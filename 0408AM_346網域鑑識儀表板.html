@@ -89,7 +89,16 @@ svg.donut{transform:rotate(-90deg)}
 .rinfo span{color:var(--teal);font-weight:700}
 
 .tc{background:#fff;border:1px solid var(--border);border-radius:8px;overflow:hidden;box-shadow:var(--sh);margin-bottom:40px}
-table{width:100%;border-collapse:collapse}
+.tbl-top-scroll{overflow-x:auto;border-bottom:1px solid var(--border)}
+.tbl-top-scroll::-webkit-scrollbar{height:6px}
+.tbl-top-scroll::-webkit-scrollbar-track{background:var(--bg4)}
+.tbl-top-scroll::-webkit-scrollbar-thumb{background:rgba(0,0,0,.18);border-radius:3px}
+.tbl-top-inner{height:1px}
+.tbl-inner{overflow-x:auto}
+.tbl-inner::-webkit-scrollbar{height:5px}
+.tbl-inner::-webkit-scrollbar-track{background:var(--bg4)}
+.tbl-inner::-webkit-scrollbar-thumb{background:rgba(0,0,0,.18);border-radius:3px}
+table{width:100%;border-collapse:collapse;min-width:680px}
 thead th{background:var(--bg4);padding:9px 13px;font-size:10px;font-weight:600;color:var(--text3);letter-spacing:.1em;text-transform:uppercase;border-bottom:1px solid var(--border2);position:sticky;top:0;z-index:5;cursor:pointer;user-select:none;white-space:nowrap;transition:color .15s}
 thead th:hover{color:var(--teal)}
 thead th .ar{margin-left:4px;font-size:9px;opacity:.35}
@@ -105,6 +114,7 @@ tbody tr:last-child td{border-bottom:none}
 .tn{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--text3);width:42px}
 .da{font-family:"JetBrains Mono",monospace;font-weight:700;color:var(--text);text-decoration:none;transition:color .15s}
 .da:hover{color:var(--teal)}
+.domain-wrap{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 .cbadge{display:inline-block;background:rgba(181,52,28,.1);border:1px solid rgba(181,52,28,.28);border-radius:3px;padding:1px 6px;font-size:11px;color:var(--red)}
 .td-date{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--text2)}
 .td-reg{font-size:12px;color:var(--text2);max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;display:inline-block}
@@ -202,17 +212,19 @@ tbody tr:last-child td{border-bottom:none}
   </div>
 
   <div class="tc">
+    <div class="tbl-top-scroll" id="topScroll"><div class="tbl-top-inner" id="topScrollInner"></div></div>
+    <div class="tbl-inner" id="tblInner">
     <table>
       <thead><tr>
         <th class="tn" onclick="srt('num')" data-col="num">#<span class="ar"></span></th>
-        <th onclick="srt('domain')" data-col="domain">有害網域<span class="ar"></span></th>
+        <th onclick="srt('domain')" data-col="domain">有害網域 &amp; 搜尋驗證<span class="ar"></span></th>
         <th onclick="srt('regDate')" data-col="regDate">註冊日期 (TW)<span class="ar"></span></th>
         <th onclick="srt('registrar')" data-col="registrar">Registrar<span class="ar"></span></th>
         <th onclick="srt('pages')" data-col="pages" style="text-align:right">污染網頁數<span class="ar"></span></th>
-        <th>搜尋驗證</th>
       </tr></thead>
       <tbody id="tb"></tbody>
     </table>
+    </div>
     <div class="pgn">
       <div class="pgi">第 <span id="pc">1</span> 頁，共 <span id="pt">1</span> 頁</div>
       <div class="pgb" id="pgb"></div>
@@ -294,15 +306,17 @@ function rb(){
     const reg=d.isChina?`<span class="cbadge">⚠ ${d.registrar}</span>`:`<span class="td-reg">${d.registrar}</span>`;
     return `<tr class="${d.isChina?"cr-row":""}">
       <td class="tn">${d.num}</td>
-      <td><a class="da" href="https://${d.domain}" target="_blank" rel="noopener">${d.domain}</a></td>
+      <td><div class="domain-wrap">
+        <a class="da" href="https://${d.domain}" target="_blank" rel="noopener">${d.domain}</a>
+        <div class="sbtns">
+          <a class="sb" href="https://www.google.com/search?q=site:${d.domain}+Costco" target="_blank">Costco</a>
+          <a class="sb t" href="https://www.google.com/search?q=site:${d.domain}+TSMC" target="_blank">TSMC</a>
+          <a class="sb e" href="https://www.google.com/search?q=site:${d.domain}+%E5%9C%8B%E4%B8%AD" target="_blank">國中</a>
+        </div>
+      </div></td>
       <td class="td-date">${d.regDate}</td>
       <td>${reg}</td>
       <td class="td-pg${pgc}">${pg}</td>
-      <td><div class="sbtns">
-        <a class="sb" href="https://www.google.com/search?q=site:${d.domain}+Costco" target="_blank">Costco</a>
-        <a class="sb t" href="https://www.google.com/search?q=site:${d.domain}+TSMC" target="_blank">TSMC</a>
-        <a class="sb e" href="https://www.google.com/search?q=site:${d.domain}+%E5%9C%8B%E4%B8%AD" target="_blank">國中</a>
-      </div></td>
     </tr>`;
   }).join("");
 }
@@ -323,6 +337,18 @@ function go(n){
 }
 
 buildTLD();buildDonut();ds();render();
+
+// 同步上下捲動條
+(function(){
+  const top=document.getElementById("topScroll");
+  const bot=document.getElementById("tblInner");
+  const inner=document.getElementById("topScrollInner");
+  function syncWidth(){inner.style.width=bot.scrollWidth+"px";}
+  syncWidth();
+  new MutationObserver(syncWidth).observe(bot,{childList:true,subtree:true});
+  top.addEventListener("scroll",()=>{bot.scrollLeft=top.scrollLeft;});
+  bot.addEventListener("scroll",()=>{top.scrollLeft=bot.scrollLeft;});
+})();
 </script>
 </body>
 </html>
