@@ -115,6 +115,28 @@ tbody tr:last-child td{border-bottom:none}
 .da{font-family:"JetBrains Mono",monospace;font-weight:700;color:var(--text);text-decoration:none;transition:color .15s}
 .da:hover{color:var(--teal)}
 .domain-wrap{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.kw-wrap{display:flex;align-items:center;gap:3px}
+.kw-input{width:80px;background:var(--bg2);border:1px solid var(--border2);border-radius:4px;padding:3px 6px;font-size:11px;color:var(--text);outline:none;transition:border-color .14s}
+.kw-input:focus{border-color:var(--teal);width:110px}
+.kw-btn{display:inline-flex;align-items:center;background:var(--bg4);border:1px solid var(--border2);border-radius:4px;padding:3px 7px;font-size:11px;color:var(--text2);cursor:pointer;transition:all .14s;white-space:nowrap}
+.kw-btn:hover{border-color:var(--red);color:var(--red);background:rgba(181,52,28,.07)}
+.gkw-wrap{background:#fff;border:1px solid var(--border2);border-radius:8px;padding:11px 16px;display:flex;align-items:center;gap:10px;box-shadow:var(--sh);margin-bottom:14px;flex-wrap:wrap}
+.gkw-label{font-size:12px;color:var(--text2);white-space:nowrap;font-weight:500}
+.gkw-input{flex:1;min-width:160px;background:var(--bg2);border:1px solid var(--border2);border-radius:6px;padding:7px 13px;font-size:13px;color:var(--text);outline:none;transition:border-color .14s}
+.gkw-input:focus{border-color:var(--teal)}
+.gkw-input::placeholder{color:var(--text3)}
+.gkw-btn{background:var(--teal);border:none;border-radius:6px;padding:7px 18px;font-size:13px;color:#fff;cursor:pointer;font-weight:600;white-space:nowrap;transition:opacity .14s}
+.gkw-btn:hover{opacity:.85}
+.gkw-clear{background:transparent;border:1px solid var(--border2);border-radius:6px;padding:7px 12px;font-size:12px;color:var(--text3);cursor:pointer;transition:all .14s}
+.gkw-clear:hover{border-color:var(--red);color:var(--red)}
+.gkw-result{width:100%;margin-top:4px;display:none}
+.gkw-result-head{font-size:11px;color:var(--text3);margin-bottom:8px;letter-spacing:.04em}
+.gkw-result-head span{color:var(--teal);font-weight:700}
+.gkw-links{display:flex;flex-direction:column;gap:4px;max-height:320px;overflow-y:auto;border:1px solid var(--border);border-radius:6px;padding:8px 10px;background:var(--bg4)}
+.gkw-links::-webkit-scrollbar{width:5px}
+.gkw-links::-webkit-scrollbar-thumb{background:rgba(0,0,0,.15);border-radius:3px}
+.gkw-link{font-family:"JetBrains Mono",monospace;font-size:12px;color:var(--blue);text-decoration:none;padding:2px 4px;border-radius:3px;transition:background .12s}
+.gkw-link:hover{background:rgba(29,95,150,.08);color:var(--teal)}
 .cbadge{display:inline-block;background:rgba(181,52,28,.1);border:1px solid rgba(181,52,28,.28);border-radius:3px;padding:1px 6px;font-size:11px;color:var(--red)}
 .td-date{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--text2)}
 .td-reg{font-size:12px;color:var(--text2);max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;display:inline-block}
@@ -201,6 +223,17 @@ tbody tr:last-child td{border-bottom:none}
           <div class="dc"><div class="dcv">346</div><div class="dcl">網域</div></div></div>
         <div class="dleg" id="dleg"></div>
       </div>
+    </div>
+  </div>
+
+  <div class="gkw-wrap">
+    <div class="gkw-label">🔍 全域關鍵字搜尋</div>
+    <input class="gkw-input" id="gkwInput" type="text" placeholder="輸入關鍵字，對全部346個網域產生Google搜尋連結…" onkeydown="if(event.key==='Enter')gkwSearch()">
+    <button class="gkw-btn" onclick="gkwSearch()">產生連結</button>
+    <button class="gkw-clear" onclick="gkwClear()">清除</button>
+    <div class="gkw-result" id="gkwResult">
+      <div class="gkw-result-head">共 <span id="gkwCount">0</span> 個網域的搜尋連結（點擊開啟）：</div>
+      <div class="gkw-links" id="gkwLinks"></div>
     </div>
   </div>
 
@@ -312,6 +345,10 @@ function rb(){
           <a class="sb" href="https://www.google.com/search?q=site:${d.domain}+Costco" target="_blank">Costco</a>
           <a class="sb t" href="https://www.google.com/search?q=site:${d.domain}+TSMC" target="_blank">TSMC</a>
           <a class="sb e" href="https://www.google.com/search?q=site:${d.domain}+%E5%9C%8B%E4%B8%AD" target="_blank">國中</a>
+          <span class="kw-wrap">
+            <input class="kw-input" type="text" placeholder="關鍵字" onkeydown="if(event.key==='Enter'&&this.value.trim()){window.open('https://www.google.com/search?q=site:${d.domain}+'+encodeURIComponent(this.value.trim()),'_blank')}">
+            <button class="kw-btn" onclick="var i=this.previousElementSibling;if(i.value.trim())window.open('https://www.google.com/search?q=site:${d.domain}+'+encodeURIComponent(i.value.trim()),'_blank')">🔍</button>
+          </span>
         </div>
       </div></td>
       <td class="td-date">${d.regDate}</td>
@@ -337,6 +374,22 @@ function go(n){
 }
 
 buildTLD();buildDonut();ds();render();
+
+function gkwSearch(){
+  const kw=document.getElementById("gkwInput").value.trim();
+  if(!kw)return;
+  const enc=encodeURIComponent(kw);
+  const links=D.map(d=>`<a class="gkw-link" href="https://www.google.com/search?q=site:${d.domain}+${enc}" target="_blank">site:${d.domain} <span style="color:var(--text3)">+ ${kw}</span></a>`).join("");
+  document.getElementById("gkwCount").textContent=D.length;
+  document.getElementById("gkwLinks").innerHTML=links;
+  document.getElementById("gkwResult").style.display="block";
+}
+
+function gkwClear(){
+  document.getElementById("gkwInput").value="";
+  document.getElementById("gkwResult").style.display="none";
+  document.getElementById("gkwLinks").innerHTML="";
+}
 
 // 同步上下捲動條
 (function(){
