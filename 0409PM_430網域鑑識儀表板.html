@@ -240,7 +240,7 @@ tbody tr:last-child td{border-bottom:none}
   <div class="search-wrap">
     <div class="search-inner">
       <div class="sbox"><span class="si">⌕</span><input type="text" id="q" placeholder="搜尋網域、日期、Registrar…" oninput="af()"></div>
-      <div class="rinfo">共 <span id="cnt">430</span> / 346 筆</div>
+      <div class="rinfo">共 <span id="cnt">430</span> / <span id="total-cnt">430</span> 筆</div>
     </div>
   </div>
 
@@ -312,6 +312,10 @@ function af(){
   ds();PG=1;render();
 }
 
+// Also sort D on init so default order is always by num asc
+D.sort((a,b)=>a.num-b.num);
+F=[...D];
+
 function srt(col){
   if(SC===col)SD=SD==="asc"?"desc":"asc";else{SC=col;SD="asc";}
   document.querySelectorAll("thead th[data-col]").forEach(th=>{
@@ -323,13 +327,13 @@ function srt(col){
 function ds(){
   F.sort((a,b)=>{
     let va=a[SC],vb=b[SC];
-    if(SC==="pages"){va=va||0;vb=vb||0;return SD==="asc"?va-vb:vb-va;}
+    if(SC==="pages"||SC==="num"){va=va||0;vb=vb||0;return SD==="asc"?va-vb:vb-va;}
     va=String(va||"").toLowerCase();vb=String(vb||"").toLowerCase();
     return SD==="asc"?va.localeCompare(vb):vb.localeCompare(va);
   });
 }
 
-function render(){rb();rp();document.getElementById("cnt").textContent=F.length;}
+function render(){rb();rp();document.getElementById("cnt").textContent=F.length;document.getElementById("total-cnt").textContent=D.length;}
 
 function rb(){
   const s=(PG-1)*PER,rows=F.slice(s,s+PER);
