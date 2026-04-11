@@ -19,16 +19,16 @@
 html{scroll-behavior:smooth}
 body{background:var(--bg);color:var(--text);font-family:"Noto Sans TC",sans-serif;font-size:14px;line-height:1.6}
 
-.header{background:linear-gradient(120deg,#2b1f14 0%,#3d2b1a 60%,#2b1f14 100%);border-bottom:3px solid var(--red);position:relative;overflow:hidden}
+.header{background:linear-gradient(120deg,#7a6050 0%,#967568 60%,#7a6050 100%);border-bottom:3px solid var(--red);position:relative;overflow:hidden}
 .header::after{content:"";position:absolute;inset:0;background:radial-gradient(ellipse 70% 100% at 5% 50%,rgba(181,52,28,.12),transparent 70%)}
-.header-inner{position:relative;z-index:1;max-width:1360px;margin:0 auto;padding:30px 40px 26px;display:grid;grid-template-columns:1fr auto;gap:24px;align-items:center}
+.header-inner{position:relative;z-index:1;max-width:1360px;margin:0 auto;padding:18px 40px 16px;display:grid;grid-template-columns:1fr auto;gap:24px;align-items:center}
 .case-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(181,52,28,.18);border:1px solid rgba(181,52,28,.4);border-radius:3px;padding:3px 12px;margin-bottom:12px;font-family:"JetBrains Mono",monospace;font-size:11px;color:#e8a090;letter-spacing:.06em}
 .case-badge::before{content:"◉";animation:blink 2s ease-in-out infinite}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}
 .header h1{font-family:"Playfair Display",serif;font-size:clamp(24px,3.4vw,48px);color:#f5efe6;line-height:1.05;margin-bottom:10px}
 .header h1 em{color:#e07b5a;font-style:normal}
-.hdr-sub{font-size:12px;color:#a89a8a;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
-.hdr-sub .sep{color:#5a4a3a}
+.hdr-sub{font-size:14px;color:#1e1e1e;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.hdr-sub .sep{color:#1e1e1e}
 .hdr-right{text-align:right}
 .hdr-org{font-family:"JetBrains Mono",monospace;font-size:10px;color:#7a6a5a;letter-spacing:.12em;margin-bottom:6px}
 .hdr-time{font-family:"JetBrains Mono",monospace;font-size:26px;color:#c8a87a;font-weight:700;letter-spacing:.04em}
@@ -188,7 +188,8 @@ tbody tr:last-child td{border-bottom:none}
       <div class="hdr-sub">
         <span>翡翠網路資訊解決方案 JADE-ANS</span>
         <span class="sep">｜</span><span>威脅攻擊者：JX</span>
-        <span class="sep">｜</span><span>版本：0411AM → 0411AM</span>
+        <span class="sep">｜</span><span>版本：0411AM → 0411AM-E</span>
+        <span class="sep">｜</span><span style="color:#1e1e1e;font-style:italic;font-size:14px;font-weight:400;">受限於搜尋引擎收錄範圍，本清單所列網域估計不及實際攻擊規模之半數，若以此推算，威脅攻擊者 JX 每月實際產生之有害網頁恐逾 2 億頁。</span>
       </div>
     </div>
     <div class="hdr-right">
