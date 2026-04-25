@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>網路指紋特徵鑑識調查報告 — JADE-ANS</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;700&family=JetBrains+Mono:wght@400;600&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy:    #1a2744;
+    --blue:    #2c4a8f;
+    --blue-lt: #3d6bc4;
+    --accent:  #c0392b;
+    --gold:    #b8860b;
+    --amber-bg:#fffbf0;
+    --amber-bd:#e6a817;
+    --grey:    #4a5568;
+    --grey-lt: #718096;
+    --bg:      #f7f8fc;
+    --white:   #ffffff;
+    --border:  #d1d9e6;
+    --code-bg: #f0f2f5;
+    --row-alt: #f4f6fb;
+    --shadow:  0 2px 16px rgba(26,39,68,.10);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Noto Sans TC', sans-serif;
+    background: var(--bg);
+    color: #2d3748;
+    font-size: 15px;
+    line-height: 1.8;
+  }
+
+  /* ── 頂部橫幅 ── */
+  .top-bar {
+    background: var(--navy);
+    color: #a0aec0;
+    font-size: 12px;
+    letter-spacing: .06em;
+    padding: 8px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .top-bar strong { color: #fff; }
+
+  /* ── 封面 ── */
+  .cover {
+    background: linear-gradient(135deg, var(--navy) 0%, #2c3e6b 60%, #1e3a6e 100%);
+    color: #fff;
+    padding: 60px 40px 50px;
+    position: relative;
+    overflow: hidden;
+  }
+  .cover::before {
+    content: '';
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 320px; height: 320px;
+    border-radius: 50%;
+    background: rgba(255,255,255,.04);
+    pointer-events: none;
+  }
+  .cover::after {
+    content: '';
+    position: absolute;
+    bottom: -40px; left: -40px;
+    width: 200px; height: 200px;
+    border-radius: 50%;
+    background: rgba(255,255,255,.03);
+    pointer-events: none;
+  }
+  .cover-inner { max-width: 860px; margin: 0 auto; position: relative; }
+  .cover-org {
+    font-size: 12px;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: #90aad4;
+    margin-bottom: 24px;
+  }
+  .cover h1 {
+    font-family: 'Noto Serif TC', serif;
+    font-size: clamp(26px, 4vw, 38px);
+    font-weight: 700;
+    line-height: 1.3;
+    margin-bottom: 12px;
+    letter-spacing: .04em;
+  }
+  .cover-sub {
+    font-size: 15px;
+    color: #a8c4e8;
+    margin-bottom: 6px;
+  }
+  .cover-notice {
+    margin-top: 28px;
+    padding: 14px 18px;
+    background: rgba(192,57,43,.18);
+    border-left: 3px solid #e74c3c;
+    border-radius: 4px;
+    font-size: 13px;
+    color: #fbb;
+    line-height: 1.6;
+  }
+  .cover-meta {
+    margin-top: 32px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 10px;
+  }
+  .meta-item {
+    background: rgba(255,255,255,.07);
+    border: 1px solid rgba(255,255,255,.10);
+    border-radius: 6px;
+    padding: 12px 16px;
+  }
+  .meta-label { font-size: 11px; color: #90aad4; letter-spacing: .08em; text-transform: uppercase; margin-bottom: 4px; }
+  .meta-value { font-size: 14px; color: #fff; font-weight: 500; }
+
+  /* ── 主體 ── */
+  .container { max-width: 900px; margin: 0 auto; padding: 40px 24px 80px; }
+
+  /* ── 目錄 ── */
+  .toc {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 24px 28px;
+    margin-bottom: 40px;
+    box-shadow: var(--shadow);
+  }
+  .toc-title {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--navy);
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+    border-bottom: 2px solid var(--blue-lt);
+    padding-bottom: 8px;
+  }
+  .toc ol { padding-left: 20px; }
+  .toc li { margin: 5px 0; }
+  .toc a { color: var(--blue); text-decoration: none; font-size: 14px; }
+  .toc a:hover { color: var(--accent); text-decoration: underline; }
+
+  /* ── 章節 ── */
+  section { margin-bottom: 48px; }
+  .section-heading {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--navy);
+    padding: 10px 0 10px 16px;
+    border-left: 4px solid var(--blue-lt);
+    margin-bottom: 20px;
+    scroll-margin-top: 20px;
+  }
+  .subsection-heading {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--blue);
+    margin: 24px 0 10px;
+    padding-bottom: 4px;
+    border-bottom: 1px solid var(--border);
+  }
+  p { margin-bottom: 12px; }
+
+  /* ── 表格 ── */
+  .table-wrap { overflow-x: auto; margin: 16px 0 24px; border-radius: 8px; box-shadow: var(--shadow); }
+  table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+  thead tr { background: var(--navy); }
+  thead th {
+    color: #fff;
+    font-weight: 600;
+    padding: 11px 14px;
+    text-align: left;
+    letter-spacing: .03em;
+    white-space: nowrap;
+  }
+  tbody tr:nth-child(odd)  { background: var(--white); }
+  tbody tr:nth-child(even) { background: var(--row-alt); }
+  tbody tr:hover { background: #e8eef8; }
+  td {
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+    line-height: 1.6;
+  }
+  td:first-child { font-weight: 500; color: var(--navy); }
+  .warn { color: var(--accent); font-weight: 700; }
+
+  /* ── code ── */
+  pre, code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12.5px;
+  }
+  .code-block {
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--accent);
+    border-radius: 6px;
+    padding: 14px 18px;
+    margin: 12px 0;
+    overflow-x: auto;
+    color: #c0392b;
+    line-height: 1.7;
+  }
+
+  /* ── 免責聲明 ── */
+  .disclaimer {
+    background: var(--amber-bg);
+    border: 1px solid var(--amber-bd);
+    border-left: 4px solid var(--gold);
+    border-radius: 6px;
+    padding: 16px 20px;
+    margin: 28px 0;
+    font-size: 13.5px;
+    color: #7b5c00;
+    line-height: 1.7;
+  }
+  .disclaimer strong { color: #5a4000; }
+
+  /* ── bullet list ── */
+  ul.report-list { margin: 10px 0 16px 20px; }
+  ul.report-list li { margin: 6px 0; line-height: 1.7; }
+
+  /* ── 優先標籤 ── */
+  .badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .04em;
+  }
+  .badge-red   { background: #fee2e2; color: #991b1b; }
+  .badge-blue  { background: #dbeafe; color: #1e40af; }
+  .badge-green { background: #d1fae5; color: #065f46; }
+
+  /* ── 九、聲明區 ── */
+  .declaration {
+    background: var(--navy);
+    color: #a8bdd8;
+    border-radius: 8px;
+    padding: 28px 32px;
+    margin-top: 16px;
+    font-size: 13.5px;
+    line-height: 1.8;
+  }
+  .declaration strong { color: #fff; }
+
+  /* ── 頁尾 ── */
+  footer {
+    text-align: center;
+    padding: 24px;
+    font-size: 12px;
+    color: var(--grey-lt);
+    border-top: 1px solid var(--border);
+    margin-top: 40px;
+  }
+
+  /* ── 列印 ── */
+  @media print {
+    .top-bar, .print-btn { display: none; }
+    body { background: #fff; font-size: 13px; }
+    .cover { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  }
+
+  /* ── 列印按鈕 ── */
+  .print-btn {
+    position: fixed;
+    bottom: 28px; right: 28px;
+    background: var(--blue);
+    color: #fff;
+    border: none;
+    border-radius: 50px;
+    padding: 12px 22px;
+    font-size: 13px;
+    cursor: pointer;
+    box-shadow: 0 4px 16px rgba(44,74,143,.35);
+    font-family: 'Noto Sans TC', sans-serif;
+    transition: background .2s;
+    z-index: 100;
+  }
+  .print-btn:hover { background: var(--navy); }
+
+  /* fade-in */
+  @keyframes fadeUp {
+    from { opacity:0; transform:translateY(16px); }
+    to   { opacity:1; transform:translateY(0); }
+  }
+  section { animation: fadeUp .5s ease both; }
+  section:nth-child(1)  { animation-delay:.05s; }
+  section:nth-child(2)  { animation-delay:.10s; }
+  section:nth-child(3)  { animation-delay:.15s; }
+  section:nth-child(4)  { animation-delay:.20s; }
+  section:nth-child(5)  { animation-delay:.25s; }
+  section:nth-child(6)  { animation-delay:.30s; }
+  section:nth-child(7)  { animation-delay:.35s; }
+  section:nth-child(8)  { animation-delay:.40s; }
+  section:nth-child(9)  { animation-delay:.45s; }
+</style>
+</head>
+<body>
+
+<div class="top-bar">
+  <span>JADE-ANS 網路資訊解決方案（翡翠網路）</span>
+  <span>報告編號：<strong>JADE-ANS-2026-BLOG-001</strong> &nbsp;|&nbsp; 2026 年</span>
+</div>
+
+<!-- 封面 -->
+<div class="cover">
+  <div class="cover-inner">
+    <div class="cover-org">JADE-ANS Internet Information Solutions &nbsp;·&nbsp; 網路採證調查報告</div>
+    <h1>網路指紋特徵鑑識調查報告</h1>
+    <div class="cover-sub">InfoBank（raitanzi）與 tbsexposed 兩個 Google Blogger 部落格</div>
+    <div class="cover-sub">技術指紋比對與關聯性分析</div>
+    <div class="cover-notice">
+      上述兩部落格分別涉及<strong>兒少性剝削</strong>與兒少不宜內容，已經由衛福部與教育部等相關機關認定；
+      JADE-ANS 技術分析顯示兩站具高度關聯性。
+    </div>
+    <div class="cover-meta">
+      <div class="meta-item"><div class="meta-label">報告編號</div><div class="meta-value">JADE-ANS-2026-BLOG-001</div></div>
+      <div class="meta-item"><div class="meta-label">出報單位</div><div class="meta-value">JADE-ANS（翡翠網路）</div></div>
+      <div class="meta-item"><div class="meta-label">出報日期</div><div class="meta-value">2026 年</div></div>
+      <div class="meta-item"><div class="meta-label">機密等級</div><div class="meta-value" style="color:#90aad4;">公開版本</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- 目錄 -->
+  <div class="toc">
+    <div class="toc-title">目錄</div>
+    <ol>
+      <li><a href="#s1">調查背景與目的</a></li>
+      <li><a href="#s2">標的網站清單</a></li>
+      <li><a href="#s3">技術指紋分析</a></li>
+      <li><a href="#s4">網頁結構相似度分析</a></li>
+      <li><a href="#s5">關鍵身分追查點</a></li>
+      <li><a href="#s6">歸因分析與限制</a></li>
+      <li><a href="#s7">司法調查建議</a></li>
+      <li><a href="#s8">附錄：技術指紋摘要</a></li>
+      <li><a href="#s9">調查者聲明</a></li>
+    </ol>
+  </div>
+
+  <!-- 一 -->
+  <section id="s1">
+    <div class="section-heading">一、調查背景與目的</div>
+    <p>JADE-ANS（翡翠網路資訊解決方案）自 2012 年起持續觀察與記錄疑似長期 SEO 污染行為對臺灣網路環境之影響。本報告針對兩個 Blogger 部落格網站進行公開網頁技術鑑識與跨網站屬性比對，藉由 HTML 結構、CSS 模板、追蹤碼與廣告指紋等技術特徵，分析其是否存在高度一致之建立流程、模板來源或操作模式。</p>
+    <p>本報告之目的在於建立可供司法或技術分析參考之關聯性線索，而非直接認定特定個人身分。</p>
+  </section>
+
+  <!-- 二 -->
+  <section id="s2">
+    <div class="section-heading">二、標的網站清單</div>
+    <p>本次鑑識涉及兩個 Blogger 部落格網站：</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>編號</th><th>網站名稱</th><th>網域</th><th>Blog ID</th><th>調查樣本網址</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>tbsexposed</td><td>tbsexposed.blogspot.com</td><td><code>8817136296941792274</code></td><td>/2012/12/blog-post_8.html、/2013/09/</td></tr>
+          <tr><td>2</td><td>InfoBank（raitanzi）</td><td>raitanzi.blogspot.com</td><td><code>6789838276628488802</code></td><td>/2006/</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- 三 -->
+  <section id="s3">
+    <div class="section-heading">三、技術指紋分析</div>
+
+    <div class="subsection-heading">3.1 共同核心指紋（兩網站交叉比對）</div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>指紋項目</th><th>數值</th><th>技術解讀</th></tr></thead>
+        <tbody>
+          <tr><td>AdSense Platform Account</td><td><code>ca-host-pub-1556223355139109</code></td><td>Blogger 平台統一廣告框架</td></tr>
+          <tr><td>CSS Bundle 版本號</td><td><code>335934321-css_bundle_v2.css</code></td><td>相同時期 Blogger 模板版本</td></tr>
+          <tr><td>CSS 模板名稱</td><td>Simple（Blogger 預設）</td><td>兩站均採 Blogger 預設模板</td></tr>
+          <tr><td>Body 字型設定</td><td>Arial 12px</td><td>字型與字級一致</td></tr>
+          <tr><td>社群分享按鈕組合</td><td>Twitter / Facebook / Pinterest</td><td>配置一致</td></tr>
+          <tr><td>留言系統</td><td>Blogger 內嵌 iframe</td><td>平台標準元件</td></tr>
+          <tr><td>關鍵字主題</td><td>盧勝彥 / 真佛宗</td><td>主題方向具有交集</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="subsection-heading">3.2 SEO 關鍵字污染特徵</div>
+    <p><strong>tbsexposed.blogspot.com</strong> 因有大量兒少不宜內容，被電信網路業者色情守門員與教育部封鎖。</p>
+    <p>部分頁面出現將特定關鍵字嵌入 HTML meta 欄位之現象，例如：</p>
+    <div class="code-block">&lt;meta content="盧勝彥, 真佛宗, sheng-yen Lu, cult" http-equiv="X-UA-Compatible"&gt;
+&lt;meta content="盧勝彥, 真佛宗, sheng-yen Lu, cult" name="viewport"&gt;</div>
+    <p>上述內容顯示：</p>
+    <ul class="report-list">
+      <li>相似關鍵字組出現在不同網站</li>
+      <li>關鍵字排列方式高度一致</li>
+      <li>可能來自相似複製流程或統一內容模板</li>
+    </ul>
+
+    <div class="subsection-heading">3.3 廣告與追蹤指紋</div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>指紋項目</th><th>tbsexposed</th><th>raitanzi</th></tr></thead>
+        <tbody>
+          <tr><td>Blog ID</td><td><code>8817136296941792274</code></td><td><code>6789838276628488802</code></td></tr>
+          <tr><td>AdSense Publisher ID</td><td>（無）</td><td><code class="warn">ca-pub-9567870895661640 ⚠️</code></td></tr>
+          <tr><td>Google Analytics</td><td>（無）</td><td><code class="warn">UA-1651107-3 ⚠️</code></td></tr>
+          <tr><td>Yahoo Site Key</td><td>（無）</td><td><code class="warn">20bb16221dc00470 ⚠️</code></td></tr>
+          <tr><td>GTM 標籤</td><td>（無）</td><td>（無）</td></tr>
+          <tr><td>廣告欄位（Ad Slots）</td><td>（無）</td><td><code>3647776614 / 8231472332 / 8774972660</code></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>其中 raitanzi 網站存在獨立 AdSense 與 Analytics 指紋，可作為後續司法調閱資料之重要參考。<span class="warn">⚠️ 標示項目為身分追查之最高優先線索。</span></p>
+  </section>
+
+  <!-- 四 -->
+  <section id="s4">
+    <div class="section-heading">四、網頁結構相似度分析</div>
+    <p>本節針對 tbsexposed 與 raitanzi 兩個 Blogger 網站進行 HTML/CSS 結構比對：</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>比對層次</th><th>tbsexposed</th><th>raitanzi</th><th>共同數量</th><th>相似度</th></tr></thead>
+        <tbody>
+          <tr><td>CSS 選擇器</td><td>58</td><td>57</td><td>57</td><td><strong style="color:#1a5c2a;">98.3%</strong></td></tr>
+          <tr><td>HTML class 結構</td><td>155</td><td>146</td><td>115</td><td><strong style="color:#1a5c2a;">74.2%</strong></td></tr>
+          <tr><td>核心區塊（post/header/footer/widget）</td><td>存在</td><td>存在</td><td>全部存在</td><td><strong style="color:#1a5c2a;">100%</strong></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="subsection-heading">技術解讀</div>
+    <p>需特別說明的是：由於兩網站均使用 Blogger / Blogspot 平台，其 HTML 與 CSS 結構本身即可能包含大量共通元素，例如：</p>
+    <ul class="report-list">
+      <li>Blogger 預設模板</li>
+      <li>Sidebar / Footer 模組</li>
+      <li>留言系統</li>
+      <li>RSS / Feed 元件</li>
+      <li>Blogger 預設 JavaScript 與 CSS</li>
+    </ul>
+    <p>因此，高相似度結果部分可能來自平台共用結構，而非完全代表相同操作者。然而，當高比例 CSS、Class 結構與關鍵字使用模式同時出現時，仍可視為值得進一步調查之技術線索。</p>
+  </section>
+
+  <!-- 五 -->
+  <section id="s5">
+    <div class="section-heading">五、關鍵身分追查點</div>
+
+    <div class="subsection-heading">5.1 AdSense Publisher ID <span class="badge badge-red">最高優先</span></div>
+    <p>raitanzi.blogspot.com 中出現以下高價值採證指紋：</p>
+    <div class="code-block">Google AdSense Publisher ID: ca-pub-9567870895661640
+Ad Slot 1: 3647776614
+Ad Slot 2: 8231472332
+Ad Slot 3: 8774972660</div>
+    <p>AdSense 帳戶申請時需綁定付款資訊與身分驗證程序（KYC），因此具有較高調查價值。透過扣押令或 MLAT 司法協助協議，可強制取得該帳戶持有人資訊。</p>
+
+    <div class="subsection-heading">5.2 Google Analytics 指紋 <span class="badge badge-blue">佐證</span></div>
+    <div class="code-block">Google Analytics ID: UA-1651107-3</div>
+    <p>此追蹤碼與 Google 帳戶相關聯，可與 ca-pub-9567870895661640 互相佐證，共同確認該 Google 帳戶的持有人。</p>
+
+    <div class="subsection-heading">5.3 其他可調查線索</div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>項目</th><th>數值</th><th>說明</th></tr></thead>
+        <tbody>
+          <tr><td>Yahoo Site Key</td><td><code>20bb16221dc00470</code></td><td>可進一步確認相關帳戶資訊</td></tr>
+          <tr><td>Blog ID（tbsexposed）</td><td><code>8817136296941792274</code></td><td>Blogger 帳號識別碼，綁定 Google 帳戶 #1</td></tr>
+          <tr><td>Blog ID（raitanzi）</td><td><code>6789838276628488802</code></td><td>Blogger 帳號識別碼，綁定 Google 帳戶 #2（優先）</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- 六 -->
+  <section id="s6">
+    <div class="disclaimer">
+      <strong>【技術分析聲明】</strong>本報告之分析係基於公開 HTML 原始碼與可觀察之網站結構特徵，屬技術相似性與模式分析，不代表法律上已完成身分認定。相關結論仍應配合司法機關調閱帳戶資料、登入紀錄、廣告帳戶及平台保存資料進一步確認。
+    </div>
+    <div class="section-heading">六、歸因分析與限制</div>
+
+    <div class="subsection-heading">6.1 技術觀察結果</div>
+    <p>依據本次比對結果，可觀察到：</p>
+    <ul class="report-list">
+      <li>兩網站在 Blogger 模板、CSS 結構與部分內容模式上具有高度一致性</li>
+      <li>相同關鍵字組與 HTML meta 欄位排列方式高度吻合</li>
+      <li>存在可追蹤之 Analytics / AdSense 指紋</li>
+      <li>tbsexposed 與 raitanzi 之 HTML 結構 CSS 選擇器相似度達 98.3%</li>
+    </ul>
+    <p>上述結果顯示：兩網站之間<strong>可能存在共同建立流程、相近模板來源或操作模式</strong>。</p>
+
+    <div class="subsection-heading">6.2 限制與注意事項</div>
+    <p>由於 Blogger 屬於統一平台，因此：</p>
+    <ul class="report-list">
+      <li>相似 CSS 與 HTML 結構可能來自平台共用模板</li>
+      <li>相似 Widget 與版型可能來自 Blogger 預設配置</li>
+      <li>結構相似不代表法律上已完成身分認定</li>
+    </ul>
+    <p>本報告應視為技術關聯性分析，而非單獨之法律認定證據。若需提高證據強度，建議結合：</p>
+    <ul class="report-list">
+      <li>Google 帳號資料及登入 IP 紀錄</li>
+      <li>AdSense / Analytics 綁定資訊</li>
+      <li>Wayback Machine 歷史版本</li>
+      <li>外部圖片來源及 JavaScript / CSS 自訂來源</li>
+    </ul>
+  </section>
+
+  <!-- 七 -->
+  <section id="s7">
+    <div class="section-heading">七、司法調查建議</div>
+
+    <div class="subsection-heading">7.1 向 Google 提出法律請求</div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>請求強度順位</th><th>Blog ID / 帳號</th><th>優先原因</th></tr></thead>
+        <tbody>
+          <tr><td><span class="badge badge-red">第一優先</span></td><td><code>6789838276628488802</code>（raitanzi）</td><td>含 ca-pub + UA-ID + Yahoo Key，身分證據最密集</td></tr>
+          <tr><td><span class="badge badge-blue">第二優先</span></td><td><code>8817136296941792274</code>（tbsexposed）</td><td>疑似污染內容最大量，證據參考價值高</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>請求內容可包括：</p>
+    <ul class="report-list">
+      <li>帳戶持有人：真實姓名、地址、Google 帳戶連結資訊</li>
+      <li>登入記錄：IP 位址、登入時間戳</li>
+      <li>AdSense 收款資訊：ca-pub-9567870895661640 綁定銀行帳戶及收款記錄</li>
+      <li>Google Analytics 帳戶 UA-1651107-3 連結資訊</li>
+    </ul>
+
+    <div class="subsection-heading">7.2 平行調查方向</div>
+    <ul class="report-list">
+      <li>Wayback Machine 歷史版本分析：查詢 tbsexposed 與 raitanzi 之 2006–2013 年原始碼</li>
+      <li>Yahoo Site Key（20bb16221dc00470）相關帳戶確認</li>
+      <li>搜尋其他網站是否存在相同 AdSense Publisher ID（ca-pub-9567870895661640）</li>
+      <li>比對其他 Blogspot 網站之相同模板與 JS/CSS 指紋</li>
+    </ul>
+  </section>
+
+  <!-- 八 -->
+  <section id="s8">
+    <div class="section-heading">八、附錄：技術指紋摘要</div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>指紋名稱</th><th>數值</th><th>來源</th></tr></thead>
+        <tbody>
+          <tr><td>Blog ID #1</td><td><code>8817136296941792274</code></td><td>tbsexposed.blogspot.com</td></tr>
+          <tr><td>Blog ID #2</td><td><code>6789838276628488802</code></td><td>raitanzi.blogspot.com</td></tr>
+          <tr><td>AdSense Platform</td><td><code>ca-host-pub-1556223355139109</code></td><td>兩站共同</td></tr>
+          <tr><td>AdSense Publisher <span class="badge badge-red">最高優先</span></td><td><code>ca-pub-9567870895661640</code></td><td>raitanzi</td></tr>
+          <tr><td>Ad Slot 1</td><td><code>3647776614</code></td><td>raitanzi</td></tr>
+          <tr><td>Ad Slot 2</td><td><code>8231472332</code></td><td>raitanzi</td></tr>
+          <tr><td>Ad Slot 3</td><td><code>8774972660</code></td><td>raitanzi</td></tr>
+          <tr><td>Google Analytics</td><td><code>UA-1651107-3</code></td><td>raitanzi</td></tr>
+          <tr><td>Yahoo Site Key</td><td><code>20bb16221dc00470</code></td><td>raitanzi</td></tr>
+          <tr><td>CSS Bundle</td><td><code>335934321-css_bundle_v2.css</code></td><td>兩站共同</td></tr>
+          <tr><td>CSS 結構相似度</td><td><strong>98.3%</strong></td><td>tbsexposed vs raitanzi</td></tr>
+          <tr><td>HTML Class 相似度</td><td><strong>74.2%</strong></td><td>tbsexposed vs raitanzi</td></tr>
+          <tr><td>SEO 污染關鍵字組</td><td>盧勝彥, 真佛宗, 邪教, sheng-yen Lu, cult</td><td>tbsexposed</td></tr>
+          <tr><td>Post ID #1</td><td><code>6238653343649540757</code></td><td>tbsexposed /2012/12/blog-post_8.html</td></tr>
+          <tr><td>Post ID #2</td><td><code>740776305040440323</code></td><td>tbsexposed 什麼才是真正的佛法</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- 九 -->
+  <section id="s9">
+    <div class="section-heading">九、調查者聲明</div>
+    <div class="declaration">
+      <p>本報告之技術證據均來自網站<strong>公開可存取之 HTML 原始碼</strong>，分析方法為自動化指紋提取與統計比對，未進行任何未經授權之登入、破解或侵入行為。所有指紋數據均有原始文件可供核驗。</p>
+      <br>
+      <p>本報告僅作為技術分析與司法參考用途，所有結論仍需配合平台資料與司法調查進一步確認。</p>
+      <br>
+      <p><strong>報告調查機構：</strong>JADE-ANS 網路資訊解決方案（翡翠網路）</p>
+      <br>
+      <p style="color:#6a8ab8;font-size:12px;">網頁指紋特徵鑑識調查報告 © 2026 JADE-ANS &nbsp;|&nbsp; JADE-ANS-2026-BLOG-001</p>
+    </div>
+  </section>
+
+</div>
+
+<footer>
+  © 2026 JADE-ANS 網路資訊解決方案（翡翠網路）&nbsp;·&nbsp; 網路指紋特徵鑑識調查報告 &nbsp;·&nbsp; JADE-ANS-2026-BLOG-001
+</footer>
+
+<button class="print-btn" onclick="window.print()">🖨 列印 / 儲存 PDF</button>
+
+</body>
+</html>
