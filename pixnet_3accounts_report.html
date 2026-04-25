@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PIXNET 三帳號檢舉技術資料 — JADE-ANS</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy:#1a2744; --blue:#2c4a8f; --blue-lt:#3d6bc4;
+    --red:#c0392b; --amber:#b8860b; --green:#1a5c2a; --orange:#d35400;
+    --amber-bg:#fffbf0; --grey:#4a5568;
+    --border:#d1d9e6; --bg:#f7f8fc; --white:#fff; --row-alt:#f4f6fb;
+  }
+  *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
+  body { font-family:'Noto Sans TC',sans-serif; background:var(--bg); color:#2d3748; font-size:15px; line-height:1.8; }
+
+  .top-bar { background:var(--navy); color:#a0aec0; font-size:12px; padding:8px 40px; display:flex; justify-content:space-between; }
+  .top-bar strong { color:#fff; }
+
+  .cover { background:linear-gradient(135deg,#6d1010 0%,#a32020 55%,#c0392b 100%); color:#fff; padding:48px 40px 40px; }
+  .cover-inner { max-width:900px; margin:0 auto; }
+  .cover-org { font-size:12px; letter-spacing:.12em; text-transform:uppercase; color:#f5b7b1; margin-bottom:18px; }
+  .cover h1 { font-size:clamp(22px,3.5vw,34px); font-weight:700; line-height:1.3; margin-bottom:10px; }
+  .cover-sub { font-size:14px; color:#fadbd8; margin-bottom:4px; }
+  .cover-notice { margin-top:22px; padding:14px 18px; background:rgba(0,0,0,.22); border-left:3px solid #f1c40f; border-radius:4px; font-size:13px; color:#fef9e7; line-height:1.7; }
+  .cover-meta { margin-top:26px; display:grid; grid-template-columns:repeat(auto-fit,minmax(155px,1fr)); gap:10px; }
+  .meta-item { background:rgba(255,255,255,.10); border:1px solid rgba(255,255,255,.15); border-radius:6px; padding:11px 15px; }
+  .meta-label { font-size:11px; color:#f5b7b1; letter-spacing:.08em; text-transform:uppercase; margin-bottom:3px; }
+  .meta-value { font-size:13px; color:#fff; font-weight:500; }
+
+  .container { max-width:920px; margin:0 auto; padding:36px 24px 80px; }
+
+  .toc { background:var(--white); border:1px solid var(--border); border-radius:8px; padding:20px 24px; margin-bottom:36px; box-shadow:0 2px 12px rgba(0,0,0,.07); }
+  .toc-title { font-size:13px; font-weight:700; color:var(--navy); letter-spacing:.08em; text-transform:uppercase; margin-bottom:12px; border-bottom:2px solid var(--red); padding-bottom:6px; }
+  .toc ol { padding-left:18px; }
+  .toc li { margin:4px 0; }
+  .toc a { color:var(--blue); text-decoration:none; font-size:14px; }
+  .toc a:hover { color:var(--red); text-decoration:underline; }
+
+  section { margin-bottom:44px; }
+  .section-heading { font-size:19px; font-weight:700; color:var(--navy); padding:10px 0 10px 14px; border-left:4px solid var(--red); margin-bottom:18px; scroll-margin-top:20px; }
+  .subsection-heading { font-size:15px; font-weight:700; color:var(--blue); margin:22px 0 10px; padding-bottom:4px; border-bottom:1px solid var(--border); }
+  p { margin-bottom:12px; }
+
+  /* 帳號卡片 */
+  .account-card { background:var(--white); border:1px solid var(--border); border-radius:10px; padding:20px 24px; margin-bottom:28px; box-shadow:0 2px 10px rgba(0,0,0,.06); }
+  .account-card-header { display:flex; align-items:center; gap:14px; margin-bottom:16px; padding-bottom:12px; border-bottom:2px solid var(--border); }
+  .account-avatar { width:44px; height:44px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:18px; font-weight:700; color:#fff; flex-shrink:0; }
+  .av-1 { background:var(--red); }
+  .av-2 { background:#8e44ad; }
+  .av-3 { background:#d35400; }
+  .account-name { font-size:18px; font-weight:700; color:var(--navy); }
+  .account-url  { font-size:12px; color:var(--blue-lt); font-family:'JetBrains Mono',monospace; }
+
+  .table-wrap { overflow-x:auto; margin:12px 0 18px; border-radius:8px; box-shadow:0 2px 8px rgba(0,0,0,.06); }
+  table { width:100%; border-collapse:collapse; font-size:13.5px; }
+  thead tr { background:var(--navy); }
+  thead th { color:#fff; font-weight:600; padding:10px 14px; text-align:left; white-space:nowrap; }
+  tbody tr:nth-child(odd)  { background:var(--white); }
+  tbody tr:nth-child(even) { background:var(--row-alt); }
+  tbody tr:hover { background:#e8eef8; }
+  td { padding:9px 14px; border-bottom:1px solid var(--border); vertical-align:top; line-height:1.6; }
+  td:first-child { font-weight:500; color:var(--navy); white-space:nowrap; }
+  td code, .mono { font-family:'JetBrains Mono',monospace; font-size:12px; }
+  td a { color:var(--blue-lt); font-family:'JetBrains Mono',monospace; font-size:12px; word-break:break-all; }
+
+  .code-block { background:#f0f2f5; border:1px solid var(--border); border-left:3px solid var(--red); border-radius:6px; padding:12px 16px; margin:10px 0; overflow-x:auto; font-family:'JetBrains Mono',monospace; font-size:12.5px; color:#c0392b; line-height:1.7; white-space:pre-wrap; }
+
+  .warn  { color:var(--red);    font-weight:700; }
+  .ok    { color:var(--green);  font-weight:700; }
+  .hi    { color:var(--orange); font-weight:700; }
+
+  .badge { display:inline-block; padding:2px 8px; border-radius:4px; font-size:11px; font-weight:700; }
+  .badge-red    { background:#fee2e2; color:#991b1b; }
+  .badge-purple { background:#f3e8ff; color:#6b21a8; }
+  .badge-orange { background:#fff7ed; color:#9a3412; }
+  .badge-blue   { background:#dbeafe; color:#1e40af; }
+  .badge-amber  { background:#fef3c7; color:#92400e; }
+
+  .alert { padding:14px 18px; border-radius:6px; margin:16px 0; font-size:13.5px; line-height:1.7; }
+  .alert-red   { background:#fee2e2; border:1px solid #fca5a5; border-left:4px solid var(--red);  color:#7f1d1d; }
+  .alert-amber { background:var(--amber-bg); border:1px solid #fcd34d; border-left:4px solid var(--amber); color:#78350f; }
+  .alert-blue  { background:#eff6ff; border:1px solid #bfdbfe; border-left:4px solid var(--blue); color:#1e3a5f; }
+
+  ul.report-list { margin:10px 0 14px 20px; }
+  ul.report-list li { margin:5px 0; line-height:1.7; }
+
+  /* GTM 共同框 */
+  .gtm-box { background:linear-gradient(135deg,#fee2e2,#fff); border:2px solid var(--red); border-radius:10px; padding:20px 24px; margin:20px 0; }
+  .gtm-box-title { font-size:16px; font-weight:700; color:var(--red); margin-bottom:12px; }
+  .gtm-match { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:10px; margin-top:12px; }
+  .gtm-item { background:#fff; border:1px solid #fca5a5; border-radius:6px; padding:12px 16px; text-align:center; }
+  .gtm-item-label { font-size:11px; color:#666; text-transform:uppercase; letter-spacing:.06em; margin-bottom:4px; }
+  .gtm-item-value { font-size:13px; font-weight:700; color:var(--navy); }
+
+  .steps { counter-reset:step; margin:14px 0; }
+  .step { display:flex; gap:14px; margin:12px 0; }
+  .step-num { counter-increment:step; min-width:28px; height:28px; background:var(--red); color:#fff; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:13px; font-weight:700; flex-shrink:0; }
+  .step-num::before { content:counter(step); }
+  .step-content { flex:1; padding-top:2px; }
+
+  .declaration { background:var(--navy); color:#a8bdd8; border-radius:8px; padding:24px 28px; font-size:13.5px; line-height:1.8; }
+  .declaration strong { color:#fff; }
+
+  footer { text-align:center; padding:20px; font-size:12px; color:#718096; border-top:1px solid var(--border); margin-top:36px; }
+  .print-btn { position:fixed; bottom:24px; right:24px; background:var(--red); color:#fff; border:none; border-radius:50px; padding:11px 20px; font-size:13px; cursor:pointer; box-shadow:0 4px 14px rgba(192,57,43,.35); font-family:'Noto Sans TC',sans-serif; z-index:100; }
+  .print-btn:hover { background:#a32020; }
+  @media print { .top-bar,.print-btn { display:none; } body { background:#fff; } }
+</style>
+</head>
+<body>
+
+<div class="top-bar">
+  <span>JADE-ANS 網路資訊解決方案（翡翠網路）</span>
+  <span>報告編號：<strong>JADE-ANS-2026-PIXNET-001</strong> &nbsp;|&nbsp; 2026-04-25</span>
+</div>
+
+<div class="cover">
+  <div class="cover-inner">
+    <div class="cover-org">JADE-ANS Internet Information Solutions · 網路採證 · 檢舉技術資料</div>
+    <h1>PIXNET 三帳號檢舉技術資料</h1>
+    <div class="cover-sub">harukainusa &nbsp;·&nbsp; lyndiakanzler &nbsp;·&nbsp; seogoogleadsense</div>
+    <div class="cover-sub">廢棄域名木馬連結（Script:SNH-gen [Trj]）與兒少相關內容</div>
+    <div class="cover-notice">
+      ⚠️ <strong>三帳號共同指紋確認：GTM-TRLQMPKX 與 Facebook App ID 101730233200171 完全一致</strong><br>
+      三個帳號均引用同一廢棄域名惡意連結，且共享相同追蹤碼，具強烈技術關聯性。<br>
+      本資料供 <strong>iWIN、PIXNET 平台及司法機關</strong> 檢舉使用，採集日期：2026-04-25。
+    </div>
+    <div class="cover-meta">
+      <div class="meta-item"><div class="meta-label">報告編號</div><div class="meta-value">JADE-ANS-2026-PIXNET-001</div></div>
+      <div class="meta-item"><div class="meta-label">採集日期</div><div class="meta-value">2026-04-25</div></div>
+      <div class="meta-item"><div class="meta-label">涉及帳號數</div><div class="meta-value">3 個</div></div>
+      <div class="meta-item"><div class="meta-label">共同 GTM</div><div class="meta-value" style="color:#f1c40f;">GTM-TRLQMPKX</div></div>
+      <div class="meta-item"><div class="meta-label">木馬威脅</div><div class="meta-value" style="color:#fca5a5;">Script:SNH-gen [Trj]</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+
+  <div class="toc">
+    <div class="toc-title">目錄</div>
+    <ol>
+      <li><a href="#s1">三帳號總覽對照表</a></li>
+      <li><a href="#s2">帳號一：harukainusa</a></li>
+      <li><a href="#s3">帳號二：lyndiakanzler</a></li>
+      <li><a href="#s4">帳號三：seogoogleadsense</a></li>
+      <li><a href="#s5">共同指紋分析：GTM-TRLQMPKX</a></li>
+      <li><a href="#s6">惡意廢棄域名連結分析</a></li>
+      <li><a href="#s7">URLScan.io 掃描紀錄</a></li>
+      <li><a href="#s8">檢舉建議與流程</a></li>
+      <li><a href="#s9">採集聲明</a></li>
+    </ol>
+  </div>
+
+  <!-- 一、總覽 -->
+  <section id="s1">
+    <div class="section-heading">一、三帳號總覽對照表</div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>項目</th><th><span class="badge badge-red">harukainusa</span></th><th><span class="badge badge-purple">lyndiakanzler</span></th><th><span class="badge badge-orange">seogoogleadsense</span></th></tr></thead>
+        <tbody>
+          <tr><td>Post ID</td><td><code>1029273124</code></td><td><code>8015802773</code></td><td><code>7078451558</code></td></tr>
+          <tr><td>發文時間</td><td>2010-11-19</td><td>2012-02-13</td><td>2011-08-31</td></tr>
+          <tr><td>GTM</td><td><code class="warn">GTM-TRLQMPKX</code></td><td><code class="warn">GTM-TRLQMPKX</code></td><td><code class="warn">GTM-TRLQMPKX</code></td></tr>
+          <tr><td>FB App ID</td><td><code>101730233200171</code></td><td><code>101730233200171</code></td><td><code>101730233200171</code></td></tr>
+          <tr><td>木馬連結 #32950030</td><td><span class="warn">✅ 確認</span></td><td><span class="warn">✅ 確認</span></td><td><span class="warn">✅ 確認</span></td></tr>
+          <tr><td>木馬連結 #32946942</td><td><span class="warn">✅ 確認</span></td><td>—</td><td>—</td></tr>
+          <tr><td>URLScan.io 紀錄</td><td>—</td><td>—</td><td><span class="ok">✅ 兩筆</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="alert alert-red">
+      🔴 <strong>三帳號 GTM-TRLQMPKX 完全一致</strong>：GTM 容器 ID 由帳號持有者自行設定，非平台預設值。三帳號共用相同 GTM 容器，具強烈的帳號關聯指向性，可向 Google 請求該容器持有人資訊。
+    </div>
+  </section>
+
+  <!-- 二、harukainusa -->
+  <section id="s2">
+    <div class="section-heading">二、帳號一：harukainusa</div>
+    <div class="account-card">
+      <div class="account-card-header">
+        <div class="account-avatar av-1">H</div>
+        <div>
+          <div class="account-name">harukainusa &nbsp;<span class="badge badge-red">帳號一</span></div>
+          <div class="account-url">https://harukainusa.pixnet.net/blog/posts/1029273124</div>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>指紋項目</th><th>數值</th></tr></thead>
+          <tbody>
+            <tr><td>PIXNET 帳號</td><td><code>harukainusa</code></td></tr>
+            <tr><td>部落格名稱</td><td>欣西亞和Shane</td></tr>
+            <tr><td>文章標題</td><td>{網路綜藝節目}國中生打手槍事件講評</td></tr>
+            <tr><td>Post ID</td><td><code>1029273124</code></td></tr>
+            <tr><td>Canonical URL</td><td><a href="https://harukainusa.pixnet.net/blog/posts/1029273124" target="_blank">harukainusa.pixnet.net/blog/posts/1029273124</a></td></tr>
+            <tr><td>發文時間</td><td>2010-11-19T03:18:00+08:00</td></tr>
+            <tr><td>最後修改時間</td><td><span class="hi">1970-01-01T08:00:00+08:00（⚠️ 異常，疑似被竄改）</span></td></tr>
+            <tr><td>累積人氣</td><td>11,340,694（截至 2026-04-25）</td></tr>
+            <tr><td>GTM</td><td><code class="warn">GTM-TRLQMPKX</code></td></tr>
+            <tr><td>Facebook App ID</td><td><code>101730233200171</code></td></tr>
+            <tr><td>OG Image</td><td><code>http://pic.pimg.tw/harukainusa/1381480506-2416169364.jpg</code></td></tr>
+            <tr><td>惡意連結 #1</td><td><code class="warn">http://tw.nextmedia.com/applenews/article/art_id/32946942/IssueID/20101109</code></td></tr>
+            <tr><td>惡意連結 #2</td><td><code class="warn">http://tw.nextmedia.com/applenews/article/art_id/32950030/IssueID/20101110</code></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- 三、lyndiakanzler -->
+  <section id="s3">
+    <div class="section-heading">三、帳號二：lyndiakanzler</div>
+    <div class="account-card">
+      <div class="account-card-header">
+        <div class="account-avatar av-2">L</div>
+        <div>
+          <div class="account-name">lyndiakanzler &nbsp;<span class="badge badge-purple">帳號二</span></div>
+          <div class="account-url">https://lyndiakanzler.pixnet.net/blog/posts/8015802773</div>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>指紋項目</th><th>數值</th></tr></thead>
+          <tbody>
+            <tr><td>PIXNET 帳號</td><td><code>lyndiakanzler</code></td></tr>
+            <tr><td>文章標題</td><td>荒淫校園！國中男要女打手槍 還討口交錄影</td></tr>
+            <tr><td>Post ID</td><td><code>8015802773</code></td></tr>
+            <tr><td>Canonical URL</td><td><a href="https://lyndiakanzler.pixnet.net/blog/posts/8015802773" target="_blank">lyndiakanzler.pixnet.net/blog/posts/8015802773</a></td></tr>
+            <tr><td>發文時間</td><td>2012-02-13T11:42:11+08:00</td></tr>
+            <tr><td>GTM</td><td><code class="warn">GTM-TRLQMPKX</code></td></tr>
+            <tr><td>Facebook App ID</td><td><code>101730233200171</code></td></tr>
+            <tr><td>OG Image</td><td><code>http://www.nownews.com/newspic/1626/i1626305.jpg</code></td></tr>
+            <tr><td>惡意連結</td><td><code class="warn">http://tw.nextmedia.com/applenews/article/art_id/32950030/IssueID/20101110</code></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- 四、seogoogleadsense -->
+  <section id="s4">
+    <div class="section-heading">四、帳號三：seogoogleadsense</div>
+    <div class="account-card">
+      <div class="account-card-header">
+        <div class="account-avatar av-3">S</div>
+        <div>
+          <div class="account-name">seogoogleadsense &nbsp;<span class="badge badge-orange">帳號三</span></div>
+          <div class="account-url">https://seogoogleadsense.pixnet.net/blog/posts/7078451558</div>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>指紋項目</th><th>數值</th></tr></thead>
+          <tbody>
+            <tr><td>PIXNET 帳號</td><td><code>seogoogleadsense</code></td></tr>
+            <tr><td>部落格名稱</td><td>熱銷商品排行商城購物網</td></tr>
+            <tr><td>文章標題</td><td>荒淫校園！國中男要女打手槍 還討口交錄影</td></tr>
+            <tr><td>Post ID</td><td><code>7078451558</code></td></tr>
+            <tr><td>Canonical URL</td><td><a href="https://seogoogleadsense.pixnet.net/blog/posts/7078451558" target="_blank">seogoogleadsense.pixnet.net/blog/posts/7078451558</a></td></tr>
+            <tr><td>發文時間</td><td>2011-08-31T17:26:13+08:00</td></tr>
+            <tr><td>GTM</td><td><code class="warn">GTM-TRLQMPKX</code></td></tr>
+            <tr><td>Facebook App ID</td><td><code>101730233200171</code></td></tr>
+            <tr><td>OG Image</td><td><code>http://www.nownews.com/newspic/1626/i1626305.jpg</code></td></tr>
+            <tr><td>惡意連結</td><td><code class="warn">http://tw.nextmedia.com/applenews/article/art_id/32950030/IssueID/20101110</code></td></tr>
+            <tr><td>URLScan.io 掃描 #1</td><td><a href="https://urlscan.io/result/019cb595-e62d-7492-a067-644af56f7649/" target="_blank">019cb595-e62d-7492-a067-644af56f7649</a></td></tr>
+            <tr><td>URLScan.io 掃描 #2</td><td><a href="https://urlscan.io/result/019dc495-fd2c-74b8-a5c7-6159fe7af8bf/" target="_blank">019dc495-fd2c-74b8-a5c7-6159fe7af8bf</a></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- 五、GTM 共同指紋 -->
+  <section id="s5">
+    <div class="section-heading">五、共同指紋分析：GTM-TRLQMPKX</div>
+    <div class="gtm-box">
+      <div class="gtm-box-title">🔴 三帳號共同 GTM 容器 ID</div>
+      <div class="code-block">GTM-TRLQMPKX</div>
+      <div class="gtm-match">
+        <div class="gtm-item"><div class="gtm-item-label">帳號一</div><div class="gtm-item-value">harukainusa</div></div>
+        <div class="gtm-item"><div class="gtm-item-label">帳號二</div><div class="gtm-item-value">lyndiakanzler</div></div>
+        <div class="gtm-item"><div class="gtm-item-label">帳號三</div><div class="gtm-item-value">seogoogleadsense</div></div>
+        <div class="gtm-item"><div class="gtm-item-label">JX 攻擊基礎設施</div><div class="gtm-item-value" style="color:var(--red);">另案已確認 ⚠️</div></div>
+      </div>
+    </div>
+    <p>Google Tag Manager 容器 ID 由帳號持有者自行於 GTM 後台建立，<strong>非 PIXNET 平台預設值</strong>。三個不同 PIXNET 帳號使用完全相同的 GTM 容器，統計上具強烈的帳號關聯指向性。</p>
+    <p>此外，GTM-TRLQMPKX 在 JADE-ANS 對 JX SEO 污染攻擊基礎設施的長期追蹤中已確認為已知指紋，顯示這三個 PIXNET 帳號可能與 JX 攻擊網路存在技術關聯。</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>請求對象</th><th>請求項目</th><th>預期取得資訊</th></tr></thead>
+        <tbody>
+          <tr><td>Google LLC</td><td>GTM-TRLQMPKX 容器持有人</td><td>Google 帳號、申請時 IP、聯絡資訊</td></tr>
+          <tr><td>Meta Platforms</td><td>FB App ID 101730233200171</td><td>Facebook 帳號持有人、申請資訊</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="subsection-heading">5.2 raitanzi.blogspot.com 廣告機制確認（與 GTM-TRLQMPKX 無關聯）</div>
+    <div class="alert alert-blue">
+      🔵 <strong>技術確認：</strong><br>
+      經比對 raitanzi.blogspot.com（InfoBank，Blog ID：6789838276628488802）三個頁面之 HTML 原始碼，確認該網站<strong>不使用 GTM</strong>，廣告機制為 Blogger 早期慣用之<strong>直接嵌入式 AdSense</strong>，與 GTM-TRLQMPKX 無關聯。
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>raitanzi 廣告指紋</th><th>數值</th><th>說明</th></tr></thead>
+        <tbody>
+          <tr><td>AdSense Publisher</td><td><code>ca-pub-9567870895661640</code></td><td>操作者自訂帳戶，KYC 綁定，法律請求最高優先</td></tr>
+          <tr><td>AdSense Platform</td><td><code>ca-host-pub-1556223355139109</code></td><td>Blogger 平台分潤層</td></tr>
+          <tr><td>Ad Slot 1</td><td><code>3647776614</code>（250×250）</td><td>直接嵌入 &lt;ins class="adsbygoogle"&gt;</td></tr>
+          <tr><td>Ad Slot 2</td><td><code>8774972660</code>（125×125）</td><td>同上</td></tr>
+          <tr><td>Ad Slot 3</td><td><code>8231472332</code>（160×90）</td><td>同上</td></tr>
+          <tr><td>Google Analytics</td><td><code>UA-1651107-3</code></td><td>操作者自訂 GA 帳戶，可佐證身分</td></tr>
+          <tr><td>Yahoo ystat.js</td><td><code>444377</code></td><td>Yahoo 站長統計 ID，可向 Yahoo 請求帳號資訊</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>raitanzi 身分追查應以 <code>ca-pub-9567870895661640</code> 向 Google 提出 AdSense KYC 資料請求為優先，而非透過 GTM 途徑。</p>
+  </section>
+  <section id="s6">
+    <div class="section-heading">六、惡意廢棄域名連結分析</div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>項目</th><th>數值</th></tr></thead>
+        <tbody>
+          <tr><td>惡意 URL #1</td><td><code class="warn">http://tw.nextmedia.com/applenews/article/art_id/32946942/IssueID/20101109</code></td></tr>
+          <tr><td>惡意 URL #2</td><td><code class="warn">http://tw.nextmedia.com/applenews/article/art_id/32950030/IssueID/20101110</code></td></tr>
+          <tr><td>威脅名稱</td><td><span class="warn">Script:SNH-gen [Trj]</span></td></tr>
+          <tr><td>威脅類型</td><td>特洛伊木馬程式（偽裝成其他檔案誘使執行）</td></tr>
+          <tr><td>偵測工具</td><td>Avast 網頁守衛</td></tr>
+          <tr><td>偵測時間</td><td>2026-04-04 13:25:05.580Z</td></tr>
+          <tr><td>偵測 ID</td><td><code>3441b6e1d8c6</code></td></tr>
+          <tr><td>狀態</td><td>已中止連線</td></tr>
+          <tr><td>引用帳號</td><td>harukainusa（兩條）、lyndiakanzler、seogoogleadsense</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p><code>tw.nextmedia.com</code> 為壹傳媒旗下壹週刊舊域名，媒體停止營運後域名廢棄或轉手，原有新聞連結現指向木馬程式。三個 PIXNET 帳號的文章均引用此連結，任何點擊者均面臨感染風險，屬於典型的 <strong>Expired Domain Abuse（廢棄域名惡意利用）</strong>。</p>
+  </section>
+
+  <!-- 七、URLScan -->
+  <section id="s7">
+    <div class="section-heading">七、URLScan.io 掃描紀錄（seogoogleadsense）</div>
+    <p>seogoogleadsense 帳號已有第三方安全掃描紀錄，可作為佐證：</p>
+    <div class="code-block">掃描紀錄 #1：https://urlscan.io/result/019cb595-e62d-7492-a067-644af56f7649/
+掃描紀錄 #2：https://urlscan.io/result/019dc495-fd2c-74b8-a5c7-6159fe7af8bf/</div>
+    <div class="alert alert-blue">
+      URLScan.io 為國際公認之網路安全掃描平台，其掃描紀錄具有公信力，可作為司法呈遞之技術佐證附件。
+    </div>
+  </section>
+
+  <!-- 八、檢舉流程 -->
+  <section id="s8">
+    <div class="section-heading">八、檢舉建議與流程</div>
+
+    <div class="subsection-heading">8.1 向 iWIN 檢舉</div>
+    <div class="steps">
+      <div class="step"><div class="step-num"></div><div class="step-content">前往 <a href="https://iwin.org.tw" target="_blank">https://iwin.org.tw</a> 或撥打 <strong>02-2577-5118</strong></div></div>
+      <div class="step"><div class="step-num"></div><div class="step-content">選擇「兒少相關不當內容」及「惡意連結」檢舉類型</div></div>
+      <div class="step"><div class="step-num"></div><div class="step-content">提交三個文章 URL：<br>
+        • <code>https://harukainusa.pixnet.net/blog/posts/1029273124</code><br>
+        • <code>https://lyndiakanzler.pixnet.net/blog/posts/8015802773</code><br>
+        • <code>https://seogoogleadsense.pixnet.net/blog/posts/7078451558</code>
+      </div></div>
+    </div>
+
+    <div class="subsection-heading">8.2 向 PIXNET 平台檢舉</div>
+    <div class="steps">
+      <div class="step"><div class="step-num"></div><div class="step-content">於各文章頁面點擊「檢舉」按鈕</div></div>
+      <div class="step"><div class="step-num"></div><div class="step-content">或 Email：<strong>service@pixnet.tw</strong><br>主旨：帳號檢舉 — harukainusa / lyndiakanzler / seogoogleadsense — 惡意連結及兒少相關內容</div></div>
+    </div>
+
+    <div class="subsection-heading">8.3 向 Google / Meta 提出法律請求</div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>順位</th><th>請求項目</th><th>請求對象</th></tr></thead>
+        <tbody>
+          <tr><td><span class="badge badge-red">第一優先</span></td><td>GTM-TRLQMPKX 容器持有人資訊</td><td>Google LLC</td></tr>
+          <tr><td><span class="badge badge-blue">第二優先</span></td><td>Facebook App ID 101730233200171 持有人</td><td>Meta Platforms</td></tr>
+          <tr><td><span class="badge badge-amber">第三優先</span></td><td>tw.nextmedia.com 域名現持有人</td><td>域名註冊商（WHOIS）</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="subsection-heading">8.4 司法呈遞附件清單</div>
+    <ul class="report-list">
+      <li>本報告（JADE-ANS-2026-PIXNET-001）</li>
+      <li>Avast 木馬警告截圖（偵測 ID：3441b6e1d8c6，時間：2026-04-04）</li>
+      <li>Google 搜尋結果 PDF（site:pixnet.net "32950030"，時間：2026-04-25）</li>
+      <li>URLScan.io 掃描紀錄（019cb595 / 019dc495）</li>
+      <li>三個文章頁面 HTML 原始碼（已存檔）</li>
+    </ul>
+  </section>
+
+  <!-- 九、聲明 -->
+  <section id="s9">
+    <div class="section-heading">九、採集聲明</div>
+    <div class="declaration">
+      <p>本報告之所有技術資料均來自<strong>公開可存取之網頁原始碼、Google 搜尋結果與防毒軟體警告截圖</strong>，採集方式為公開瀏覽，未進行任何未經授權之存取、破解或侵入行為。所有指紋數據均有原始文件可供核驗。</p>
+      <br>
+      <p>本資料整理目的為協助相關機關依法處理涉及惡意域名濫用及兒少保護之網路內容通報。</p>
+      <br>
+      <p><strong>採集單位：</strong>JADE-ANS 網路資訊解決方案（翡翠網路）</p>
+      <p><strong>採集日期：</strong>2026-04-25</p>
+      <p><strong>報告編號：</strong>JADE-ANS-2026-PIXNET-001</p>
+    </div>
+  </section>
+
+</div>
+
+<footer>
+  © 2026 JADE-ANS 網路資訊解決方案（翡翠網路）&nbsp;·&nbsp; PIXNET 三帳號檢舉技術資料 &nbsp;·&nbsp; JADE-ANS-2026-PIXNET-001
+</footer>
+
+<button class="print-btn" onclick="window.print()">🖨 列印 / 儲存 PDF</button>
+
+</body>
+</html>
