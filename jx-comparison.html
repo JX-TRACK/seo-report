@@ -90,6 +90,47 @@ body{background:var(--bg);color:var(--text);font-family:"Noto Sans TC",sans-seri
   .header-inner{padding:20px}
 }
 </style>
+<script>
+// 自動從 jx-delta.html 讀取最新數據
+(function(){
+  fetch('jx-delta.html')
+    .then(function(r){ return r.text(); })
+    .then(function(src){
+      // 從JSON資料中解析數字
+      var m = src.match(/const D=(\[.*?\]);/s) || src.match(/const D=(\[.*?\])/s);
+      if(!m) return;
+      try {
+        var D = JSON.parse(m[1]);
+        var domains = D.length;
+        var pages = D.reduce(function(s,d){ return s + (d.pages||0); }, 0);
+        var exposure = pages * 3;
+        var pagesYi = (pages/1e8).toFixed(3);
+        var exposureYi = (exposure/1e8).toFixed(3);
+        var pagesComma = pages.toLocaleString();
+        var exposureComma = exposure.toLocaleString();
+
+        // 取版本號
+        var ver = (src.match(/class="hdr-time">([^<]+)</) || [])[1] || '';
+
+        // 替換頁面所有數字
+        var b = document.body.innerHTML;
+        b = b.replace(/\d{1,4},?\d{3},?\d{3}(?=\s*個污染網頁|\s*頁)/g, pagesComma);
+        b = b.replace(/\d\.\d{3}\s*億(?=\s*）|\s*<)/g, function(m){
+          if(m.indexOf('5.') === 0 || parseFloat(m) > 3) return exposureYi + ' 億';
+          return pagesYi + ' 億';
+        });
+        b = b.replace(/1[0-9]{3}\s*個(惡意|有害)/g, domains + '個$1');
+        b = b.replace(/1[0-9]{3}\s*(baseline)/g, domains + ' $1');
+        b = b.replace(/1[0-9]{3}\s*個已確認/g, domains + '個已確認');
+        b = b.replace(/逾\s*1,?559/g, '逾 ' + domains);
+        b = b.replace(/已整理為\s*\d{4}\s*個/g, '已整理為 ' + domains + ' 個');
+        if(ver) b = b.replace(/\d{4}[AP]M/g, ver);
+        document.body.innerHTML = b;
+      } catch(e){ console.error('JADE auto-update error:', e); }
+    })
+    .catch(function(e){ console.warn('fetch jx-delta failed:', e); });
+})();
+</script>
 </head>
 <body>
 
@@ -110,7 +151,7 @@ body{background:var(--bg);color:var(--text);font-family:"Noto Sans TC",sans-seri
 
 <div class="ticker-wrap">
   <div class="ticker-text">
-    ⚑ 國安局業務報告：GSN首季遭侵擾逾1億7328萬次&emsp;｜&emsp;⚑ JADE-ANS鑑識：1559個惡意網域・已採證179,202,895個污染網頁（1.792 億）&emsp;｜&emsp;⚑ 有害資訊曝光數估計：523,348,620則（5.233 億）&emsp;｜&emsp;⚑ 關聯案號：臺灣地檢署 111年度偵字第8075號&emsp;｜&emsp;⚑ 國安局業務報告：GSN首季遭侵擾逾1億7328萬次&emsp;｜&emsp;⚑ JADE-ANS鑑識：1559個惡意網域・已採證179,202,895個污染網頁（1.792 億）&emsp;｜&emsp;⚑ 有害資訊曝光數估計：523,348,620則（5.233 億）&emsp;｜&emsp;⚑ 關聯案號：臺灣地檢署 111年度偵字第8075號
+    ⚑ 國安局業務報告：GSN首季遭侵擾逾1億7328萬次&emsp;｜&emsp;⚑ JADE-ANS鑑識：1559個惡意網域・已採證179,202,895個污染網頁（1.792 億）&emsp;｜&emsp;⚑ 有害資訊曝光數估計：537,608,685則（5.376 億）&emsp;｜&emsp;⚑ 關聯案號：臺灣地檢署 111年度偵字第8075號&emsp;｜&emsp;⚑ 國安局業務報告：GSN首季遭侵擾逾1億7328萬次&emsp;｜&emsp;⚑ JADE-ANS鑑識：1559個惡意網域・已採證179,202,895個污染網頁（1.792 億）&emsp;｜&emsp;⚑ 有害資訊曝光數估計：537,608,685則（5.376 億）&emsp;｜&emsp;⚑ 關聯案號：臺灣地檢署 111年度偵字第8075號
   </div>
 </div>
 
@@ -137,7 +178,7 @@ body{background:var(--bg);color:var(--text);font-family:"Noto Sans TC",sans-seri
       <div class="cc-label">JADE-ANS 翡翠網路</div>
       <div class="cc-title">民間數位鑑識成果</div>
       <div class="cc-item">系統性鑑識 1559 個惡意網域</div>
-      <div class="cc-item">已採證 179,202,895 個污染網頁（<strong>1.792 億</strong>）｜有害資訊曝光數逾 <strong>5.233 億則</strong>（×3，詐騙／病毒／色情隨機切換）</div><p style="background:#fff7ed;border-left:4px solid #f97316;padding:10px 14px;border-radius:0 6px 6px 0;font-size:13px;color:#92400e;margin:12px 0"><strong>有害資訊曝光數說明：</strong>經實證，每一污染網頁可在<strong>詐騙、病毒散布、色情內容</strong>三種模式間<strong>隨機動態切換</strong>，每次造訪可能觸發不同攻擊向量，導致傳統內容過濾系統完全失效。故以網頁數 ×3 作為有害資訊曝光數之保守估計。此動態機制同時觸犯刑法第339條（詐欺）、第360條（妨害電腦使用）及散布兒少不宜內容。</p>
+      <div class="cc-item">已採證 179,202,895 個污染網頁（<strong>1.792 億</strong>）｜有害資訊曝光數逾 <strong>5.376 億則</strong>（×3，詐騙／病毒／色情隨機切換）</div><p style="background:#fff7ed;border-left:4px solid #f97316;padding:10px 14px;border-radius:0 6px 6px 0;font-size:13px;color:#92400e;margin:12px 0"><strong>有害資訊曝光數說明：</strong>經實證，每一污染網頁可在<strong>詐騙、病毒散布、色情內容</strong>三種模式間<strong>隨機動態切換</strong>，每次造訪可能觸發不同攻擊向量，導致傳統內容過濾系統完全失效。故以網頁數 ×3 作為有害資訊曝光數之保守估計。此動態機制同時觸犯刑法第339條（詐欺）、第360條（妨害電腦使用）及散布兒少不宜內容。</p>
       <div class="cc-item">共用 Monetag SmartLink Key 攻擊指紋確認</div>
       <div class="cc-item">一致 admpid 序列・共同 C2 轉接域名架構</div>
       <div class="cc-item">WHOIS 時間戳記・Registrar 行為異常指標・SERP 即時命中驗證</div>
@@ -211,6 +252,7 @@ body{background:var(--bg);color:var(--text);font-family:"Noto Sans TC",sans-seri
     <span class="ft">比較觀察報告</span>
   </div>
 </div>
+
 
 </body>
 </html>
