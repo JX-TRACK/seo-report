@@ -90,56 +90,7 @@ body{background:var(--bg);color:var(--text);font-family:"Noto Sans TC",sans-seri
   .header-inner{padding:20px}
 }
 </style>
-<script>
-// 自動從 jx-delta.html 讀取最新數據
-(function(){
-  fetch('jx-delta.html')
-    .then(function(r){ return r.text(); })
-    .then(function(src){
-      // 從JSON資料中解析數字
-      var m = src.match(/const D=(\[.*?\]);/s) || src.match(/const D=(\[.*?\])/s);
-      if(!m) return;
-      try {
-        var D = JSON.parse(m[1]);
-        var domains = D.length;
-        var pages = D.reduce(function(s,d){ return s + (d.pages||0); }, 0);
-        var exposure = pages * 3;
-        var pagesYi = (pages/1e8).toFixed(3);
-        var exposureYi = (exposure/1e8).toFixed(3);
-        var pagesComma = pages.toLocaleString();
-        var exposureComma = exposure.toLocaleString();
 
-        // 取版本號
-        var ver = (src.match(/class="hdr-time">([^<]+)</) || [])[1] || '';
-        // 同步所有日期 span → Excel 最新資料日期
-        var lastDate = '2026-04-30';
-        try {
-          var dm = src.match(/"regDate":"(\d{4}-\d{2}-\d{2})/g);
-          if(dm && dm.length) lastDate = dm[dm.length-1].replace('"regDate":"','');
-        } catch(e){}
-        ['comp-date-auto','comp-footer-date','comp-inner-date'].forEach(function(id){
-          var el2=document.getElementById(id); if(el2) el2.textContent=lastDate;
-        });
-
-        // 替換頁面所有數字
-        var b = document.body.innerHTML;
-        b = b.replace(/\d{1,4},?\d{3},?\d{3}(?=\s*個污染網頁|\s*頁)/g, pagesComma);
-        b = b.replace(/\d\.\d{3}\s*億(?=\s*）|\s*<)/g, function(m){
-          if(m.indexOf('5.') === 0 || parseFloat(m) > 3) return exposureYi + ' 億';
-          return pagesYi + ' 億';
-        });
-        b = b.replace(/1[0-9]{3}\s*個(惡意|有害)/g, domains + '個$1');
-        b = b.replace(/1[0-9]{3}\s*(baseline)/g, domains + ' $1');
-        b = b.replace(/1[0-9]{3}\s*個已確認/g, domains + '個已確認');
-        b = b.replace(/逾\s*1,?559/g, '逾 ' + domains);
-        b = b.replace(/已整理為\s*\d{4}\s*個/g, '已整理為 ' + domains + ' 個');
-        if(ver) b = b.replace(/\d{4}[AP]M/g, ver);
-        document.body.innerHTML = b;
-      } catch(e){ console.error('JADE auto-update error:', e); }
-    })
-    .catch(function(e){ console.warn('fetch jx-delta failed:', e); });
-})();
-</script>
 </head>
 <body>
 
@@ -150,7 +101,7 @@ body{background:var(--bg);color:var(--text);font-family:"Noto Sans TC",sans-seri
     <div class="hdr-sub">
       <span>翡翠網路資訊解決方案 JADE-ANS</span>
       <span class="sep">｜</span><span>威脅攻擊者：JX</span>
-      <span class="sep">｜</span><span>2026-04-24</span>
+      <span class="sep">｜</span><span>2026-04-30</span>
       <span class="sep">｜</span><span>1683 baseline</span>
     </div>
     <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:8px;">
@@ -165,7 +116,7 @@ body{background:var(--bg);color:var(--text);font-family:"Noto Sans TC",sans-seri
 </header>
 
 <div class="ticker-wrap">
-  <div class="ticker-text">⚑ 國安局業務報告：GSN首季遭侵擾逾1億7328萬次&emsp;｜&emsp;⚑ JADE-ANS鑑識：1,683個惡意網域・已採證188,018,917個污染網頁（1.88 億）&emsp;｜&emsp;⚑ 有害資訊曝光數估計：564,056,751則（5.641 億）&emsp;｜&emsp;⚑ 關聯案號：臺灣地檢署 111年度偵字第8075號&emsp;｜&emsp;⚑ 國安局業務報告：GSN首季遭侵擾逾1億7328萬次&emsp;｜&emsp;⚑ JADE-ANS鑑識：1,683個惡意網域・已採證188,018,917個污染網頁（1.88 億）&emsp;｜&emsp;⚑ 有害資訊曝光數估計：564,056,751則（5.641 億）&emsp;｜&emsp;⚑ 關聯案號：臺灣地檢署 111年度偵字第8075號
+  <div class="ticker-text">⚑ 國安局業務報告：GSN首季遭侵擾逾1億7328萬次&emsp;｜&emsp;⚑ JADE-ANS鑑識：1,1,683個惡意網域・已採證188,018,917個污染網頁（1.88 億）&emsp;｜&emsp;⚑ 有害資訊曝光數估計：564,056,751則（5.641 億）&emsp;｜&emsp;⚑ 關聯案號：臺灣地檢署 111年度偵字第8075號&emsp;｜&emsp;⚑ 國安局業務報告：GSN首季遭侵擾逾1億7328萬次&emsp;｜&emsp;⚑ JADE-ANS鑑識：1,1,683個惡意網域・已採證188,018,917個污染網頁（1.88 億）&emsp;｜&emsp;⚑ 有害資訊曝光數估計：564,056,751則（5.641 億）&emsp;｜&emsp;⚑ 關聯案號：臺灣地檢署 111年度偵字第8075號
   </div>
 </div>
 
@@ -258,7 +209,7 @@ body{background:var(--bg);color:var(--text);font-family:"Noto Sans TC",sans-seri
 <div class="footer">
   <div class="fl">
     翡翠網路資訊解決方案 JADE-ANS FORENSICS<br>
-    關聯案號：臺灣地檢署 111年度偵字第8075號｜威脅攻擊者：JX｜<span id="comp-footer-date">2026-04-30</span>
+    關聯案號：臺灣地檢署 111年度偵字第8075號｜威脅攻擊者：JX｜2026-04-30
   </div>
   <div style="display:flex;gap:8px;">
     <span class="ft">TLP:RED</span>
