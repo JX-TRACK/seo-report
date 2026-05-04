@@ -67,8 +67,8 @@ footer span{color:#b5281e}
 
 <div class="title-block">
   <div class="eyebrow">Mythos · Case File · 2026</div>
-  <h1>對 JX 的敘事<br/>一個人的十二年</h1>
-  <p class="subtitle">他建造了一座污染台灣資訊環境的機器——這是它如何運作的故事</p>
+  <h1>對社會工程污染的敘事<br/>JX 駭客團體的十二年</h1>
+  <p class="subtitle">他建造了一座污染台灣和全世界資訊環境的機器——這是它如何運作的故事</p>
 </div>
 
 <div class="audio-block">
@@ -93,28 +93,28 @@ footer span{color:#b5281e}
 <div class="section-label">發現</div>
 
 <p>某個時間點，他發現了一件事：<strong>Google 的演算法是可以被欺騙的。</strong></p>
-<p>只要在足夠多的網域上放置足夠多的關鍵字，真實的搜尋結果就會被污染。一個人搜尋「OO國中」，看到的第一頁會是他製造的內容。一個人搜尋「O勝O」，看到的是他想讓人看到的東西。</p>
+<p>只要有技術可以欺騙 Google 的審查機制，真實的搜尋結果就可以被輕易污染。只要在足夠多的網域上放置足夠多的關鍵字，一個人搜尋「OO國中」，看到的第一頁會是他製造的內容。一個人搜尋「O勝O」，看到的是他想讓人看到的東西。</p>
 <div class="pull">這不只是仇恨，這是系統性的資訊污染。而且它可以賺錢。</div>
 
 <div class="section-label">金流</div>
 
-<p>他找到了 Monetag。這家廣告網路讓任何人都可以在自己的網站上放置彈窗廣告，每一千次曝光換取一筆收益。他申請了帳號，通過了 KYC 實名認證，拿到了一個 Publisher Key：</p>
+<p>他找到了 Monetag。這家廣告網路讓任何人都可以在自己的網站上放置彈跳窗廣告，每一千次曝光換取一筆收益。他申請了帳號，通過了 KYC 實名認證，拿到了一個 Publisher Key：</p>
 <div class="keyfrag">
   <div class="keyfrag-label">Monetag Publisher Key · KYC 實名綁定 · 跨 1,841 域</div>
   <div class="keyfrag-val">6b147b6d3f3b8cd0bbd3191b3b1a8394</div>
 </div>
-<p><em>這個字串從此跟著他。跨越 1,841 個域名，至少近半年從未更換。</em></p>
+<p><em>這個字串從此跟著 JX 們。跨越 1,841 個域名，至少近半年從未更換。</em></p>
 
 <div class="section-label">機器</div>
 
-<p>他開始寫腳本。程式腳本，可以同時對接多家域名註冊商的 API：Spaceship、Sav.com、Dynadot、GoDaddy、Porkbun。每天下班後，他啟動腳本，幾分鐘內完成幾十個域名的批次註冊。</p>
+<p>他開始寫程式腳本，可以同時對接多家域名註冊商的 API：Spaceship、Sav.com、Dynadot、GoDaddy、Porkbun。每天下班後，他啟動腳本，幾分鐘內完成幾十個域名的批次註冊。</p>
 <p>2026 年 4 月，他在一個月內註冊了 1,590 個域名，花費超過 NT$651,616。</p>
 <div class="pull">這已經不是副業。這是一個有計劃、有預算、有技術架構的長期工程。</div>
 <p>每一個域名的結構都一樣。4,631 個位元組的 JavaScript，嵌入同一個 Publisher Key，連接同一條攻擊鏈：</p>
 
 <div class="chain">
   <div class="chain-hd">Attack Chain · 完整攻擊路徑</div>
-  <div class="chain-row"><div class="chain-lbl">受害者搜尋</div><div class="chain-desc">SEO 污染頁面出現在 Google 搜尋前幾頁</div></div>
+  <div class="chain-row"><div class="chain-lbl">受害者搜尋</div><div class="chain-desc">SEO 污染頁面出現在 Google 搜尋前幾頁的結果中</div></div>
   <div class="chain-row"><div class="chain-lbl">JX 域名</div><div class="chain-desc">4,631 bytes JS 載入，Publisher Key 嵌入，向 C2 申請 UUID</div></div>
   <div class="chain-row"><div class="chain-lbl">UUID 簽發</div><div class="chain-desc">protrafficinspector.com 動態簽發 fstu / sht / ps1</div></div>
   <div class="chain-row"><div class="chain-lbl">FORM POST</div><div class="chain-desc">architectureimpolitesacred.com — 現役主 C2，廣告計費在此發生</div></div>
@@ -138,9 +138,9 @@ footer span{color:#b5281e}
 <div class="section-label">結語</div>
 
 <div class="coda">
-  <p>這不是一個人做了一件壞事。而是一個人，花了十二年，建造了一座污染台灣資訊環境的、自動化而且充滿 AI 色彩的機器——這些汙染早就擴及全世界了。</p>
-  <p>這座機器有 <strong>1,841 個已確認的節點</strong>，有將近 <strong>2 億個已採證的污染網頁</strong>，有一個 KYC 綁定的金流帳號，有一份檢察官不起訴處分書裡他親口承認的部落格。所有的線索都通向同一個人。</p>
-  <div class="coda-note">他的身分隱藏在台灣電子電機的大廠中，只要不被權責單位識破法辦，這種社會工程汙染，就會繼續在網路上流竄出沒，他還可以汙染網路世界，繼續領高薪，過他的無憂舒適日子。</div>
+  <p>這不是一個人做了一件壞事。而是 JX 們，花了十二年，建造了一座污染台灣和全世界資訊環境的、自動化而且充滿 AI 色彩的機器。</p>
+  <p>這座機器有 <strong>1,841 個已確認的節點</strong>，有將近 <strong>2 億個已採證的污染網頁</strong>，有一個 KYC 綁定的金流帳號，有一份檢察官不起訴處分書裡他親口承認的部落格。所有的線索都通向同一個人，所有的線索都通向同一源頭。</p>
+  <div class="coda-note">他的身分隱藏在台灣達到電子電機大廠前段班的企業中，只要不被權責單位識破法辦，這種社會工程汙染，就會繼續在網路上流竄出沒，他還可以汙染網路世界，繼續領高薪，過他的無憂舒適日子。</div>
   <div class="coda-link">搜證儀表板：<a href="https://jx-delta.pages.dev/jx-delta" target="_blank">https://jx-delta.pages.dev/jx-delta →</a></div>
   <div class="coda-final">
     <strong>Mythos 不是在指控他有罪。</strong>
