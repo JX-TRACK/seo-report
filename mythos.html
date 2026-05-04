@@ -3,234 +3,155 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Mythos — 對 JX 的敘事 · JADE-ANS</title>
-<link rel="preconnect" href="https://fonts.googleapis.com"/>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Noto+Serif+TC:wght@300;400;600;900&family=Noto+Sans+TC:wght@300;400&family=Share+Tech+Mono&display=swap" rel="stylesheet"/>
+<title>Mythos — 對 JX 的敘事</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@300;400;600;900&family=Noto+Sans+TC:wght@300;400&family=Share+Tech+Mono&display=swap" rel="stylesheet"/>
 <style>
-:root{
-  --bg:#0a0806;--bg2:#100e0b;--bg3:#1a1612;--surface:#1e1a15;
-  --red:#c0392b;--red2:#e74c3c;--red-dim:rgba(192,57,43,.15);
-  --gold:#c9a84c;--gold2:#e8c97a;--gold-dim:rgba(201,168,76,.12);
-  --ink:#f0ebe3;--ink2:#c8c0b4;--ink3:#8a8070;
-  --rule:rgba(201,168,76,.2);
-  --serif:'Playfair Display','Noto Serif TC',serif;
-  --sans:'Noto Sans TC',sans-serif;
-  --mono:'Share Tech Mono',monospace;
-}
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
-body{background:var(--bg);color:var(--ink2);font-family:var(--sans);font-size:17px;line-height:1.85;overflow-x:hidden}
-body::after{content:'';position:fixed;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.07) 2px,rgba(0,0,0,.07) 4px);pointer-events:none;z-index:900}
-body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.05'/%3E%3C/svg%3E");pointer-events:none;z-index:901;opacity:.5}
-#prog{position:fixed;top:0;left:0;height:1px;background:linear-gradient(90deg,var(--red),var(--gold));width:0;z-index:999;transition:width .1s}
-nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:18px 60px;display:flex;justify-content:space-between;align-items:center;background:rgba(10,8,6,.88);backdrop-filter:blur(20px);border-bottom:1px solid var(--rule)}
-.nav-brand{font-family:var(--mono);font-size:11px;letter-spacing:3px;color:var(--ink3);text-transform:uppercase}
-.nav-right{display:flex;gap:28px;align-items:center}
-.nav-link{font-family:var(--mono);font-size:10px;letter-spacing:2px;color:var(--ink3);text-decoration:none;text-transform:uppercase;transition:color .2s;border-bottom:1px solid transparent;padding-bottom:1px}
-.nav-link:hover{color:var(--gold);border-color:var(--gold)}
-.nav-badge{font-family:var(--mono);font-size:9px;letter-spacing:3px;color:var(--red2);border:1px solid var(--red);padding:4px 12px;border-radius:1px;text-shadow:0 0 8px var(--red)}
-.hero{min-height:100vh;display:flex;flex-direction:column;justify-content:flex-end;padding:140px 60px 100px;position:relative;overflow:hidden}
-.hero::before{content:'';position:absolute;top:-20%;left:-10%;width:70%;height:140%;background:radial-gradient(ellipse at 20% 50%,rgba(192,57,43,.08) 0%,transparent 60%);pointer-events:none}
-.hero-label{font-family:var(--mono);font-size:10px;letter-spacing:5px;color:var(--red);text-transform:uppercase;margin-bottom:32px;opacity:0;animation:fadeIn .6s .3s forwards;display:flex;align-items:center;gap:16px}
-.hero-label::before{content:'';width:32px;height:1px;background:var(--red)}
-.hero-title{font-family:var(--serif);font-size:clamp(72px,11vw,140px);font-weight:900;line-height:.95;color:var(--ink);margin-bottom:8px;opacity:0;animation:slideUp .9s .5s cubic-bezier(.16,1,.3,1) forwards}
-.hero-title .accent{color:var(--red);font-style:italic}
-.hero-sub{font-family:var(--serif);font-size:clamp(16px,2.2vw,22px);font-weight:400;font-style:italic;color:var(--gold);margin-top:28px;margin-bottom:56px;opacity:0;animation:fadeIn .7s .9s forwards;border-left:2px solid var(--gold);padding-left:20px}
-.hero-data{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--rule);opacity:0;animation:fadeIn .7s 1.1s forwards;max-width:860px}
-.hdi{padding:20px 24px;border-right:1px solid var(--rule)}
-.hdi:last-child{border-right:none}
-.hdi-num{font-family:var(--serif);font-size:28px;font-weight:700;color:var(--gold2);display:block;line-height:1;margin-bottom:6px}
-.hdi-label{font-family:var(--mono);font-size:9px;letter-spacing:2px;color:var(--ink3);text-transform:uppercase}
-.scroll-cue{position:absolute;bottom:40px;right:60px;font-family:var(--mono);font-size:9px;letter-spacing:3px;color:var(--ink3);text-transform:uppercase;display:flex;flex-direction:column;align-items:center;gap:10px;opacity:0;animation:fadeIn .6s 1.4s forwards}
-.scroll-cue::after{content:'';width:1px;height:60px;background:linear-gradient(to bottom,var(--ink3),transparent);animation:linePulse 2s ease-in-out infinite}
-.chapters{max-width:900px;margin:0 auto;padding:0 60px 160px}
-.chapter{padding:80px 0;border-bottom:1px solid var(--rule);opacity:0;transform:translateY(40px);transition:opacity .8s ease,transform .8s ease}
-.chapter.vis{opacity:1;transform:none}
-.chapter:last-child{border-bottom:none}
-.ch-num{font-family:var(--mono);font-size:9px;letter-spacing:4px;color:var(--red);text-transform:uppercase;margin-bottom:16px;display:flex;align-items:center;gap:12px}
-.ch-num::after{content:'';flex:1;height:1px;background:var(--rule)}
-.ch-title{font-family:var(--serif);font-size:clamp(28px,4vw,42px);font-weight:700;color:var(--ink);margin-bottom:36px;line-height:1.2}
-.chapter p{font-family:var(--sans);font-size:16px;line-height:2;color:var(--ink2);margin-bottom:22px;font-weight:300}
-.chapter p strong{color:var(--ink);font-weight:600}
-.chapter p em{color:var(--ink3);font-style:italic}
-.pull{margin:40px -20px;padding:28px 40px;border-left:3px solid var(--red);background:var(--red-dim);font-family:var(--serif);font-size:clamp(18px,2.2vw,23px);font-weight:700;color:var(--red2);line-height:1.55;font-style:italic;position:relative}
-.pull::before{content:'"';position:absolute;top:-16px;left:32px;font-family:var(--serif);font-size:80px;color:var(--red);opacity:.2;line-height:1}
-.keyfrag{margin:36px 0;background:var(--bg3);border:1px solid rgba(201,168,76,.3);border-radius:2px;overflow:hidden}
-.kf-hd{background:rgba(201,168,76,.08);border-bottom:1px solid rgba(201,168,76,.2);padding:10px 20px;display:flex;justify-content:space-between;align-items:center}
-.kf-label{font-family:var(--mono);font-size:9px;letter-spacing:3px;color:var(--gold);text-transform:uppercase}
-.kf-tag{font-family:var(--mono);font-size:9px;color:var(--red);letter-spacing:1px}
-.kf-val{padding:24px 20px;font-family:var(--mono);font-size:17px;color:var(--gold2);letter-spacing:2px;text-align:center;word-break:break-all;text-shadow:0 0 20px rgba(201,168,76,.3)}
-.chain{margin:36px 0;border:1px solid var(--rule);border-radius:2px;overflow:hidden}
-.chain-hd{background:var(--surface);padding:12px 20px;font-family:var(--mono);font-size:9px;letter-spacing:3px;color:var(--ink3);text-transform:uppercase;border-bottom:1px solid var(--rule)}
-.chain-row{display:grid;grid-template-columns:180px 1fr;border-bottom:1px solid rgba(255,255,255,.04);transition:background .2s}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#faf8f5;color:#222;font-family:'Noto Serif TC',serif;font-size:18px;line-height:2;max-width:680px;margin:0 auto;padding:80px 32px 120px}
+.site-header{border-bottom:2px solid #222;padding-bottom:16px;margin-bottom:64px;display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:8px}
+.site-name{font-family:'Share Tech Mono',monospace;font-size:11px;letter-spacing:3px;color:#888;text-transform:uppercase}
+.tlp{font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:2px;color:#b5281e;border:1px solid #b5281e;padding:2px 8px}
+.title-block{margin-bottom:56px}
+.eyebrow{font-family:'Share Tech Mono',monospace;font-size:11px;letter-spacing:3px;color:#999;text-transform:uppercase;margin-bottom:16px}
+h1{font-family:'Noto Serif TC',serif;font-size:clamp(36px,7vw,56px);font-weight:900;line-height:1.1;color:#111;margin-bottom:16px}
+.subtitle{font-size:16px;color:#666;font-weight:300;font-style:italic}
+.audio-block{margin-bottom:56px;border:1px solid #ddd;border-left:3px solid #b5281e;padding:20px 24px;background:#fff}
+.audio-label{font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:2px;color:#999;text-transform:uppercase;margin-bottom:12px}
+.audio-title{font-size:15px;font-weight:600;color:#222;margin-bottom:14px;font-family:'Noto Sans TC',sans-serif}
+audio{width:100%;height:36px;outline:none}
+.audio-note{font-family:'Noto Sans TC',sans-serif;font-size:12px;color:#aaa;margin-top:8px}
+hr{border:none;border-top:1px solid #ddd;margin:48px 0}
+p{margin-bottom:28px;color:#333;font-weight:300}
+p strong{font-weight:600;color:#111}
+p em{font-style:italic;color:#666}
+.pull{margin:40px 0;padding:20px 28px;border-left:3px solid #b5281e;background:#fff8f7;font-size:19px;font-weight:600;color:#b5281e;font-style:italic;line-height:1.6}
+.keyfrag{margin:36px 0;background:#111;padding:20px 24px;text-align:center}
+.keyfrag-label{font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:3px;color:#666;text-transform:uppercase;margin-bottom:10px}
+.keyfrag-val{font-family:'Share Tech Mono',monospace;font-size:15px;color:#c9a84c;letter-spacing:1px;word-break:break-all}
+.chain{margin:36px 0;border:1px solid #ddd}
+.chain-hd{background:#111;color:#ccc;font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:3px;padding:10px 16px;text-transform:uppercase}
+.chain-row{display:flex;border-bottom:1px solid #eee;font-size:14px}
 .chain-row:last-child{border-bottom:none}
-.chain-row:hover{background:rgba(255,255,255,.02)}
-.chain-lbl{font-family:var(--mono);font-size:12px;color:var(--gold);padding:14px 20px;border-right:1px solid var(--rule);display:flex;align-items:center;gap:8px}
-.chain-lbl::before{content:'›';color:var(--red);font-size:16px;line-height:1}
-.chain-desc{padding:14px 20px;font-family:var(--sans);font-size:13px;color:var(--ink2);display:flex;align-items:center}
-.ts-block{margin:32px 0;position:relative;padding-left:24px}
-.ts-block::before{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;background:linear-gradient(to bottom,var(--gold),transparent)}
-.ts-time{font-family:var(--mono);font-size:11px;letter-spacing:2px;color:var(--gold);margin-bottom:8px}
-.ts-text{font-family:var(--sans);font-size:14px;color:var(--ink2);line-height:1.8}
-.ts-text code{font-family:var(--mono);font-size:12px;color:var(--gold2);background:var(--gold-dim);padding:1px 6px;border-radius:2px}
-.ev-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin:36px 0}
-.ev{padding:24px;border:1px solid var(--rule);border-top:2px solid var(--red);background:var(--bg2);position:relative;overflow:hidden;transition:border-color .3s,background .3s}
-.ev:hover{background:var(--bg3);border-top-color:var(--gold)}
-.ev-num{font-family:var(--serif);font-size:38px;font-weight:900;color:var(--gold2);line-height:1;margin-bottom:8px;display:block}
-.ev-unit{font-size:18px;font-weight:400}
-.ev-label{font-family:var(--mono);font-size:9px;letter-spacing:2px;color:var(--ink3);text-transform:uppercase}
-.coda{margin-top:64px;padding:48px;background:var(--bg2);border:1px solid var(--rule);position:relative;overflow:hidden}
-.coda::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--red),var(--gold),var(--red))}
-.coda-main{font-family:var(--serif);font-size:clamp(18px,2.2vw,24px);font-weight:600;color:var(--ink);line-height:1.65;margin-bottom:24px}
-.coda-note{font-family:var(--sans);font-size:14px;color:var(--ink3);line-height:1.9;padding-left:20px;border-left:2px solid var(--surface);margin-bottom:24px}
-.coda-link{font-family:var(--mono);font-size:12px;color:var(--ink3);margin-top:28px;display:flex;align-items:center;gap:8px}
-.coda-link a{color:var(--gold2);text-decoration:none;border-bottom:1px solid var(--rule);padding-bottom:1px;transition:color .2s,border-color .2s}
-.coda-link a:hover{color:var(--gold);border-color:var(--gold)}
-.coda-final{margin-top:40px;padding-top:32px;border-top:1px solid var(--rule);font-family:var(--serif);font-size:18px;font-style:italic;color:var(--ink2);line-height:1.8}
-.coda-final strong{color:var(--ink);font-style:normal;font-weight:700;display:block;margin-bottom:6px;font-size:20px}
-footer{background:var(--bg2);border-top:1px solid var(--rule);padding:32px 60px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px}
-.ft-l{font-family:var(--mono);font-size:10px;letter-spacing:1.5px;color:var(--ink3);line-height:1.8}
-.ft-r a{font-family:var(--mono);font-size:10px;letter-spacing:1.5px;color:var(--gold);text-decoration:none;border-bottom:1px solid var(--rule);padding-bottom:1px;transition:color .2s}
-.ft-r a:hover{color:var(--gold2)}
-@keyframes fadeIn{from{opacity:0}to{opacity:1}}
-@keyframes slideUp{from{opacity:0;transform:translateY(40px)}to{opacity:1;transform:none}}
-@keyframes linePulse{0%,100%{opacity:.6}50%{opacity:.2}}
-@media(max-width:700px){
-  nav{padding:14px 20px}.hero{padding:110px 24px 80px}
-  .hero-data{grid-template-columns:repeat(2,1fr)}.chapters{padding:0 24px 100px}
-  .ev-grid{grid-template-columns:1fr}.chain-row{grid-template-columns:1fr}
-  .chain-lbl{border-right:none;border-bottom:1px solid var(--rule)}
-  .coda{padding:28px 24px}.pull{margin:32px 0}footer{padding:24px}
+.chain-lbl{font-family:'Share Tech Mono',monospace;font-size:12px;color:#8b6914;padding:10px 16px;min-width:160px;border-right:1px solid #eee;display:flex;align-items:center;gap:6px;background:#fafaf8}
+.chain-lbl::before{content:'›';color:#b5281e;font-size:16px}
+.chain-desc{padding:10px 16px;color:#444;font-family:'Noto Sans TC',sans-serif;display:flex;align-items:center}
+.ts{margin:28px 0;padding-left:20px;border-left:2px solid #c9a84c}
+.ts-time{font-family:'Share Tech Mono',monospace;font-size:11px;color:#8b6914;margin-bottom:6px;letter-spacing:1px}
+.ts-text{font-family:'Noto Sans TC',sans-serif;font-size:15px;color:#444;line-height:1.7}
+.ts-text code{font-family:'Share Tech Mono',monospace;font-size:12px;background:#f0ede8;padding:1px 5px;color:#666}
+.section-label{font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:3px;color:#b5281e;text-transform:uppercase;margin-bottom:20px;margin-top:56px;display:flex;align-items:center;gap:12px}
+.section-label::after{content:'';flex:1;height:1px;background:#ddd}
+.coda{margin-top:56px;padding:32px 28px;border:1px solid #ddd;border-top:3px solid #111;background:#fff}
+.coda p{font-size:17px;line-height:1.85;margin-bottom:20px}
+.coda-note{color:#888;font-size:15px;padding-left:16px;border-left:2px solid #ddd;font-style:italic;margin-bottom:20px;font-family:'Noto Sans TC',sans-serif;line-height:1.8}
+.coda-link{font-family:'Share Tech Mono',monospace;font-size:12px;color:#888;margin-top:24px;padding-top:20px;border-top:1px solid #eee}
+.coda-link a{color:#8b6914;text-underline-offset:3px}
+.coda-final{margin-top:24px;font-size:16px;color:#555;font-style:italic;line-height:1.8}
+.coda-final strong{font-style:normal;color:#111;display:block;margin-bottom:4px;font-size:17px}
+footer{margin-top:80px;padding-top:24px;border-top:1px solid #ddd;font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:1px;color:#aaa;line-height:1.8}
+footer a{color:#8b6914}
+footer span{color:#b5281e}
+@media(max-width:480px){
+  body{padding:48px 20px 80px}
+  .chain-row{flex-direction:column}
+  .chain-lbl{border-right:none;border-bottom:1px solid #eee;min-width:unset}
 }
 </style>
 </head>
 <body>
-<div id="prog"></div>
-<nav>
-  <div class="nav-brand">JADE-ANS · Digital Forensics</div>
-  <div class="nav-right">
-    <a class="nav-link" href="https://jx-track.github.io/seo-report/" target="_blank">Report</a>
-    <a class="nav-link" href="https://jx-delta.pages.dev/jx-delta" target="_blank">Dashboard</a>
-    <div class="nav-badge">TLP:RED</div>
+
+<header class="site-header">
+  <div class="site-name">JADE-ANS · 數位鑑識</div>
+  <div class="tlp">TLP:RED</div>
+</header>
+
+<div class="title-block">
+  <div class="eyebrow">Mythos · Case File · 2026</div>
+  <h1>對 JX 的敘事<br/>一個人的十二年</h1>
+  <p class="subtitle">他建造了一座污染台灣資訊環境的機器——這是它如何運作的故事</p>
+</div>
+
+<div class="audio-block">
+  <div class="audio-label">語音朗讀版本</div>
+  <div class="audio-title">一人操弄兩億垃圾網頁</div>
+  <audio controls preload="none">
+    <source src="一人操弄兩億垃圾網頁.mp3" type="audio/mpeg"/>
+    您的瀏覽器不支援音訊播放。
+  </audio>
+  <div class="audio-note">全文約 3.5 分鐘 · m4a 格式</div>
+</div>
+
+<hr/>
+
+<div class="section-label">開始</div>
+
+<p>2014 年，台灣某處，一個人打開電腦，在 Blogger 上建立了幾個部落格。他是住在北部地區的上班族，對一些宗教團體和學校懷有某種情緒，於是他開始在網路上散布關於這些團體的圖文。</p>
+<p><em>這不是故事的開始，但這是我們第一次能追蹤到他的地方。</em></p>
+<p>那幾年他並不孤單地操作。他用「馬龍」、用「JX」、用各種帳號在論壇、部落格之間移動，留下指紋，但指紋太細碎，沒有人把它們連起來。檢察官看到的只是一個轉貼週刊的人，罪嫌不足，不起訴。</p>
+<div class="pull">他選擇繼續。</div>
+
+<div class="section-label">發現</div>
+
+<p>某個時間點，他發現了一件事：<strong>Google 的演算法是可以被欺騙的。</strong></p>
+<p>只要在足夠多的網域上放置足夠多的關鍵字，真實的搜尋結果就會被污染。一個人搜尋「OO國中」，看到的第一頁會是他製造的內容。一個人搜尋「O勝O」，看到的是他想讓人看到的東西。</p>
+<div class="pull">這不只是仇恨，這是系統性的資訊污染。而且它可以賺錢。</div>
+
+<div class="section-label">金流</div>
+
+<p>他找到了 Monetag。這家廣告網路讓任何人都可以在自己的網站上放置彈窗廣告，每一千次曝光換取一筆收益。他申請了帳號，通過了 KYC 實名認證，拿到了一個 Publisher Key：</p>
+<div class="keyfrag">
+  <div class="keyfrag-label">Monetag Publisher Key · KYC 實名綁定 · 跨 1,841 域</div>
+  <div class="keyfrag-val">6b147b6d3f3b8cd0bbd3191b3b1a8394</div>
+</div>
+<p><em>這個字串從此跟著他。跨越 1,841 個域名，至少近半年從未更換。</em></p>
+
+<div class="section-label">機器</div>
+
+<p>他開始寫腳本。程式腳本，可以同時對接多家域名註冊商的 API：Spaceship、Sav.com、Dynadot、GoDaddy、Porkbun。每天下班後，他啟動腳本，幾分鐘內完成幾十個域名的批次註冊。</p>
+<p>2026 年 4 月，他在一個月內註冊了 1,590 個域名，花費超過 NT$651,616。</p>
+<div class="pull">這已經不是副業。這是一個有計劃、有預算、有技術架構的長期工程。</div>
+<p>每一個域名的結構都一樣。4,631 個位元組的 JavaScript，嵌入同一個 Publisher Key，連接同一條攻擊鏈：</p>
+
+<div class="chain">
+  <div class="chain-hd">Attack Chain · 完整攻擊路徑</div>
+  <div class="chain-row"><div class="chain-lbl">受害者搜尋</div><div class="chain-desc">SEO 污染頁面出現在 Google 搜尋前幾頁</div></div>
+  <div class="chain-row"><div class="chain-lbl">JX 域名</div><div class="chain-desc">4,631 bytes JS 載入，Publisher Key 嵌入，向 C2 申請 UUID</div></div>
+  <div class="chain-row"><div class="chain-lbl">UUID 簽發</div><div class="chain-desc">protrafficinspector.com 動態簽發 fstu / sht / ps1</div></div>
+  <div class="chain-row"><div class="chain-lbl">FORM POST</div><div class="chain-desc">architectureimpolitesacred.com — 現役主 C2，廣告計費在此發生</div></div>
+  <div class="chain-row"><div class="chain-lbl">廣告彈窗</div><div class="chain-desc">Monetag Popunder 觸發，CPM 計費入帳</div></div>
+  <div class="chain-row"><div class="chain-lbl">JX 銀行帳戶</div><div class="chain-desc">廣告收益流入，KYC 實名綁定，可追查</div></div>
+</div>
+
+<p><em>受害者以為自己在搜尋 OO 國中的資訊，實際上他們是 JX 廣告庫存的一部分。</em></p>
+
+<div class="section-label">被發現</div>
+
+<div class="ts">
+  <div class="ts-time">2026-05-02 · 06:19 TST</div>
+  <div class="ts-text">調查員搜尋 <code>site:boutique 盧勝彥 OR 英明國中</code>，發現 <code>mmvtar.boutique</code>，存下網頁（<code>uc6w0rekrs_英明國中他在動影片_-_mmvtar_boutique.htm</code>）。</div>
+</div>
+<div class="ts">
+  <div class="ts-time">2026-05-02 · 06:23 TST（+82秒後）</div>
+  <div class="ts-text">又發現 <code>dvyuwo.beer</code>。兩個不同域名、不同 TLD、不同頁面標題，但解碼 token 後——<strong>完全相同的 Publisher Key、admpid、C2 伺服器地址。</strong></div>
+</div>
+
+<div class="section-label">結語</div>
+
+<div class="coda">
+  <p>這不是一個人做了一件壞事。而是一個人，花了十二年，建造了一座污染台灣資訊環境的、自動化而且充滿 AI 色彩的機器——這些汙染早就擴及全世界了。</p>
+  <p>這座機器有 <strong>1,841 個已確認的節點</strong>，有將近 <strong>2 億個已採證的污染網頁</strong>，有一個 KYC 綁定的金流帳號，有一份檢察官不起訴處分書裡他親口承認的部落格。所有的線索都通向同一個人。</p>
+  <div class="coda-note">他的身分隱藏在台灣電子電機的大廠中，只要不被權責單位識破法辦，這種社會工程汙染，就會繼續在網路上流竄出沒，他還可以汙染網路世界，繼續領高薪，過他的無憂舒適日子。</div>
+  <div class="coda-link">搜證儀表板：<a href="https://jx-delta.pages.dev/jx-delta" target="_blank">https://jx-delta.pages.dev/jx-delta →</a></div>
+  <div class="coda-final">
+    <strong>Mythos 不是在指控他有罪。</strong>
+    Mythos 是在說：這些碎片，拼在一起，只能講出一個故事。
   </div>
-</nav>
-
-<section class="hero">
-  <div class="hero-label">Mythos · Case File · 2026</div>
-  <h1 class="hero-title">對 JX<br/><span class="accent">的敘事</span></h1>
-  <p class="hero-sub">他建造了一座污染台灣資訊環境的機器——<br/>這是它如何運作的故事</p>
-  <div class="hero-data">
-    <div class="hdi"><span class="hdi-num">1,786</span><span class="hdi-label">已確認惡意網域</span></div>
-    <div class="hdi"><span class="hdi-num">1.965 億</span><span class="hdi-label">已採證污染網頁</span></div>
-    <div class="hdi"><span class="hdi-num">12 年</span><span class="hdi-label">持續運作至今</span></div>
-    <div class="hdi"><span class="hdi-num">NT$650K+</span><span class="hdi-label">單月域名費（2026.04）</span></div>
-  </div>
-  <div class="scroll-cue">Scroll</div>
-</section>
-
-<div class="chapters">
-
-  <article class="chapter">
-    <div class="ch-num">Chapter 01 · 開始</div>
-    <h2 class="ch-title">一個人打開電腦</h2>
-    <p>2014 年，台灣某處，一個人打開電腦，在 Blogger 上建立了幾個部落格。他是住在北部地區的上班族，對一些宗教團體和學校懷有某種情緒，於是他開始在網路上散布關於這些團體的圖文。</p>
-    <p><em>這不是故事的開始，但這是我們第一次能追蹤到他的地方。</em></p>
-    <p>那幾年他並不孤單地操作。他用「馬龍」、用「JX」、用各種帳號在論壇、部落格之間移動，留下指紋，但指紋太細碎，沒有人把它們連起來。檢察官看到的只是一個轉貼週刊的人，罪嫌不足，不起訴。</p>
-    <div class="pull">他選擇繼續。</div>
-  </article>
-
-  <article class="chapter">
-    <div class="ch-num">Chapter 02 · 發現</div>
-    <h2 class="ch-title">演算法是可以被欺騙的</h2>
-    <p>某個時間點，他發現了一件事：<strong>Google 的演算法是可以被欺騙的。</strong></p>
-    <p>只要在足夠多的網域上放置足夠多的關鍵字，真實的搜尋結果就會被污染。一個人搜尋「OO國中」，看到的第一頁會是他製造的內容。一個人搜尋「O勝O」，看到的是他想讓人看到的東西。</p>
-    <div class="pull">這不只是仇恨，這是系統性的資訊污染。而且它可以賺錢。</div>
-  </article>
-
-  <article class="chapter">
-    <div class="ch-num">Chapter 03 · 金流</div>
-    <h2 class="ch-title">這個字串從此跟著他</h2>
-    <p>他找到了 Monetag。這家廣告網路讓任何人都可以在自己的網站上放置彈窗廣告，每一千次曝光換取一筆收益。他申請了帳號，通過了 KYC 實名認證，拿到了一個 Publisher Key：</p>
-    <div class="keyfrag">
-      <div class="kf-hd">
-        <span class="kf-label">Monetag Publisher Key · KYC 實名綁定</span>
-        <span class="kf-tag">跨 1,786 域 · 近半年未更換</span>
-      </div>
-      <div class="kf-val">6b147b6d3f3b8cd0bbd3191b3b1a8394</div>
-    </div>
-    <p><em>這個字串從此跟著他。跨越 1,786 個域名，至少近半年從未更換。</em></p>
-  </article>
-
-  <article class="chapter">
-    <div class="ch-num">Chapter 04 · 機器</div>
-    <h2 class="ch-title">每天下班後，他啟動腳本</h2>
-    <p>他開始寫腳本。程式腳本，可以同時對接多家域名註冊商的 API：Spaceship、Sav.com、Dynadot、GoDaddy、Porkbun。每天下班後，他啟動腳本，幾分鐘內完成幾十個域名的批次註冊。</p>
-    <p>2026 年 4 月，他在一個月內註冊了 1,588 個域名，花費超過 NT$650,000。</p>
-    <div class="pull">這已經不是副業。這是一個有計劃、有預算、有技術架構的長期工程。</div>
-    <p>每一個域名的結構都一樣。4,631 個位元組的 JavaScript，嵌入同一個 Publisher Key，連接同一條攻擊鏈：</p>
-    <div class="chain">
-      <div class="chain-hd">Attack Chain · 完整攻擊路徑</div>
-      <div class="chain-row"><div class="chain-lbl">受害者搜尋</div><div class="chain-desc">SEO 污染頁面出現在 Google 搜尋前幾頁</div></div>
-      <div class="chain-row"><div class="chain-lbl">JX 域名</div><div class="chain-desc">4,631 bytes JS 載入，Publisher Key 嵌入，向 C2 申請 UUID</div></div>
-      <div class="chain-row"><div class="chain-lbl">UUID 簽發</div><div class="chain-desc">protrafficinspector.com 動態簽發 fstu / sht / ps1</div></div>
-      <div class="chain-row"><div class="chain-lbl">FORM POST</div><div class="chain-desc">architectureimpolitesacred.com — 現役主 C2，廣告計費在此發生</div></div>
-      <div class="chain-row"><div class="chain-lbl">廣告彈窗</div><div class="chain-desc">Monetag Popunder 觸發，CPM 計費入帳</div></div>
-      <div class="chain-row"><div class="chain-lbl">JX 銀行帳戶</div><div class="chain-desc">廣告收益流入，KYC 實名綁定，可追查</div></div>
-    </div>
-    <p><em>受害者以為自己在搜尋 OO 國中的資訊，實際上他們是 JX 廣告庫存的一部分。</em></p>
-  </article>
-
-  <article class="chapter">
-    <div class="ch-num">Chapter 05 · 被發現</div>
-    <h2 class="ch-title">82 秒，兩個域名，同一個人</h2>
-    <div class="ts-block">
-      <div class="ts-time">2026-05-02 · 06:19 TST</div>
-      <div class="ts-text">調查員搜尋 <code>site:boutique 盧勝彥 OR 英明國中</code>，發現 <code>mmvtar.boutique</code>，存下網頁。</div>
-    </div>
-    <div class="ts-block">
-      <div class="ts-time">2026-05-02 · 06:23 TST（+82秒）</div>
-      <div class="ts-text">又發現 <code>dvyuwo.beer</code>。兩個不同域名、不同 TLD、不同頁面標題，但解碼 token 後——<strong style="color:var(--ink)">完全相同的 Publisher Key、admpid、C2 伺服器地址。</strong></div>
-    </div>
-    <div class="ev-grid">
-      <div class="ev"><span class="ev-num">1,786</span><span class="ev-label">已確認惡意網域</span></div>
-      <div class="ev"><span class="ev-num">1.965<span class="ev-unit"> 億</span></span><span class="ev-label">已採證污染網頁</span></div>
-      <div class="ev"><span class="ev-num">5.896<span class="ev-unit"> 億</span></span><span class="ev-label">有害資訊曝光數（估）</span></div>
-      <div class="ev"><span class="ev-num">39</span><span class="ev-label">攻擊使用 TLD 種類</span></div>
-    </div>
-  </article>
-
-  <article class="chapter">
-    <div class="ch-num">Chapter 06 · 結語</div>
-    <h2 class="ch-title">只能講出一個故事</h2>
-    <div class="coda">
-      <p class="coda-main">這不是一個人做了一件壞事。而是一個人，花了十二年，建造了一座污染台灣資訊環境的、自動化而且充滿 AI 色彩的機器——這些汙染早就擴及全世界了。</p>
-      <p class="coda-main">這座機器有 1,786 個已確認的節點，有將近 2 億個已採證的污染網頁，有一個 KYC 綁定的金流帳號，有一份檢察官不起訴處分書裡他親口承認的部落格。所有的線索都通向同一個人。</p>
-      <p class="coda-note">他的身分隱藏在台灣電子電機的大廠中，只要不被權責單位識破法辦，這種社會工程汙染，就會繼續在網路上流竄出沒，他還可以汙染網路世界，繼續領高薪，過他的無憂舒適日子。</p>
-      <div class="coda-link"><span>搜證儀表板：</span><a href="https://jx-delta.pages.dev/jx-delta" target="_blank">https://jx-delta.pages.dev/jx-delta →</a></div>
-      <div class="coda-final">
-        <strong>Mythos 不是在指控他有罪。</strong>
-        Mythos 是在說：這些碎片，拼在一起，只能講出一個故事。
-      </div>
-    </div>
-  </article>
-
 </div>
 
 <footer>
-  <div class="ft-l">
-    JADE-ANS 數位鑑識　｜　案號：111年度偵字第8075號<br/>
-    <span style="color:var(--red)">TLP:RED — 僅限執法機關及授權人員使用</span>
-  </div>
-  <div class="ft-r"><a href="https://jx-delta.pages.dev/jx-delta" target="_blank">搜證儀表板 →</a></div>
+  JADE-ANS 數位鑑識 · 案號：111年度偵字第8075號 · <span>TLP:RED</span><br/>
+  搜證資料：<a href="https://jx-delta.pages.dev/jx-delta">jx-delta.pages.dev/jx-delta</a>
 </footer>
 
-<script>
-window.addEventListener('scroll',()=>{
-  const h=document.documentElement;
-  document.getElementById('prog').style.width=(h.scrollTop/(h.scrollHeight-h.clientHeight)*100)+'%';
-});
-const obs=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('vis')}),{threshold:.06});
-document.querySelectorAll('.chapter').forEach(el=>obs.observe(el));
-</script>
 </body>
 </html>
