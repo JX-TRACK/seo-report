@@ -241,6 +241,16 @@ tbody tr:last-child td{border-bottom:none}
     <div class="kpi cb"><div class="kpi-lbl">最近7天平均註冊數</div><div class="kpi-val">53.6</div><div class="kpi-unit">個／天</div><div class="kpi-sub">0427–0503 共 375 個網域</div></div>
     <div class="kpi co"><div class="kpi-lbl">TLD 種類 ／ 主要 Registrar</div><div class="kpi-val" style="font-size:38px;font-weight:900;color:var(--red2);">54<span style="font-size:20px;font-weight:700;color:var(--text3);margin:0 6px;">種</span>/<span style="font-size:20px;font-weight:700;color:var(--text3);margin:0 6px;"></span>6<span style="font-size:20px;font-weight:700;color:var(--text3);margin-left:6px;">家</span></div><div class="kpi-sub" style="white-space:nowrap;font-size:10px;">本批資料・共 6 家 Registrar</div></div>
     <div class="kpi cg"><div class="kpi-lbl">上班時間批次註冊</div><div class="kpi-val">617</div><div class="kpi-sub">16~17 時資料列</div></div>
+    <div class="kpi" style="border-top:3px solid #8B7355;">
+      <div class="kpi-lbl" style="font-size:15px;font-weight:700;">2026/1/1前估算費用</div>
+      <div class="kpi-val" style="font-size:clamp(14px,2vw,22px);color:#8B7355;white-space:nowrap;" id="kpi-pre-cost">NT$1,536,377</div>
+      <div class="kpi-sub" id="kpi-pre-cost-sub">0101–0323 估算（81天）日均NT$18,968</div>
+    </div>
+    <div class="kpi" style="border-top:3px solid var(--red);">
+      <div class="kpi-lbl" style="font-size:15px;font-weight:700;">預估總費用</div>
+      <div class="kpi-val" style="font-size:clamp(14px,2vw,22px);color:var(--red);white-space:nowrap;" id="kpi-grand-total">NT$2,333,017</div>
+      <div class="kpi-sub" id="kpi-grand-total-sub">1/1–0503 全期估算</div>
+    </div>
     
 
     
@@ -453,5 +463,66 @@ function gkwClear(){
 
 <script>
 
+
+<script>
+(function(){
+  // 1/1~3/22 估算費用 + 預估總費用
+  // 從既有 kpi-val 讀取累計費用和天數
+  function calcPreCost(){
+    // 從頁面取得累計費用
+    var cumEl = document.querySelector('.kpi-val[style*="color:var(--red)"]');
+    // 改用 ID 讀取
+    var grandEl = document.getElementById('kpi-grand-total');
+    var preEl   = document.getElementById('kpi-pre-cost');
+    var preSubEl= document.getElementById('kpi-pre-cost-sub');
+    var grandSubEl = document.getElementById('kpi-grand-total-sub');
+
+    // 從頁面讀取累計費用（累計費用估計格）
+    var cumValEl = document.querySelector('[id="kpi-total-days"]');
+    if(!cumValEl) return;
+
+    var totalDays = parseInt(cumValEl.textContent) || 0;
+    if(totalDays <= 0) return;
+
+    // 讀取累計費用文字
+    var cumKpi = document.querySelector('.kpi-sub');
+    // 改用更精確的方式：找「全部」的 kpi-sub
+    var allSubs = document.querySelectorAll('.kpi-sub');
+    var cumCostText = '';
+    allSubs.forEach(function(el){
+      if(el.textContent.indexOf('全部') >= 0 && el.textContent.indexOf('個網域') >= 0){
+        // 找同層的 kpi-val
+        var parent = el.parentElement;
+        var valEl = parent.querySelector('.kpi-val');
+        if(valEl) cumCostText = valEl.textContent;
+      }
+    });
+
+    var cumCost = parseInt(cumCostText.replace(/[^0-9]/g,'')) || 0;
+    if(cumCost <= 0) return;
+
+    // 計算
+    var dailyRate = cumCost / totalDays;
+    var preDays   = 81;  // 1/1~3/22 = 81天
+    var preCost   = Math.round(dailyRate * preDays);
+    var grandTotal= cumCost + preCost;
+
+    // 格式化
+    function fmt(n){ return 'NT$' + n.toLocaleString('zh-TW'); }
+
+    if(preEl)  preEl.textContent  = fmt(preCost);
+    if(grandEl) grandEl.textContent = fmt(grandTotal);
+    if(preSubEl) preSubEl.textContent = '1/1–3/22（81天）· 日均 NT$' + Math.round(dailyRate).toLocaleString('zh-TW');
+    if(grandSubEl) grandSubEl.textContent = '1/1–最近日 全期估算';
+  }
+
+  // DOM 載入後執行
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', calcPreCost);
+  } else {
+    setTimeout(calcPreCost, 200);
+  }
+})();
+</script>
 </body>
 </html>
