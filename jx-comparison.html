@@ -129,40 +129,60 @@ body{background:var(--bg);color:var(--text);font-family:"Noto Sans TC",sans-seri
 
   <!-- COMPARE CARDS -->
   <div class="compare-grid">
+
+    <!-- 左欄：政府 + JADE-ANS 摘要 -->
     <div class="compare-card gov">
       <div class="cc-label">國家安全局</div>
       <div class="cc-title">政府情報層次評估</div>
-      <div class="cc-item">GSN首季遭侵擾逾 1億7328萬次</div>
+      <div class="cc-item">GSN 首季遭侵擾逾 1億7328萬次</div>
       <div class="cc-item">蒐獲異常帳號逾 1萬3千組</div>
       <div class="cc-item">爭議訊息 86萬餘則</div>
       <div class="cc-item">點名中共官媒、網路水軍、內容農場為主要管道</div>
-      <div class="cc-item">結合AI深偽技術與假民調手段</div>
+      <div class="cc-item">結合 AI 深偽技術與假民調手段</div>
       <div class="cc-item">政策制定導向，情報敏感性限制公開揭露</div>
-      <div style="margin-top:16px;padding:14px 16px;background:#f0f7ff;border-left:4px solid #3b82f6;border-radius:0 6px 6px 0;font-size:13px;color:#1e40af">
-        <strong>JADE-ANS 翡翠網路</strong><br/>
-        <strong style="font-size:15px;color:#1e3a5f">民間數位鑑識成果</strong><br/><br/>
-        <div style="margin-bottom:6px">▸ 系統性鑑識 <strong>2,001</strong> 個惡意網域</div>
-        <div style="margin-bottom:6px">▸ 已採證 <strong>216,843,930</strong> 個污染網頁（<strong>2.168 億</strong>）</div>
-        <div style="margin-bottom:6px">▸ 有害資訊曝光數逾 <strong>6.505 億則</strong>（×3，詐騙／病毒／色情隨機切換）</div>
-        <div style="margin-bottom:6px">▸ 共用 Monetag SmartLink Key 攻擊指紋確認</div>
-        <div style="margin-bottom:6px">▸ 一致 admpid 序列・共同 C2 轉接域名架構</div>
-        <div style="margin-bottom:6px">▸ WHOIS 時間戳記・Registrar 行為異常指標・SERP 即時命中驗證</div>
-        <div>▸ 可呈堂數位鑑識格式，直接關聯司法案號<br/>（依 0505AM 最新 2,001_RAW baseline 持續更新）</div>
+
+      <!-- JADE-ANS 摘要（左下角） -->
+      <div style="margin-top:20px;padding:16px;background:#eff6ff;border:1.5px solid #93c5fd;border-radius:8px">
+        <div style="font-size:11px;font-weight:700;color:#1d4ed8;letter-spacing:2px;margin-bottom:4px">JADE-ANS 翡翠網路</div>
+        <div style="font-size:16px;font-weight:900;color:#1e3a5f;margin-bottom:12px">民間數位鑑識成果</div>
+        <div style="font-size:13px;line-height:1.9;color:#1e40af">
+          <div>▸ 系統性鑑識 <strong>2,001</strong> 個惡意網域</div>
+          <div>▸ 已採證 <strong>216,843,930</strong> 個污染網頁（<strong>2.168 億</strong>）</div>
+          <div>▸ 有害資訊曝光數逾 <strong>6.505 億則</strong>（×3 估算）</div>
+          <div>▸ 共用 Monetag Publisher Key 攻擊指紋確認</div>
+          <div>▸ 一致 admpid 序列・共同 C2 轉接架構</div>
+          <div>▸ WHOIS 時間戳記・Registrar 行為異常・SERP 即時命中驗證</div>
+          <div>▸ 可呈堂數位鑑識格式，直接關聯司法案號</div>
+          <div style="font-size:11px;color:#3b82f6;margin-top:6px">依 0505AM 最新 2,001_RAW baseline 持續更新</div>
+        </div>
       </div>
     </div>
+
+    <!-- 右欄：JADE-ANS 完整版 -->
     <div class="compare-card jade">
       <div class="cc-label">JADE-ANS 翡翠網路</div>
       <div class="cc-title">民間數位鑑識成果</div>
+
       <div class="cc-item">系統性鑑識 <strong>2,001</strong> 個惡意網域</div>
-      <div class="cc-item">已採證 <strong>216,843,930</strong> 個污染網頁（<strong>2.168 億</strong>）｜有害資訊曝光數逾 <strong>6.505 億則</strong>（×3，詐騙／病毒／色情隨機切換）</div>
-      <div style="background:#fff7ed;border-left:4px solid #f97316;padding:10px 14px;border-radius:0 6px 6px 0;font-size:12.5px;color:#92400e;margin:10px 0;line-height:1.7">
-        <strong>有害資訊曝光數說明：</strong>每一污染網頁可在<strong>詐騙、病毒散布、色情內容</strong>三種模式間<strong>隨機動態切換</strong>，每次造訪可能觸發不同攻擊向量。故以網頁數 ×3 作為保守估計。此動態機制同時觸犯刑法第339條（詐欺）、第360條（妨害電腦使用）及散布兒少不宜內容。
+
+      <div class="cc-item">
+        已採證 <strong>216,843,930</strong> 個污染網頁（<strong>2.168 億</strong>）<br/>
+        有害資訊曝光數逾 <strong>6.505 億則</strong>（×3，詐騙／病毒／色情隨機切換）
       </div>
+
+      <div style="background:#fff7ed;border-left:4px solid #f97316;padding:12px 14px;border-radius:0 6px 6px 0;font-size:12px;color:#92400e;margin:10px 0;line-height:1.8">
+        <strong>有害資訊曝光數說明：</strong>每一污染網頁可在<strong>詐騙、病毒散布、色情內容</strong>三種模式間<strong>隨機動態切換</strong>，每次造訪可能觸發不同攻擊向量，導致傳統內容過濾系統完全失效。故以網頁數 ×3 作為保守估計。此動態機制同時觸犯刑法第339條（詐欺）、第360條（妨害電腦使用）及散布兒少不宜內容。
+      </div>
+
       <div class="cc-item">共用 Monetag SmartLink Key 攻擊指紋確認</div>
       <div class="cc-item">一致 admpid 序列・共同 C2 轉接域名架構</div>
       <div class="cc-item">WHOIS 時間戳記・Registrar 行為異常指標・SERP 即時命中驗證</div>
-      <div class="cc-item">可呈堂數位鑑識格式，直接關聯司法案號（依 0505AM 最新 2,001_RAW baseline 持續更新）</div>
+      <div class="cc-item">
+        可呈堂數位鑑識格式，直接關聯司法案號<br/>
+        <span style="font-size:12px;color:#888">（依 0505AM 最新 2,001_RAW baseline 持續更新）</span>
+      </div>
     </div>
+
   </div>
 
   <!-- SECTION 1 -->
