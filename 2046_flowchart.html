@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="utf-8"/>
+<title>2046 網域 SEO 污染案 Monetization 流程圖</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:'Noto Sans TC','Microsoft JhengHei',sans-serif;
+  background:#fff;
+  font-size:13px;
+  padding:16px;
+  width:1400px;
+  margin:0 auto;
+}
+/* ── TITLE ── */
+.title{text-align:center;padding:14px 0 8px;border-bottom:none}
+.title h1{font-size:32px;font-weight:900;color:#1a1a1a;letter-spacing:.5px;margin-bottom:5px}
+.title h1 b{color:#C00}
+.title p{font-size:15px;color:#C00;font-weight:700;letter-spacing:.5px}
+
+/* ── 5-COL HEADER ── */
+.col-headers{
+  display:grid;
+  grid-template-columns:180px 280px 280px 280px 200px;
+  margin-top:12px;
+  gap:6px;
+}
+.ch{
+  border-radius:20px;padding:7px 10px;
+  text-align:center;font-size:14px;font-weight:700;
+  display:flex;align-items:center;justify-content:center;gap:7px;
+  border:2px solid transparent;
+}
+.ch-num{
+  width:22px;height:22px;border-radius:50%;
+  display:inline-flex;align-items:center;justify-content:center;
+  font-size:13px;font-weight:900;color:#fff;flex-shrink:0;
+}
+.ch1{background:#dbeafe;border-color:#3b82f6;color:#1e40af} .ch1 .ch-num{background:#2563eb}
+.ch2{background:#dcfce7;border-color:#22c55e;color:#15803d} .ch2 .ch-num{background:#16a34a}
+.ch3{background:#d1fae5;border-color:#10b981;color:#065f46} .ch3 .ch-num{background:#059669}
+.ch4{background:#fff7ed;border-color:#f97316;color:#9a3412} .ch4 .ch-num{background:#ea580c}
+.ch5{background:#ede9fe;border-color:#8b5cf6;color:#4c1d95} .ch5 .ch-num{background:#7c3aed}
+
+/* ── MAIN GRID ── */
+.main{
+  display:grid;
+  grid-template-columns:180px 280px 280px 280px 200px;
+  gap:6px;
+  margin-top:6px;
+}
+.col{display:flex;flex-direction:column;gap:6px}
+
+/* ── CARDS ── */
+.card{border-radius:6px;padding:10px 12px;font-size:14px;line-height:1.65}
+.card-title{font-size:14px;font-weight:700;margin-bottom:4px}
+
+.c1{background:#eff6ff;border:1.5px solid #93c5fd}
+.c2{background:#f0fdf4;border:1.5px solid #86efac}
+.c3{background:#ecfdf5;border:1.5px solid #6ee7b7}
+.c3-inner{background:#fff7ed;border:1.5px solid #fb923c;border-radius:5px;padding:8px 10px;margin-top:4px}
+.c3-inner .mono{color:#dc2626;font-weight:700;font-size:13px;font-family:Consolas,monospace;line-height:1.7}
+.c4{background:#fff7ed;border:1.5px solid #fb923c}
+.c4-key{background:#fff0f0;border:2px solid #dc2626;border-radius:5px;padding:8px 10px;margin-top:5px;text-align:center}
+.c4-key .kt{font-size:13px;font-weight:700;color:#dc2626;margin-bottom:3px}
+.c4-key .kv{font-family:Consolas,monospace;font-size:13px;color:#dc2626;font-weight:700;line-height:1.6}
+.c5{background:#f5f3ff;border:1.5px solid #c4b5fd}
+.cash{background:#fef3c7;border:2px solid #f59e0b;border-radius:20px;padding:8px 12px;text-align:center;font-size:13px;font-weight:700;color:#92400e;margin-top:auto}
+
+/* GOOGLE mockup */
+.google-box{background:#fff;border:1.5px solid #dadce0;border-radius:8px;padding:8px 10px}
+.g-logo{font-size:20px;font-weight:700;background:linear-gradient(90deg,#4285F4,#EA4335,#FBBC05,#34A853);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:5px}
+.g-search{display:flex;align-items:center;border:1.5px solid #aaa;border-radius:22px;padding:3px 10px;font-size:13px;color:#555;margin-bottom:5px}
+.g-result{background:#fff;border-left:3px solid #dc2626;padding:4px 7px;font-size:12px;line-height:1.4;margin-bottom:3px;border-radius:2px}
+.g-result .gt{color:#1a0dab;font-weight:700;font-size:13px}
+.g-result .gu{color:#1a7f37;font-size:11px}
+.g-result2{border-left-color:#aaa}
+.g-result2 .gt{color:#666}
+.user{text-align:center;padding:10px 5px;margin-top:auto}
+.user-icon{font-size:30px;margin-bottom:4px}
+
+/* server icon */
+.srv{display:flex;align-items:center;gap:8px;margin:8px 0}
+.srv-icon{font-size:28px}
+.srv-text{font-size:13px;line-height:1.6;color:#374151}
+
+/* checks */
+.chk{margin-top:5px}
+.chk div{display:flex;gap:4px;font-size:13px;line-height:1.55;margin-bottom:1px;color:#374151}
+.chk div::before{content:'✓';color:#15803d;flex-shrink:0}
+.chk-r div::before{color:#dc2626}
+
+/* bullet list */
+.bul div{display:flex;gap:5px;font-size:13px;line-height:1.6;margin-bottom:1px}
+.bul div::before{content:'•';flex-shrink:0}
+
+/* mono */
+.mono{font-family:Consolas,'Courier New',monospace;font-size:13px}
+.mono-r{color:#dc2626}
+.mono-o{color:#ea580c}
+
+/* arrow */
+.arr{text-align:center;font-size:18px;color:#374151;margin:4px 0;font-weight:700}
+.arr-label{text-align:center;font-size:12px;color:#6b7280;margin:-2px 0 2px;font-weight:500}
+
+/* landing icons */
+.land div{display:flex;align-items:center;gap:7px;font-size:13px;margin-bottom:5px}
+.land .li{font-size:16px}
+
+/* ── BOTTOM ── */
+.bottom{
+  display:grid;
+  grid-template-columns:180px 280px 280px 480px;
+  gap:6px;
+  margin-top:6px;
+}
+.bc{border-radius:6px;padding:10px 12px;font-size:13px}
+.bc-title{font-weight:700;font-size:14px;margin-bottom:6px;text-align:center;color:#1a1a1a}
+.bc1{background:#eff6ff;border:1.5px solid #93c5fd}
+.bc2{background:#f0fdf4;border:1.5px solid #86efac}
+.bc3{background:#fefce8;border:1.5px solid #fde047}
+.bc4{background:#fff7ed;border:1.5px solid #fdba74}
+
+.star-row{display:flex;gap:6px;align-items:flex-start;margin-bottom:4px;font-size:13px}
+.star{color:#f59e0b;font-size:16px;flex-shrink:0}
+
+.conc{font-size:13px;line-height:1.75;color:#374151}
+.conc-r{color:#dc2626;font-weight:700;font-size:14px;margin-top:6px;line-height:1.7}
+
+/* key highlight in bottom */
+.kh{color:#dc2626;font-weight:700;font-family:Consolas,monospace;font-size:11px}
+.kh2{color:#ea580c;font-weight:700;font-family:Consolas,monospace;font-size:11px}
+
+/* ── FOOTER ── */
+.footer{
+  margin-top:8px;padding:7px 14px;
+  background:#f8f8f8;border:1px solid #ddd;border-radius:4px;
+  display:flex;justify-content:space-between;align-items:center;
+  font-size:11.5px;color:#555;
+}
+.leg{display:flex;gap:14px;flex-wrap:wrap;align-items:center}
+.leg-item{display:flex;align-items:center;gap:4px}
+</style>
+</head>
+<body>
+
+<!-- TITLE -->
+<div class="title">
+  <h1><b>2046</b> 網域 SEO 污染案　Monetization 流程圖（證據鏈）</h1>
+  <p>多個網站導向同一變現系統，使用相同 tracking key 與參數，屬單一營利控制體系</p>
+</div>
+
+<!-- COL HEADERS -->
+<div class="col-headers">
+  <div class="ch ch1"><span class="ch-num">1</span>使用者搜尋</div>
+  <div class="ch ch2"><span class="ch-num">2</span>污染網域（搜尋結果）</div>
+  <div class="ch ch3"><span class="ch-num">3</span>重新導向（Monetization 核心）</div>
+  <div class="ch ch4"><span class="ch-num">4</span>追蹤／變現系統（Redirect）</div>
+  <div class="ch ch5"><span class="ch-num">5</span>最終導流／落地頁</div>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+
+  <!-- COL 1: 使用者搜尋 -->
+  <div class="col">
+    <div class="card c1">
+      <div class="google-box">
+        <div class="g-logo">Google</div>
+        <div class="g-search">英明國中</div>
+        <div style="font-size:10.5px;color:#555;margin-bottom:4px">搜尋結果頁（SERP）</div>
+        <div class="g-result">
+          <div class="gt">英明國中校友會 - 最新消息</div>
+          <div class="gu">https://tsuooz.vu/.b14pcq/...</div>
+        </div>
+        <div class="g-result g-result2"><div class="gt">英明國中-相關資訊</div></div>
+        <div class="g-result g-result2"><div class="gt">英明國中論壇最新</div></div>
+      </div>
+    </div>
+    <div class="card c1 user">
+      <div class="user-icon">👥</div>
+      <div style="font-weight:700;font-size:13px">一般使用者</div>
+      <div style="font-size:11px;color:#555;margin-top:2px">點擊搜尋結果</div>
+    </div>
+  </div>
+
+  <!-- COL 2: 污染網域 -->
+  <div class="col">
+    <div class="card c2">
+      <div class="card-title">SEO 污染網域（部分示例）</div>
+      <div style="font-family:Consolas,monospace;font-size:11.5px;color:#15803d;line-height:1.85;margin-top:4px">
+        tsuooz.vu<br/>
+        /.b14pcq/4taehwk0bdvwa200.jsp<br/>
+        ohxrpp.vu<br/>
+        /.2ra7fekeaprfsunw/p/od/166.jsp<br/>
+        evwtoc.technology /xxxxx<br/>
+        hnpodz.garden /xxxxx<br/>
+        meuglz.today /xxxxx<br/>
+        rswfek.live /xxxxx<br/>
+        <strong>… 共 2,046 個網域</strong>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;justify-content:center;gap:8px;padding:4px 0">
+      <div style="flex:1;height:2px;background:#374151"></div>
+      <div style="font-size:11.5px;font-weight:700;color:#374151">自動跳轉</div>
+      <div style="font-size:16px">→</div>
+      <div style="font-size:11px;color:#555">302 / JS</div>
+    </div>
+    <div class="card c2">
+      <div class="card-title">共同技術特徵（文件一）</div>
+      <div class="chk">
+        <div>程式碼結構完全一致</div>
+        <div>隱藏表單＋自動提交</div>
+        <div>瀏覽器指紋蒐集</div>
+        <div>UUID 參數散列</div>
+        <div>PushState 隱藏 URL</div>
+        <div>外部請求分別指向主 C2<br/>&nbsp;&nbsp;&nbsp;（architectureimpolitesacred.com）<br/>&nbsp;&nbsp;&nbsp;及 UUID 節點（protrafficinspector.com）</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- COL 3: 重新導向/Monetization核心 -->
+  <div class="col">
+    <div class="card c3">
+      <div class="card-title" style="text-align:center;color:#065f46">重新導向（中間跳轉）</div>
+      <div style="text-align:center;font-family:Consolas,monospace;font-size:11.5px;font-weight:700;color:#065f46;margin:5px 0">
+        protrafficinspector.com
+      </div>
+      <div class="srv" style="justify-content:center">
+        <span class="srv-icon">🗄️</span>
+        <span class="srv-icon">🌐</span>
+      </div>
+      <div style="text-align:center;font-size:12px;color:#374151;line-height:1.8">
+        流量處理平台<br/>追蹤 / 分流<br/>變現分配
+      </div>
+      <div class="arr">↓</div>
+      <div style="text-align:center;font-size:12px;font-weight:700;color:#374151;margin-bottom:4px">多層跳轉 / 追蹤參數追加</div>
+      <div style="font-size:12px;color:#374151;margin-bottom:3px">常見參數：</div>
+      <div class="bul" style="color:#374151">
+        <div>key</div>
+        <div>hash</div>
+        <div>subid / s1 / st1</div>
+        <div>fstu / ps1 / sht</div>
+        <div>clickid / zoneid</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- COL 4: 追蹤變現/Redirect -->
+  <div class="col">
+    <div class="card c4">
+      <div style="text-align:center;font-family:Consolas,monospace;font-size:12px;font-weight:700;color:#9a3412;margin-bottom:6px">
+        architectureimpolitesacred.com<br/>/uc6w0rekrs
+      </div>
+      <div class="arr" style="color:#374151">↓</div>
+      <div class="c4-key">
+        <div class="kt">Monetization Key（收益識別碼）</div>
+        <div class="kv">key=6b147b6d3f3b8cd0<br/>bbd3191b3b1a8394</div>
+        <div style="font-size:11px;color:#666;margin-top:3px">（多網域共用相同 key）</div>
+      </div>
+      <div style="font-size:12px;font-weight:700;margin:8px 0 4px;color:#374151">功能：</div>
+      <div class="chk chk-r">
+        <div style="color:#374151">流量識別</div>
+        <div style="color:#374151">來源追蹤</div>
+        <div style="color:#374151">收益歸屬</div>
+        <div style="color:#374151">自動分流</div>
+      </div>
+    </div>
+    <div class="cash">
+      💲 收益分成（Affiliate / CPA）<br/>
+      <span style="font-size:11px;font-weight:400">由同一帳戶 / 錢包收款（高匯關聯）</span>
+    </div>
+  </div>
+
+  <!-- COL 5: 落地頁 -->
+  <div class="col">
+    <div class="card c5">
+      <div class="card-title" style="text-align:center;color:#4c1d95">最終導流 / 落地頁<br/>（示例）</div>
+      <div class="land" style="margin-top:8px">
+        <div><span class="li">🌐</span>成人內容站</div>
+        <div><span class="li">⭐</span>博客 / 賭場站</div>
+        <div><span class="li">📱</span>App 下載站</div>
+        <div><span class="li">📈</span>虛假投資站</div>
+        <div><span class="li">▶️</span>影音串流站</div>
+        <div><span class="li">⋯</span></div>
+      </div>
+    </div>
+    <div class="card c5">
+      <div class="card-title" style="color:#4c1d95">特徵：</div>
+      <div class="chk" style="margin-top:4px">
+        <div style="color:#374151">內容不相關</div>
+        <div style="color:#374151">高風險 / 違法內容</div>
+        <div style="color:#374151">常見惡意廣告</div>
+        <div style="color:#374151">兒少不當內容</div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /main -->
+
+<!-- BOTTOM -->
+<div class="bottom">
+
+  <div class="bc bc1">
+    <div class="bc-title">證據項目</div>
+    <div class="chk">
+      <div>網域註冊時間高度集中</div>
+      <div>TLD 批量註冊</div>
+      <div>程式碼結構完全相同</div>
+      <div>外部請求一致</div>
+      <div>使用相同 Key 與參數</div>
+      <div>導向相同變現系統</div>
+    </div>
+  </div>
+
+  <div class="bc bc2">
+    <div class="bc-title">關鍵證據（部分）</div>
+    <div style="font-size:11.5px;line-height:1.7">
+      <div style="margin-bottom:5px">● Redirect URL 帶有相同 Key</div>
+      <div class="kh" style="padding-left:12px">?key=6b147b6d3f3b8cd0bbd3191b3b1a8394</div>
+      <div class="kh2" style="padding-left:12px">&hash=b2bc</div>
+      <div style="margin-top:6px">● 外部請求分別指向主 C2 及 UUID 節點</div>
+      <div style="padding-left:12px;font-size:11px;color:#555">
+        architectureimpolitesacred.com（主 C2）<br/>
+        protrafficinspector.com（UUID 簽發）
+      </div>
+      <div style="margin-top:6px">● 多網域 Token 值識別用途</div>
+      <div style="padding-left:12px;font-size:11px;color:#555">（如 st1、ps1、sh1、shl）</div>
+    </div>
+  </div>
+
+  <div class="bc bc3">
+    <div class="bc-title">鑑識判斷</div>
+    <div class="star-row"><span class="star">★</span>同源性：極高</div>
+    <div class="star-row"><span class="star">★</span>自動化部署可能性：極高</div>
+    <div class="star-row"><span class="star">★</span>人工巧合可能性：極低</div>
+    <div class="star-row"><span class="star">★</span>可作為同一行為人（或同一控制集團）之技術證據：可</div>
+  </div>
+
+  <div class="bc bc4">
+    <div class="bc-title">結論</div>
+    <div class="conc">
+      2,046 個網域透過相同程式架構與追蹤參數，導向同一變現系統，並使用相同 monetization key 進行流量識別與收益分配，構成單一營利控制體系。此為 SEO 污染、流量劫持與不當內容導流之惡意犯罪證據鏈。
+    </div>
+    <div class="conc-r">
+      Monetization Key 與 Redirect 系統一致性，已構成收益歸屬之直接證據，證明力高於 IP 與網域註冊資訊。
+    </div>
+  </div>
+
+</div><!-- /bottom -->
+
+<!-- FOOTER -->
+<div class="footer">
+  <div class="leg">
+    <span style="font-weight:700">流程圖例：</span>
+    <span class="leg-item"><span style="color:#1a1a1a;font-weight:700">→</span> 使用者行為</span>
+    <span class="leg-item"><span style="color:#22c55e;font-weight:700">→</span> 污染入口</span>
+    <span class="leg-item"><span style="color:#f97316;font-weight:700">→</span> 技術跳轉</span>
+    <span class="leg-item"><span style="color:#dc2626;font-weight:700">→</span> 變現處理</span>
+    <span class="leg-item"><span style="color:#8b5cf6;font-weight:700">→</span> 最終落地</span>
+    <span class="leg-item"><span style="color:#dc2626;font-weight:700">--→</span> 導流方向</span>
+    <span class="leg-item"><span style="color:#f59e0b;font-weight:700">$</span> 金流</span>
+  </div>
+  <div style="font-weight:700">製圖日期：2026-05-07</div>
+</div>
+
+</body>
+</html>
