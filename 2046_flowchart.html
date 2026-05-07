@@ -4,144 +4,148 @@
 <meta charset="utf-8"/>
 <title>2046 網域 SEO 污染案 Monetization 流程圖</title>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap');
 *{box-sizing:border-box;margin:0;padding:0}
 body{
-  font-family:'Noto Sans TC','Microsoft JhengHei',sans-serif;
-  background:#fff;
-  font-size:13px;
-  padding:16px;
-  width:1400px;
+  font-family:'Microsoft JhengHei','Noto Sans TC','PingFang TC','Heiti TC',Arial,sans-serif;
+  background:#ffffff;
+  font-size:16px;
+  padding:10px 14px 8px;
+  width:1600px;
   margin:0 auto;
+  color:#222;
 }
-/* ── TITLE ── */
-.title{text-align:center;padding:14px 0 8px;border-bottom:none}
-.title h1{font-size:32px;font-weight:900;color:#1a1a1a;letter-spacing:.5px;margin-bottom:5px}
-.title h1 b{color:#C00}
-.title p{font-size:15px;color:#C00;font-weight:700;letter-spacing:.5px}
+/* ── TITLE：套用原圖風格 ── */
+.title{text-align:center;padding:8px 0 5px;border-bottom:none}
+.title h1{font-size:40px;font-weight:900;color:#10184b;letter-spacing:3px;line-height:1.1;margin-bottom:8px}
+.title h1 b{color:#10184b}
+.title p{font-size:18px;color:#f00;font-weight:900;letter-spacing:2px;line-height:1.3}
 
 /* ── 5-COL HEADER ── */
 .col-headers{
   display:grid;
-  grid-template-columns:180px 280px 280px 280px 200px;
-  margin-top:12px;
-  gap:6px;
+  grid-template-columns:245px 305px 305px 305px 250px;
+  margin-top:10px;
+  gap:22px;
+  align-items:start;
 }
 .ch{
-  border-radius:20px;padding:7px 10px;
-  text-align:center;font-size:14px;font-weight:700;
-  display:flex;align-items:center;justify-content:center;gap:7px;
+  border-radius:8px;padding:10px 12px;
+  text-align:center;font-size:17px;font-weight:900;
+  display:flex;align-items:center;justify-content:center;gap:10px;
   border:2px solid transparent;
+  background:#fff;
+  min-height:48px;
+  box-shadow:0 0 0 1px rgba(255,255,255,.35) inset;
 }
 .ch-num{
   width:22px;height:22px;border-radius:50%;
   display:inline-flex;align-items:center;justify-content:center;
-  font-size:13px;font-weight:900;color:#fff;flex-shrink:0;
+  font-size:14px;font-weight:900;color:#fff;flex-shrink:0;
 }
-.ch1{background:#dbeafe;border-color:#3b82f6;color:#1e40af} .ch1 .ch-num{background:#2563eb}
-.ch2{background:#dcfce7;border-color:#22c55e;color:#15803d} .ch2 .ch-num{background:#16a34a}
-.ch3{background:#d1fae5;border-color:#10b981;color:#065f46} .ch3 .ch-num{background:#059669}
-.ch4{background:#fff7ed;border-color:#f97316;color:#9a3412} .ch4 .ch-num{background:#ea580c}
-.ch5{background:#ede9fe;border-color:#8b5cf6;color:#4c1d95} .ch5 .ch-num{background:#7c3aed}
+.ch1{background:#f8fbff;border-color:#4f8df7;color:#0d47a1}.ch1 .ch-num{background:#0d47a1}
+.ch2{background:#fbfffb;border-color:#4f9666;color:#0f5a2c}.ch2 .ch-num{background:#0f6b2e}
+.ch3{background:#fffaf5;border-color:#ff8a3d;color:#f05a00}.ch3 .ch-num{background:#ff6a00}
+.ch4{background:#fff9f9;border-color:#ff3b3b;color:#e60012}.ch4 .ch-num{background:#e60012}
+.ch5{background:#fbf8ff;border-color:#a96cf0;color:#5b20bf}.ch5 .ch-num{background:#6b2bd7}
 
 /* ── MAIN GRID ── */
 .main{
   display:grid;
-  grid-template-columns:180px 280px 280px 280px 200px;
-  gap:6px;
-  margin-top:6px;
+  grid-template-columns:245px 305px 305px 305px 250px;
+  gap:22px;
+  margin-top:12px;
 }
-.col{display:flex;flex-direction:column;gap:6px}
+.col{display:flex;flex-direction:column;gap:12px;min-width:0}
 
-/* ── CARDS ── */
-.card{border-radius:6px;padding:10px 12px;font-size:14px;line-height:1.65}
-.card-title{font-size:14px;font-weight:700;margin-bottom:4px}
-
-.c1{background:#eff6ff;border:1.5px solid #93c5fd}
-.c2{background:#f0fdf4;border:1.5px solid #86efac}
-.c3{background:#ecfdf5;border:1.5px solid #6ee7b7}
-.c3-inner{background:#fff7ed;border:1.5px solid #fb923c;border-radius:5px;padding:8px 10px;margin-top:4px}
+/* ── CARDS：放大字級、線框色、留白接近原圖 ── */
+.card{border-radius:8px;padding:13px 14px;font-size:15px;line-height:1.7;background:#fff}
+.card-title{font-size:17px;font-weight:900;margin-bottom:8px;text-align:center;letter-spacing:.6px}
+.c1{background:#fff;border:2px solid #5c96ff;box-shadow:0 0 0 1px #d8e6ff inset}
+.c2{background:#fff;border:2px solid #4f9666;box-shadow:0 0 0 1px #d7efdf inset}
+.c3{background:#fff;border:2px solid #ff8a3d;box-shadow:0 0 0 1px #ffe2cc inset}
+.c3-inner{background:#fff7ed;border:1.5px solid #fb923c;border-radius:6px;padding:8px 10px;margin-top:4px}
 .c3-inner .mono{color:#dc2626;font-weight:700;font-size:13px;font-family:Consolas,monospace;line-height:1.7}
-.c4{background:#fff7ed;border:1.5px solid #fb923c}
-.c4-key{background:#fff0f0;border:2px solid #dc2626;border-radius:5px;padding:8px 10px;margin-top:5px;text-align:center}
-.c4-key .kt{font-size:13px;font-weight:700;color:#dc2626;margin-bottom:3px}
-.c4-key .kv{font-family:Consolas,monospace;font-size:13px;color:#dc2626;font-weight:700;line-height:1.6}
-.c5{background:#f5f3ff;border:1.5px solid #c4b5fd}
-.cash{background:#fef3c7;border:2px solid #f59e0b;border-radius:20px;padding:8px 12px;text-align:center;font-size:13px;font-weight:700;color:#92400e;margin-top:auto}
+.c4{background:#fff;border:2px solid #ff3b3b;box-shadow:0 0 0 1px #ffd9d9 inset}
+.c4-key{background:#fff6f6;border:2px solid #ff3b3b;border-radius:8px;padding:12px 10px;margin-top:9px;text-align:center}
+.c4-key .kt{font-size:15px;font-weight:900;color:#ff0000;margin-bottom:8px}
+.c4-key .kv{font-family:Consolas,monospace;font-size:17px;color:#ff0000;font-weight:900;line-height:1.45;word-break:break-all}
+.c5{background:#fff;border:2px solid #a96cf0;box-shadow:0 0 0 1px #eadcff inset}
+.cash{background:#fff6f6;border:2px solid #ff3b3b;border-radius:8px;padding:12px 12px;text-align:center;font-size:17px;font-weight:900;color:#f00;margin-top:auto;line-height:1.5}
 
 /* GOOGLE mockup */
-.google-box{background:#fff;border:1.5px solid #dadce0;border-radius:8px;padding:8px 10px}
-.g-logo{font-size:20px;font-weight:700;background:linear-gradient(90deg,#4285F4,#EA4335,#FBBC05,#34A853);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:5px}
-.g-search{display:flex;align-items:center;border:1.5px solid #aaa;border-radius:22px;padding:3px 10px;font-size:13px;color:#555;margin-bottom:5px}
-.g-result{background:#fff;border-left:3px solid #dc2626;padding:4px 7px;font-size:12px;line-height:1.4;margin-bottom:3px;border-radius:2px}
-.g-result .gt{color:#1a0dab;font-weight:700;font-size:13px}
-.g-result .gu{color:#1a7f37;font-size:11px}
-.g-result2{border-left-color:#aaa}
-.g-result2 .gt{color:#666}
-.user{text-align:center;padding:10px 5px;margin-top:auto}
-.user-icon{font-size:30px;margin-bottom:4px}
+.google-box{background:#fff;border:1.5px solid #dadce0;border-radius:10px;padding:13px 14px}
+.g-logo{font-size:34px;font-weight:700;background:linear-gradient(90deg,#4285F4,#EA4335,#FBBC05,#34A853);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:8px;text-align:center;letter-spacing:-1px}
+.g-search{display:flex;align-items:center;border:1.5px solid #c6cad1;border-radius:22px;padding:6px 12px;font-size:14px;color:#444;margin-bottom:9px;font-weight:700}
+.g-search:after{content:'🔍';margin-left:auto;font-size:15px;color:#1a73e8}
+.g-result{background:#fff;border:2px solid #ff4d4d;padding:8px 9px;font-size:13px;line-height:1.5;margin-bottom:8px;border-radius:8px}
+.g-result .gt{color:#0047ff;font-weight:900;font-size:15px}
+.g-result .gu{color:#008b40;font-size:13px;font-weight:700;word-break:break-all}
+.g-result2{border:none;background:transparent;height:20px;margin:8px 0;border-radius:2px;position:relative;padding:0}
+.g-result2:before{content:'';display:block;height:8px;background:#d6d9de;border-radius:5px;width:90%;margin:0 auto 8px}
+.g-result2 .gt{display:none}
+.user{text-align:center;padding:18px 5px;margin-top:auto}
+.user-icon{font-size:42px;margin-bottom:6px;color:#1256b4}
 
 /* server icon */
-.srv{display:flex;align-items:center;gap:8px;margin:8px 0}
-.srv-icon{font-size:28px}
-.srv-text{font-size:13px;line-height:1.6;color:#374151}
+.srv{display:flex;align-items:center;gap:8px;margin:12px 0}
+.srv-icon{font-size:42px}
+.srv-text{font-size:14px;line-height:1.7;color:#222}
 
 /* checks */
-.chk{margin-top:5px}
-.chk div{display:flex;gap:4px;font-size:13px;line-height:1.55;margin-bottom:1px;color:#374151}
-.chk div::before{content:'✓';color:#15803d;flex-shrink:0}
-.chk-r div::before{color:#dc2626}
+.chk{margin-top:6px}
+.chk div{display:flex;gap:6px;font-size:15px;line-height:1.55;margin-bottom:2px;color:#111;font-weight:700}
+.chk div::before{content:'✓';color:#111;flex-shrink:0;font-weight:900}
+.chk-r div::before{color:#111}
 
 /* bullet list */
-.bul div{display:flex;gap:5px;font-size:13px;line-height:1.6;margin-bottom:1px}
+.bul div{display:flex;gap:8px;font-size:16px;line-height:1.6;margin-bottom:1px;font-weight:700}
 .bul div::before{content:'•';flex-shrink:0}
 
 /* mono */
-.mono{font-family:Consolas,'Courier New',monospace;font-size:13px}
+.mono{font-family:Consolas,'Courier New',monospace;font-size:15px}
 .mono-r{color:#dc2626}
 .mono-o{color:#ea580c}
 
 /* arrow */
-.arr{text-align:center;font-size:18px;color:#374151;margin:4px 0;font-weight:700}
-.arr-label{text-align:center;font-size:12px;color:#6b7280;margin:-2px 0 2px;font-weight:500}
+.arr{text-align:center;font-size:26px;color:#111;margin:7px 0;font-weight:900;line-height:1}
+.arr-label{text-align:center;font-size:13px;color:#444;margin:-2px 0 2px;font-weight:700}
 
 /* landing icons */
-.land div{display:flex;align-items:center;gap:7px;font-size:13px;margin-bottom:5px}
-.land .li{font-size:16px}
+.land div{display:flex;align-items:center;gap:12px;font-size:15px;margin-bottom:12px;font-weight:900}
+.land .li{font-size:25px;width:30px;text-align:center}
 
 /* ── BOTTOM ── */
 .bottom{
   display:grid;
-  grid-template-columns:180px 280px 280px 480px;
-  gap:6px;
-  margin-top:6px;
+  grid-template-columns:245px 360px 305px 598px;
+  gap:12px;
+  margin-top:14px;
 }
-.bc{border-radius:6px;padding:10px 12px;font-size:13px}
-.bc-title{font-weight:700;font-size:14px;margin-bottom:6px;text-align:center;color:#1a1a1a}
-.bc1{background:#eff6ff;border:1.5px solid #93c5fd}
-.bc2{background:#f0fdf4;border:1.5px solid #86efac}
-.bc3{background:#fefce8;border:1.5px solid #fde047}
-.bc4{background:#fff7ed;border:1.5px solid #fdba74}
-
-.star-row{display:flex;gap:6px;align-items:flex-start;margin-bottom:4px;font-size:13px}
-.star{color:#f59e0b;font-size:16px;flex-shrink:0}
-
-.conc{font-size:13px;line-height:1.75;color:#374151}
-.conc-r{color:#dc2626;font-weight:700;font-size:14px;margin-top:6px;line-height:1.7}
-
-/* key highlight in bottom */
-.kh{color:#dc2626;font-weight:700;font-family:Consolas,monospace;font-size:11px}
-.kh2{color:#ea580c;font-weight:700;font-family:Consolas,monospace;font-size:11px}
+.bc{border-radius:8px;padding:13px 14px;font-size:15px;background:#fff;line-height:1.55}
+.bc-title{font-weight:900;font-size:17px;margin-bottom:7px;text-align:center;color:#0f172a;letter-spacing:.5px}
+.bc1{background:#fff;border:2px solid #5c96ff;box-shadow:0 0 0 1px #d8e6ff inset}
+.bc2{background:#fff;border:2px solid #5c96ff;box-shadow:0 0 0 1px #d8e6ff inset}
+.bc3{background:#fffdf0;border:2px solid #ff9d3f;box-shadow:0 0 0 1px #ffe5bf inset}
+.bc4{background:#fff;border:2px solid #999;box-shadow:0 0 0 1px #eee inset}
+.star-row{display:flex;gap:9px;align-items:flex-start;margin-bottom:7px;font-size:15px;font-weight:900;line-height:1.5}
+.star{color:#ffb000;font-size:18px;flex-shrink:0}
+.conc{font-size:15px;line-height:1.75;color:#111;font-weight:700}
+.conc-r{color:#f00;font-weight:900;font-size:16px;margin-top:10px;line-height:1.65}
+.kh{color:#f00;font-weight:900;font-family:Consolas,monospace;font-size:14px;word-break:break-all}
+.kh2{color:#e95f00;font-weight:900;font-family:Consolas,monospace;font-size:14px;word-break:break-all}
 
 /* ── FOOTER ── */
 .footer{
-  margin-top:8px;padding:7px 14px;
-  background:#f8f8f8;border:1px solid #ddd;border-radius:4px;
+  margin-top:10px;padding:10px 16px;
+  background:#f8fafc;border:2px solid #cbd5e1;border-radius:7px;
   display:flex;justify-content:space-between;align-items:center;
-  font-size:11.5px;color:#555;
+  font-size:14px;color:#333;font-weight:900;
 }
-.leg{display:flex;gap:14px;flex-wrap:wrap;align-items:center}
-.leg-item{display:flex;align-items:center;gap:4px}
+.leg{display:flex;gap:18px;flex-wrap:wrap;align-items:center}
+.leg-item{display:flex;align-items:center;gap:5px}
+@media print{
+  body{width:1600px;padding:8px}
+}
 </style>
 </head>
 <body>
@@ -170,7 +174,7 @@ body{
       <div class="google-box">
         <div class="g-logo">Google</div>
         <div class="g-search">英明國中</div>
-        <div style="font-size:10.5px;color:#555;margin-bottom:4px">搜尋結果頁（SERP）</div>
+        <div style="font-size:13px;color:#555;margin-bottom:6px;font-weight:800">搜尋結果頁（SERP）</div>
         <div class="g-result">
           <div class="gt">英明國中校友會 - 最新消息</div>
           <div class="gu">https://tsuooz.vu/.b14pcq/...</div>
@@ -181,8 +185,8 @@ body{
     </div>
     <div class="card c1 user">
       <div class="user-icon">👥</div>
-      <div style="font-weight:700;font-size:13px">一般使用者</div>
-      <div style="font-size:11px;color:#555;margin-top:2px">點擊搜尋結果</div>
+      <div style="font-weight:900;font-size:16px">一般使用者</div>
+      <div style="font-size:13px;color:#555;margin-top:3px;font-weight:700">點擊搜尋結果</div>
     </div>
   </div>
 
@@ -190,7 +194,7 @@ body{
   <div class="col">
     <div class="card c2">
       <div class="card-title">SEO 污染網域（部分示例）</div>
-      <div style="font-family:Consolas,monospace;font-size:11.5px;color:#15803d;line-height:1.85;margin-top:4px">
+      <div style="font-family:Consolas,monospace;font-size:13.2px;color:#07823c;line-height:1.95;margin-top:5px;font-weight:700;letter-spacing:.1px">
         tsuooz.vu<br/>
         /.b14pcq/4taehwk0bdvwa200.jsp<br/>
         ohxrpp.vu<br/>
@@ -199,14 +203,14 @@ body{
         hnpodz.garden /xxxxx<br/>
         meuglz.today /xxxxx<br/>
         rswfek.live /xxxxx<br/>
-        <strong>… 共 2,046 個網域</strong>
+        <strong style="display:inline-block;margin-top:6px;font-size:16px;font-weight:900;color:#065f46;background:#dcfce7;border:1px solid #86efac;border-radius:6px;padding:2px 8px">… 共 2,046 個網域</strong>
       </div>
     </div>
     <div style="display:flex;align-items:center;justify-content:center;gap:8px;padding:4px 0">
       <div style="flex:1;height:2px;background:#374151"></div>
-      <div style="font-size:11.5px;font-weight:700;color:#374151">自動跳轉</div>
-      <div style="font-size:16px">→</div>
-      <div style="font-size:11px;color:#555">302 / JS</div>
+      <div style="font-size:14px;font-weight:900;color:#374151">自動跳轉</div>
+      <div style="font-size:20px;font-weight:900">→</div>
+      <div style="font-size:13px;color:#555;font-weight:800">302 / JS</div>
     </div>
     <div class="card c2">
       <div class="card-title">共同技術特徵（文件一）</div>
@@ -225,19 +229,19 @@ body{
   <div class="col">
     <div class="card c3">
       <div class="card-title" style="text-align:center;color:#065f46">重新導向（中間跳轉）</div>
-      <div style="text-align:center;font-family:Consolas,monospace;font-size:16px;font-weight:700;color:#065f46;margin:5px 0">
+      <div style="text-align:center;font-family:Consolas,monospace;font-size:15px;font-weight:900;color:#065f46;margin:7px 0;line-height:1.45">
         protrafficinspector.com
       </div>
       <div class="srv" style="justify-content:center">
         <span class="srv-icon">🗄️</span>
         <span class="srv-icon">🌐</span>
       </div>
-      <div style="text-align:center;font-size:12px;color:#374151;line-height:1.8">
+      <div style="text-align:center;font-size:15px;color:#222;line-height:1.75;font-weight:900">
         流量處理平台<br/>追蹤 / 分流<br/>變現分配
       </div>
       <div class="arr">↓</div>
-      <div style="text-align:center;font-size:12px;font-weight:700;color:#374151;margin-bottom:4px">多層跳轉 / 追蹤參數追加</div>
-      <div style="font-size:12px;color:#374151;margin-bottom:3px">常見參數：</div>
+      <div style="text-align:center;font-size:15px;font-weight:900;color:#222;margin-bottom:6px">多層跳轉 / 追蹤參數追加</div>
+      <div style="font-size:15px;color:#222;margin-bottom:4px;font-weight:900">常見參數：</div>
       <div class="bul" style="color:#374151">
         <div>key</div>
         <div>hash</div>
@@ -251,16 +255,16 @@ body{
   <!-- COL 4: 追蹤變現/Redirect -->
   <div class="col">
     <div class="card c4">
-      <div style="text-align:center;font-family:Consolas,monospace;font-size:16px;font-weight:700;color:#9a3412;margin-bottom:6px">
+      <div style="text-align:center;font-family:Consolas,monospace;font-size:15px;font-weight:900;color:#9a3412;margin-bottom:8px;line-height:1.55">
         architectureimpolitesacred.com<br/>/uc6w0rekrs
       </div>
       <div class="arr" style="color:#374151">↓</div>
       <div class="c4-key">
         <div class="kt">Monetization Key（收益識別碼）</div>
         <div class="kv">key=6b147b6d3f3b8cd0<br/>bbd3191b3b1a8394</div>
-        <div style="font-size:11px;color:#666;margin-top:3px">（多網域共用相同 key）</div>
+        <div style="font-size:13px;color:#555;margin-top:5px;font-weight:800">（多網域共用相同 key）</div>
       </div>
-      <div style="font-size:12px;font-weight:700;margin:8px 0 4px;color:#374151">功能：</div>
+      <div style="font-size:15px;font-weight:900;margin:10px 0 5px;color:#222">功能：</div>
       <div class="chk chk-r">
         <div style="color:#374151">流量識別</div>
         <div style="color:#374151">來源追蹤</div>
@@ -270,7 +274,7 @@ body{
     </div>
     <div class="cash">
       💲 收益分成（Affiliate / CPA）<br/>
-      <span style="font-size:11px;font-weight:400">由同一帳戶 / 錢包收款（高匯關聯）</span>
+      <span style="font-size:13px;font-weight:800">由同一帳戶 / 錢包收款（高匯關聯）</span>
     </div>
   </div>
 
@@ -317,17 +321,17 @@ body{
 
   <div class="bc bc2">
     <div class="bc-title">關鍵證據（部分）</div>
-    <div style="font-size:11.5px;line-height:1.7">
+    <div style="font-size:14px;line-height:1.75;font-weight:700">
       <div style="margin-bottom:5px">● Redirect URL 帶有相同 Key</div>
       <div class="kh" style="padding-left:12px">?key=6b147b6d3f3b8cd0bbd3191b3b1a8394</div>
       <div class="kh2" style="padding-left:12px">&hash=b2bc</div>
       <div style="margin-top:6px">● 外部請求分別指向主 C2 及 UUID 節點</div>
-      <div style="padding-left:12px;font-size:11px;color:#555">
+      <div style="padding-left:12px;font-size:13px;color:#444;font-weight:700;line-height:1.55">
         architectureimpolitesacred.com（主 C2）<br/>
         protrafficinspector.com（UUID 簽發）
       </div>
       <div style="margin-top:6px">● 多網域 Token 值識別用途</div>
-      <div style="padding-left:12px;font-size:11px;color:#555">（如 st1、ps1、sh1、shl）</div>
+      <div style="padding-left:12px;font-size:13px;color:#444;font-weight:700;line-height:1.55">（如 st1、ps1、sh1、shl）</div>
     </div>
   </div>
 
