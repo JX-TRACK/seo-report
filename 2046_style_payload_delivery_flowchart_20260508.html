@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-05-08 導流變現與 Payload 交付鏈 Flowchart</title>
+<style>
+:root{
+  --bg:#07111f;
+  --panel:#0f1b2d;
+  --panel2:#111f34;
+  --line:#2f405c;
+  --text:#f8fafc;
+  --muted:#9fb0c8;
+  --blue:#38bdf8;
+  --green:#34d399;
+  --orange:#fb923c;
+  --red:#fb7185;
+  --purple:#a78bfa;
+  --yellow:#facc15;
+  --cyan:#22d3ee;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  background:
+    radial-gradient(circle at top left, rgba(56,189,248,.20), transparent 28%),
+    radial-gradient(circle at bottom right, rgba(251,113,133,.16), transparent 28%),
+    linear-gradient(135deg,#07111f,#0b1324 55%,#111827);
+  color:var(--text);
+  font-family:"Noto Sans TC","Microsoft JhengHei",Arial,sans-serif;
+}
+.page{max-width:1420px;margin:0 auto;padding:26px 24px 34px}
+.header{
+  display:flex;justify-content:space-between;gap:20px;align-items:flex-start;
+  border:1px solid rgba(148,163,184,.25);
+  background:rgba(15,27,45,.82);
+  border-radius:24px;
+  padding:24px 28px;
+  box-shadow:0 22px 55px rgba(0,0,0,.28);
+}
+h1{font-size:34px;line-height:1.25;margin:0 0 10px;font-weight:950;letter-spacing:.5px}
+.hi{color:var(--red)}
+.subtitle{color:#cbd5e1;font-size:16px;font-weight:800}
+.badgebox{display:flex;flex-direction:column;gap:8px;min-width:270px}
+.badge{
+  border:1px solid rgba(255,255,255,.18);
+  background:rgba(255,255,255,.08);
+  border-radius:999px;
+  padding:8px 13px;
+  font-size:13px;
+  font-weight:900;
+  text-align:center;
+}
+.alert{
+  margin:18px 0;
+  border-radius:18px;
+  padding:15px 20px;
+  background:linear-gradient(90deg,rgba(220,38,38,.92),rgba(249,115,22,.82));
+  font-size:18px;
+  font-weight:950;
+  letter-spacing:.3px;
+  box-shadow:0 15px 35px rgba(220,38,38,.22);
+}
+.grid{
+  display:grid;
+  grid-template-columns:310px 1fr 330px;
+  gap:14px;
+}
+.side,.center,.bottom{
+  border:1px solid rgba(148,163,184,.22);
+  background:rgba(15,27,45,.78);
+  border-radius:22px;
+  padding:16px;
+  box-shadow:0 18px 40px rgba(0,0,0,.20);
+}
+.section-title{
+  display:flex;align-items:center;gap:8px;
+  font-size:17px;font-weight:950;margin:0 0 12px;
+}
+.dot{width:11px;height:11px;border-radius:50%;background:var(--blue);box-shadow:0 0 18px var(--blue)}
+.evidence-card{
+  border:1px solid rgba(148,163,184,.22);
+  background:rgba(17,31,52,.82);
+  border-radius:16px;
+  padding:13px 13px;
+  margin-bottom:10px;
+}
+.evidence-card b{display:block;font-size:14px;margin-bottom:5px;color:#fff}
+.evidence-card code{
+  display:block;
+  color:#dbeafe;
+  background:rgba(2,6,23,.45);
+  border:1px solid rgba(148,163,184,.20);
+  border-radius:10px;
+  padding:8px;
+  font-size:12px;
+  word-break:break-all;
+  line-height:1.45;
+}
+.tag{
+  display:inline-block;
+  padding:3px 8px;
+  border-radius:999px;
+  font-size:11px;
+  font-weight:950;
+  margin-top:6px;
+}
+.t-blue{background:rgba(56,189,248,.18);color:#7dd3fc;border:1px solid rgba(56,189,248,.35)}
+.t-green{background:rgba(52,211,153,.16);color:#86efac;border:1px solid rgba(52,211,153,.35)}
+.t-red{background:rgba(251,113,133,.16);color:#fecdd3;border:1px solid rgba(251,113,133,.35)}
+.t-yellow{background:rgba(250,204,21,.18);color:#fde68a;border:1px solid rgba(250,204,21,.35)}
+.flow{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:8px;
+  padding:2px 4px;
+}
+.node{
+  width:92%;
+  min-height:86px;
+  border-radius:20px;
+  border:2px solid;
+  padding:13px 18px;
+  display:grid;
+  grid-template-columns:64px 1fr 170px;
+  align-items:center;
+  gap:14px;
+  position:relative;
+  box-shadow:0 14px 32px rgba(0,0,0,.22);
+}
+.num{
+  width:48px;height:48px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:22px;font-weight:950;
+  background:rgba(255,255,255,.12);
+  border:1px solid rgba(255,255,255,.22);
+}
+.ntitle{font-size:20px;font-weight:950;margin-bottom:2px}
+.ndesc{font-size:13.5px;color:#dbeafe;font-weight:800}
+.nmeta{
+  font-size:12px;
+  color:#e2e8f0;
+  background:rgba(2,6,23,.34);
+  border-radius:12px;
+  padding:8px;
+  word-break:break-all;
+  border:1px solid rgba(255,255,255,.12);
+}
+.n-blue{background:linear-gradient(135deg,rgba(37,99,235,.84),rgba(14,165,233,.52));border-color:#38bdf8}
+.n-green{background:linear-gradient(135deg,rgba(5,150,105,.82),rgba(16,185,129,.48));border-color:#34d399}
+.n-orange{background:linear-gradient(135deg,rgba(234,88,12,.84),rgba(251,146,60,.50));border-color:#fb923c}
+.n-purple{background:linear-gradient(135deg,rgba(109,40,217,.84),rgba(167,139,250,.48));border-color:#a78bfa}
+.n-red{background:linear-gradient(135deg,rgba(190,18,60,.84),rgba(251,113,133,.48));border-color:#fb7185}
+.n-yellow{background:linear-gradient(135deg,rgba(202,138,4,.92),rgba(250,204,21,.58));border-color:#facc15;color:#111827}
+.n-yellow .ndesc,.n-yellow .nmeta{color:#1f2937}
+.n-yellow .nmeta{background:rgba(255,255,255,.35)}
+.arrow{
+  font-size:28px;
+  line-height:1;
+  color:#94a3b8;
+  text-shadow:0 0 18px rgba(255,255,255,.25);
+}
+.kpis{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:12px;
+  margin:14px 0;
+}
+.kpi{
+  border:1px solid rgba(148,163,184,.22);
+  background:rgba(15,27,45,.76);
+  border-radius:18px;
+  padding:15px 10px;
+  text-align:center;
+}
+.kpi .big{font-size:28px;font-weight:950;color:#7dd3fc}
+.kpi .small{font-size:12px;color:#cbd5e1;font-weight:850}
+.bottom{
+  margin-top:14px;
+  display:grid;
+  grid-template-columns:1.2fr 1fr 1fr;
+  gap:14px;
+}
+.conclusion{
+  border:1px solid rgba(251,113,133,.35);
+  background:rgba(127,29,29,.22);
+  border-radius:18px;
+  padding:16px;
+}
+.conclusion h3{margin:0 0 8px;color:#fecdd3;font-size:18px}
+.conclusion p{margin:0;color:#ffe4e6;font-weight:850}
+.mini-list{margin:0;padding-left:18px;color:#dbeafe;font-size:13px;font-weight:800}
+.mini-list li{margin-bottom:5px}
+.footer{
+  text-align:center;
+  color:#9fb0c8;
+  font-size:12px;
+  margin-top:16px;
+}
+@media(max-width:1100px){
+  .grid{grid-template-columns:1fr}
+  .node{width:100%;grid-template-columns:52px 1fr}
+  .nmeta{grid-column:2}
+  .bottom{grid-template-columns:1fr}
+  .kpis{grid-template-columns:repeat(2,1fr)}
+  .header{flex-direction:column}
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header class="header">
+    <div>
+      <h1><span class="hi">2026-05-08</span> 導流變現與 Payload 交付鏈 Flowchart</h1>
+      <div class="subtitle">比照 2046 Flowchart 風格｜多入口 SEO 污染 → 統一 Routing → 偽 MEGA → ShortURL → Payload / Monetization</div>
+    </div>
+    <div class="badgebox">
+      <div class="badge">Jade-Ans Internet Information Solutions</div>
+      <div class="badge">Evidence Chain / Case Flow</div>
+      <div class="badge">TW Date: 2026-05-08</div>
+    </div>
+  </header>
+
+  <div class="alert">核心判斷：3 個不同入口網域 100% 收斂至同一 routing ID、同一導流節點、同一偽 MEGA 落地頁與同一短網址。</div>
+
+  <div class="kpis">
+    <div class="kpi"><div class="big">3</div><div class="small">不同入口網域</div></div>
+    <div class="kpi"><div class="big">1</div><div class="small">共同 Routing ID</div></div>
+    <div class="kpi"><div class="big">302</div><div class="small">多層 Redirect</div></div>
+    <div class="kpi"><div class="big">RAR</div><div class="small">疑似 Payload 交付</div></div>
+  </div>
+
+  <main class="grid">
+    <aside class="side">
+      <div class="section-title"><span class="dot"></span>左側證據：入口與 Routing</div>
+      <div class="evidence-card">
+        <b>入口樣本</b>
+        <code>aefnmr.cam<br>bpslqc.bar<br>crwzsg.watch</code>
+        <span class="tag t-blue">Different TLDs</span>
+      </div>
+      <div class="evidence-card">
+        <b>固定 Routing ID</b>
+        <code>61r8J6b241783108cf901ed3fc4c2c240948b4950f72a</code>
+        <span class="tag t-green">100% Converged</span>
+      </div>
+      <div class="evidence-card">
+        <b>動態 Session 參數</b>
+        <code>?hash=e8bd</code>
+        <span class="tag t-yellow">Tracking / Session</span>
+      </div>
+      <div class="evidence-card">
+        <b>導流參數</b>
+        <code>s1=back</code>
+        <span class="tag t-yellow">Campaign / Source</span>
+      </div>
+    </aside>
+
+    <section class="center">
+      <div class="section-title"><span class="dot"></span>中央主流程：Unified Attack Chain</div>
+      <div class="flow">
+
+        <div class="node n-blue">
+          <div class="num">1</div>
+          <div>
+            <div class="ntitle">SEO Pollution Domains</div>
+            <div class="ndesc">多個污染入口，TLD 與路徑不同，但導向一致。</div>
+          </div>
+          <div class="nmeta">aefnmr.cam / bpslqc.bar / crwzsg.watch</div>
+        </div>
+        <div class="arrow">↓</div>
+
+        <div class="node n-green">
+          <div class="num">2</div>
+          <div>
+            <div class="ntitle">Routing Core</div>
+            <div class="ndesc">共同 routing ID，代表集中式導流核心。</div>
+          </div>
+          <div class="nmeta">61r8J6b241783108cf901ed3fc4c2c240948b4950f72a</div>
+        </div>
+        <div class="arrow">↓</div>
+
+        <div class="node n-orange">
+          <div class="num">3</div>
+          <div>
+            <div class="ntitle">Redirect Infrastructure</div>
+            <div class="ndesc">第二層 302 導向相同第三方導流節點。</div>
+          </div>
+          <div class="nmeta">vnvpmr4.the-myscontactonlines.com/kye2xbr?s1=back</div>
+        </div>
+        <div class="arrow">↓</div>
+
+        <div class="node n-purple">
+          <div class="num">4</div>
+          <div>
+            <div class="ntitle">Fake MEGA Landing</div>
+            <div class="ndesc">URL 偽裝 file.zip，但實際回傳 HTML；頁面顯示 file.rar。</div>
+          </div>
+          <div class="nmeta">mega-nz.hypernodeaxis3.cfd/file.zip<br>Content-Type: text/html</div>
+        </div>
+        <div class="arrow">↓</div>
+
+        <div class="node n-red">
+          <div class="num">5</div>
+          <div>
+            <div class="ntitle">ShortURL Conversion</div>
+            <div class="ndesc">要求使用者 Copy / Paste，觸發手動轉換與追蹤。</div>
+          </div>
+          <div class="nmeta">shorturl.at/Nnb2G<br>後續 404 / 動態失效</div>
+        </div>
+        <div class="arrow">↓</div>
+
+        <div class="node n-yellow">
+          <div class="num">6</div>
+          <div>
+            <div class="ntitle">Payload Delivery / Monetization</div>
+            <div class="ndesc">第三方下載端、RAR、密碼，顯示 payload 交付與反檢測設計。</div>
+          </div>
+          <div class="nmeta">arch.auroracloudhub5.xyz<br>file.rar / password: 1747</div>
+        </div>
+
+      </div>
+    </section>
+
+    <aside class="side">
+      <div class="section-title"><span class="dot"></span>右側證據：落地頁與反分析</div>
+      <div class="evidence-card">
+        <b>偽裝品牌</b>
+        <code>MEGA-like interface<br>mega-nz.hypernodeaxis3.cfd</code>
+        <span class="tag t-red">Brand Impersonation</span>
+      </div>
+      <div class="evidence-card">
+        <b>下載誘導</b>
+        <code>file.rar<br>10.2 MB<br>Password: 1747</code>
+        <span class="tag t-red">Social Engineering</span>
+      </div>
+      <div class="evidence-card">
+        <b>行為紀錄</b>
+        <code>navigator.sendBeacon("/_api/log_download.php", ...)</code>
+        <span class="tag t-yellow">Conversion Tracking</span>
+      </div>
+      <div class="evidence-card">
+        <b>短網址失效</b>
+        <code>shorturl.at/Nnb2G → 404</code>
+        <span class="tag t-red">One-time / Anti-tracking</span>
+      </div>
+    </aside>
+  </main>
+
+  <section class="bottom">
+    <div class="conclusion">
+      <h3>Final Conclusion</h3>
+      <p>Multiple polluted domains converge into a unified monetization and payload delivery infrastructure.</p>
+    </div>
+    <div class="side">
+      <div class="section-title"><span class="dot"></span>金流定位</div>
+      <ul class="mini-list">
+        <li>尚未直接取得 payout 帳戶。</li>
+        <li>Routing ID 與 tracking 參數顯示收益歸屬結構。</li>
+        <li>偽下載頁與 shortURL 形成 conversion trigger。</li>
+      </ul>
+    </div>
+    <div class="side">
+      <div class="section-title"><span class="dot"></span>鑑識價值</div>
+      <ul class="mini-list">
+        <li>多入口收斂：強關聯證據。</li>
+        <li>短網址失效：動態反追蹤證據。</li>
+        <li>密碼 RAR：反檢測與 payload 交付線索。</li>
+      </ul>
+    </div>
+  </section>
+
+  <div class="footer">Jade-Ans Internet Information Solutions｜Case Flowchart｜Generated 2026-05-08</div>
+</div>
+</body>
+</html>
