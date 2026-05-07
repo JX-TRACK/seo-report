@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SEO污染與導流變現鏈技術鑑識報告｜2026-05-08</title>
+<style>
+:root{
+  --bg:#f6f8fb; --ink:#172033; --muted:#5b6475; --red:#dc2626;
+  --orange:#f97316; --blue:#2563eb; --green:#15803d; --line:#d9e1ee; --card:#ffffff;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Noto Sans TC","Microsoft JhengHei",Arial,sans-serif;line-height:1.65}
+.wrap{max-width:1180px;margin:0 auto;padding:28px 18px 60px}
+.hero{background:linear-gradient(135deg,#0f172a,#1e3a8a);color:#fff;border-radius:22px;padding:34px;box-shadow:0 14px 35px rgba(15,23,42,.18)}
+.hero h1{margin:0 0 10px;font-size:34px;line-height:1.25;font-weight:900;letter-spacing:.5px}
+.hero .sub{font-size:17px;color:#dbeafe;font-weight:700}
+.meta{display:flex;gap:12px;flex-wrap:wrap;margin-top:18px}
+.pill{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.22);padding:7px 12px;border-radius:999px;font-size:14px;font-weight:700}
+.alert{margin:22px 0;background:#fff1f2;border:2px solid #fecdd3;border-left:8px solid var(--red);border-radius:16px;padding:18px 22px;font-size:18px;font-weight:900;color:#991b1b}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:18px 0}
+.kpi{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:18px;text-align:center;box-shadow:0 8px 20px rgba(15,23,42,.06)}
+.kpi .num{font-size:30px;font-weight:900;color:#1e3a8a}
+.kpi .lab{font-size:14px;color:var(--muted);font-weight:700}
+section{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:24px;margin:18px 0;box-shadow:0 8px 20px rgba(15,23,42,.05)}
+h2{margin:0 0 14px;font-size:24px;font-weight:900;color:#0f172a;border-left:7px solid var(--blue);padding-left:12px}
+h3{margin:18px 0 8px;font-size:18px;color:#1e3a8a}
+.code{background:#0b1220;color:#e5e7eb;border-radius:14px;padding:16px 18px;font-family:Consolas,"Courier New",monospace;font-size:14px;overflow:auto;white-space:pre-wrap}
+.chain{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;margin-top:14px;align-items:stretch}
+.node{border-radius:16px;padding:14px 10px;text-align:center;font-weight:900;min-height:112px;display:flex;flex-direction:column;justify-content:center;border:2px solid transparent}
+.node small{display:block;font-weight:700;margin-top:6px;color:#475569}
+.n1{background:#eff6ff;border-color:#93c5fd;color:#1d4ed8}.n2{background:#ecfdf5;border-color:#86efac;color:#047857}.n3{background:#fff7ed;border-color:#fdba74;color:#c2410c}.n4{background:#f5f3ff;border-color:#c4b5fd;color:#6d28d9}.n5{background:#fff1f2;border-color:#fda4af;color:#be123c}.n6{background:#fef3c7;border-color:#fbbf24;color:#92400e}
+table{width:100%;border-collapse:collapse;margin-top:12px;font-size:14px}
+th,td{border:1px solid var(--line);padding:10px;vertical-align:top}
+th{background:#eef2ff;color:#1e3a8a;font-weight:900}
+td code{background:#f1f5f9;padding:2px 5px;border-radius:5px;color:#0f172a;word-break:break-all}
+.good{color:var(--green);font-weight:900}.bad{color:var(--red);font-weight:900}.warn{color:var(--orange);font-weight:900}
+.quote{background:#f8fafc;border-left:7px solid var(--green);border-radius:14px;padding:16px 18px;font-size:17px;font-weight:800}
+.footer{color:#64748b;font-size:13px;text-align:center;margin-top:20px}
+@media(max-width:900px){.grid{grid-template-columns:repeat(2,1fr)}.chain{grid-template-columns:1fr}.hero h1{font-size:27px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="hero">
+  <h1>SEO污染與導流變現鏈技術鑑識報告</h1>
+  <div class="sub">當日分析版｜多入口收斂、偽 MEGA 落地頁、短網址與 payload 交付鏈</div>
+  <div class="meta">
+    <span class="pill">Jade-Ans Internet Information Solutions</span>
+    <span class="pill">日期：2026-05-08（TW）</span>
+    <span class="pill">證據類型：HTTP 302 / Landing HTML / Short URL</span>
+  </div>
+</header>
+
+<div class="alert">核心結論：多個不同污染入口網域，已技術性證明收斂至同一 routing ID、同一導流節點、同一偽裝下載頁與同一短網址，顯示其屬於集中式導流與變現控制鏈。</div>
+
+<div class="grid">
+  <div class="kpi"><div class="num">3</div><div class="lab">測試入口網域</div></div>
+  <div class="kpi"><div class="num">100%</div><div class="lab">導向同一 Routing ID</div></div>
+  <div class="kpi"><div class="num">302</div><div class="lab">多層 HTTP 轉址</div></div>
+  <div class="kpi"><div class="num">1</div><div class="lab">共同短網址 / 落地頁</div></div>
+</div>
+
+<section>
+<h2>一、測試樣本</h2>
+<table>
+<thead><tr><th>#</th><th>入口網域</th><th>入口 URL 特徵</th></tr></thead>
+<tbody>
+<tr><td>1</td><td><code>aefnmr.cam</code></td><td><code>.jsp</code> 路徑</td></tr>
+<tr><td>2</td><td><code>bpslqc.bar</code></td><td><code>.rburl2</code> 路徑</td></tr>
+<tr><td>3</td><td><code>crwzsg.watch</code></td><td><code>.xml</code> 路徑</td></tr>
+</tbody>
+</table>
+</section>
+
+<section>
+<h2>二、完整導流鏈</h2>
+<div class="chain">
+  <div class="node n1">SEO污染入口<small>多網域 / 多TLD</small></div>
+  <div class="node n2">Routing ID<small>61r8J6b...</small></div>
+  <div class="node n3">導流節點<small>myscontact</small></div>
+  <div class="node n4">偽 MEGA 頁<small>HTML 偽裝 file.zip</small></div>
+  <div class="node n5">短網址<small>shorturl.at / 動態失效</small></div>
+  <div class="node n6">Payload 交付<small>RAR / 密碼 / 第三方域</small></div>
+</div>
+<h3>實測鏈條</h3>
+<div class="code">入口網域
+→ 302
+→ https://pelagialbromoauricandroseme.com/61r8J6b241783108cf901ed3fc4c2c240948b4950f72a?hash=e8bd
+→ 302
+→ https://vnvpmr4.the-myscontactonlines.com/kye2xbr?s1=back
+→ 偽 MEGA 落地頁
+→ https://mega-nz.hypernodeaxis3.cfd/file.zip?c=...&s=356529
+→ shorturl.at/Nnb2G
+→ arch.auroracloudhub5.xyz（疑似下載 / payload 交付端）</div>
+</section>
+
+<section>
+<h2>三、收斂證據表</h2>
+<table>
+<thead><tr><th>入口網域</th><th>Step1 Routing ID</th><th>Step2 導流節點</th><th>Landing</th><th>Short URL</th></tr></thead>
+<tbody>
+<tr><td><code>aefnmr.cam</code></td><td><code>61r8J6b241783108cf901ed3fc4c2c240948b4950f72a</code></td><td><code>vnvpmr4.the-myscontactonlines.com/kye2xbr?s1=back</code></td><td><code>mega-nz.hypernodeaxis3.cfd/file.zip</code></td><td><code>shorturl.at/Nnb2G</code></td></tr>
+<tr><td><code>bpslqc.bar</code></td><td><code>61r8J6b241783108cf901ed3fc4c2c240948b4950f72a</code></td><td><code>vnvpmr4.the-myscontactonlines.com/kye2xbr?s1=back</code></td><td><code>mega-nz.hypernodeaxis3.cfd/file.zip</code></td><td><code>shorturl.at/Nnb2G</code></td></tr>
+<tr><td><code>crwzsg.watch</code></td><td><code>61r8J6b241783108cf901ed3fc4c2c240948b4950f72a</code></td><td><code>vnvpmr4.the-myscontactonlines.com/kye2xbr?s1=back</code></td><td><code>mega-nz.hypernodeaxis3.cfd/file.zip</code></td><td><code>shorturl.at/Nnb2G</code></td></tr>
+</tbody>
+</table>
+<p class="quote">判斷：三個入口網域之導流結果完全一致，構成「多入口 → 單一後端控制鏈」之強技術證據。</p>
+</section>
+
+<section>
+<h2>四、偽 MEGA 落地頁目的</h2>
+<table>
+<thead><tr><th>觀察項目</th><th>技術意義</th></tr></thead>
+<tbody>
+<tr><td><code>file.zip</code> URL 但回傳 <code>text/html</code></td><td>檔名偽裝；實際非 ZIP 檔。</td></tr>
+<tr><td>頁面顯示 <code>file.rar</code>、大小 <code>10.2 MB</code></td><td>社交工程式下載誘導。</td></tr>
+<tr><td>顯示密碼 <code>1747</code></td><td>密碼壓縮檔可降低防毒靜態掃描效果，具反檢測特徵。</td></tr>
+<tr><td>要求 Copy Link 後另開分頁</td><td>手動行為過濾 bot / crawler，確認真人操作。</td></tr>
+<tr><td><code>navigator.sendBeacon</code> 紀錄下載事件</td><td>具備行為追蹤與 conversion 記錄。</td></tr>
+</tbody>
+</table>
+</section>
+
+<section>
+<h2>五、金流與變現判斷</h2>
+<p>目前尚未直接取得銀行帳戶、加密錢包或廣告平台 payout ID，因此不應直接宣稱已取得實際收款帳戶。</p>
+<ul>
+  <li><span class="good">流量集中：</span>三個入口均導向同一 routing ID。</li>
+  <li><span class="good">追蹤存在：</span><code>hash</code>、<code>s1</code>、短網址與 beacon 共同構成 tracking / conversion 結構。</li>
+  <li><span class="good">變現目的：</span>偽下載頁誘導使用者完成下一步操作，具備 conversion trigger 特徵。</li>
+</ul>
+<p class="quote">金流不直接存在於 URL 中；但 routing ID 與 tracking 參數已揭示其收益歸屬與變現追蹤結構。</p>
+</section>
+
+<section>
+<h2>六、鑑識結論</h2>
+<ol>
+  <li>三個不同入口網域均導向相同 routing ID，非獨立網站行為。</li>
+  <li>Step2 導流節點完全一致，顯示後端轉發系統集中。</li>
+  <li>偽 MEGA 頁面實際為 HTML，非檔案下載，具品牌偽裝與下載誘導目的。</li>
+  <li>短網址失效與 copy-paste 指示顯示其具一次性、動態與反追蹤設計。</li>
+  <li>密碼壓縮檔與第三方下載域顯示其已具 payload 交付能力。</li>
+</ol>
+<div class="alert">最終判斷：本案已由技術證據支持「多網域污染 → 單一導流系統 → 統一變現 / payload 交付鏈」成立。</div>
+</section>
+
+<section>
+<h2>七、建議後續蒐證</h2>
+<ul>
+  <li>擴大測試更多入口網域，統計 routing ID 收斂比例。</li>
+  <li>保存每層 HTTP header、Location、Content-Type 與截圖。</li>
+  <li>安全下載 payload 後僅做 hash 與靜態分析，不執行。</li>
+  <li>記錄 shorturl 失效時間，作為一次性導流證據。</li>
+  <li>整理成 Word / PDF / 簡報版送交主管機關。</li>
+</ul>
+</section>
+
+<div class="footer">本報告為技術鑑識彙整頁，依使用者實測資料與輸出結果製作。Jade-Ans Internet Information Solutions｜2026-05-08</div>
+</div>
+</body>
+</html>
