@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>三個網域網頁程式之異同與運作原理分析報告</title>
+<style>
+  :root {
+    --navy:  #1F3864;
+    --blue:  #2E75B6;
+    --lblue: #BDD7EE;
+    --llblue:#DEEAF1;
+    --red:   #C00000;
+    --orange:#E26B0A;
+    --grey:  #595959;
+    --lgrey: #F2F2F2;
+    --yellow:#FFF2CC;
+    --white: #FFFFFF;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Arial', 'Microsoft JhengHei', sans-serif;
+    font-size: 15px;
+    color: #333;
+    background: #f5f7fa;
+    line-height: 1.7;
+  }
+
+  /* ── LAYOUT ── */
+  .page-wrap { max-width: 960px; margin: 0 auto; background: white; box-shadow: 0 2px 20px rgba(0,0,0,.1); }
+
+  /* ── COVER ── */
+  .cover {
+    background: linear-gradient(135deg, var(--navy) 0%, #2a5298 100%);
+    color: white;
+    padding: 56px 56px 48px;
+    position: relative;
+  }
+  .cover-inner { display: flex; justify-content: space-between; align-items: flex-start; gap: 32px; }
+  .cover-text { flex: 1; }
+  .cover h1 {
+    font-size: 26px;
+    font-weight: 700;
+    line-height: 1.4;
+    letter-spacing: .04em;
+    margin-bottom: 12px;
+  }
+  .cover-subtitle {
+    font-size: 14px;
+    color: var(--lblue);
+    margin-bottom: 24px;
+    border-bottom: 1px solid rgba(189,215,238,.4);
+    padding-bottom: 16px;
+  }
+  .cover-meta { display: flex; flex-wrap: wrap; gap: 12px 32px; font-size: 13px; color: #c8daef; }
+  .tlp-badge {
+    display: inline-block;
+    background: var(--red);
+    color: white;
+    font-weight: 700;
+    font-size: 12px;
+    padding: 2px 10px;
+    border-radius: 3px;
+    letter-spacing: .08em;
+    vertical-align: middle;
+  }
+  .cover-qr {
+    flex-shrink: 0;
+    background: white;
+    border-radius: 8px;
+    padding: 10px;
+    text-align: center;
+    width: 140px;
+  }
+  .cover-qr img { width: 120px; height: 120px; display: block; }
+  .cover-qr p { font-size: 10px; color: var(--navy); font-weight: 700; margin-top: 6px; line-height: 1.3; }
+
+  /* ── NAV ── */
+  nav {
+    background: var(--navy);
+    padding: 0 56px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    display: flex;
+    gap: 0;
+    overflow-x: auto;
+  }
+  nav a {
+    display: block;
+    color: #aac4e0;
+    text-decoration: none;
+    font-size: 12.5px;
+    padding: 11px 14px;
+    white-space: nowrap;
+    border-bottom: 3px solid transparent;
+    transition: color .2s, border-color .2s;
+  }
+  nav a:hover { color: white; border-bottom-color: var(--lblue); }
+
+  /* ── REF BOX ── */
+  .ref-box {
+    margin: 28px 56px;
+    background: var(--llblue);
+    border-left: 5px solid var(--blue);
+    border-radius: 0 6px 6px 0;
+    padding: 14px 20px;
+    font-size: 13.5px;
+  }
+  .ref-box .ref-label { font-weight: 700; color: var(--navy); margin-bottom: 6px; font-size: 12px; text-transform: uppercase; letter-spacing: .06em; }
+  .ref-box a { color: var(--blue); word-break: break-all; }
+  .ref-box a:hover { color: var(--navy); }
+
+  /* ── MAIN CONTENT ── */
+  main { padding: 0 56px 60px; }
+
+  /* ── SECTIONS ── */
+  .section { margin-bottom: 48px; }
+  .section-title {
+    font-size: 19px;
+    font-weight: 700;
+    color: var(--navy);
+    border-bottom: 3px solid var(--blue);
+    padding-bottom: 8px;
+    margin-bottom: 20px;
+    margin-top: 40px;
+    scroll-margin-top: 52px;
+  }
+  .sub-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--blue);
+    margin: 24px 0 12px;
+  }
+  .sub-sub-title {
+    font-size: 14.5px;
+    font-weight: 700;
+    color: var(--grey);
+    margin: 18px 0 8px;
+  }
+  p { margin-bottom: 10px; font-size: 14.5px; }
+
+  /* ── BULLETS ── */
+  ul { list-style: none; margin: 8px 0 14px 0; padding: 0; }
+  ul li {
+    padding: 4px 0 4px 22px;
+    position: relative;
+    font-size: 14px;
+    color: #444;
+  }
+  ul li::before { content: '▪'; position: absolute; left: 4px; color: var(--blue); font-size: 12px; top: 6px; }
+
+  /* ── NUMBERED ── */
+  ol.steps { list-style: none; counter-reset: step; margin: 10px 0 16px; padding: 0; }
+  ol.steps li {
+    counter-increment: step;
+    padding: 8px 0 8px 44px;
+    position: relative;
+    font-size: 14px;
+    border-bottom: 1px solid #f0f0f0;
+  }
+  ol.steps li::before {
+    content: counter(step);
+    position: absolute;
+    left: 0;
+    top: 6px;
+    width: 28px;
+    height: 28px;
+    background: var(--blue);
+    color: white;
+    border-radius: 50%;
+    font-size: 13px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* ── CODE ── */
+  .code-block {
+    background: var(--lgrey);
+    border-left: 4px solid var(--red);
+    border-radius: 0 4px 4px 0;
+    padding: 10px 16px;
+    font-family: 'Courier New', monospace;
+    font-size: 13px;
+    color: var(--red);
+    margin: 10px 0 14px;
+    overflow-x: auto;
+    white-space: pre;
+  }
+
+  /* ── INFO BOXES ── */
+  .info-box {
+    background: var(--llblue);
+    border-left: 5px solid var(--blue);
+    border-radius: 0 6px 6px 0;
+    padding: 14px 18px;
+    margin: 14px 0 20px;
+    font-size: 14px;
+    color: var(--navy);
+  }
+  .warn-box {
+    background: var(--yellow);
+    border-left: 5px solid var(--orange);
+    border-radius: 0 6px 6px 0;
+    padding: 14px 18px;
+    margin: 14px 0 20px;
+    font-size: 14px;
+    color: #5a3a00;
+  }
+  .warn-box strong, .info-box strong { display: block; margin-bottom: 4px; }
+
+  /* ── TABLES ── */
+  .tbl-wrap { overflow-x: auto; margin: 12px 0 20px; }
+  table { border-collapse: collapse; width: 100%; font-size: 13.5px; }
+  thead th {
+    background: var(--navy);
+    color: white;
+    padding: 9px 14px;
+    font-weight: 700;
+    text-align: left;
+    font-size: 13px;
+    letter-spacing: .03em;
+  }
+  tbody tr:nth-child(odd)  td { background: white; }
+  tbody tr:nth-child(even) td { background: var(--lgrey); }
+  tbody tr:hover td { background: var(--llblue); }
+  td {
+    padding: 8px 14px;
+    border: 1px solid var(--lblue);
+    vertical-align: top;
+  }
+  td.key-cell { font-weight: 700; color: var(--navy); white-space: nowrap; }
+  td.mono     { font-family: 'Courier New', monospace; color: var(--red); font-size: 12.5px; word-break: break-all; }
+  td.hi       { background: var(--yellow) !important; font-family: 'Courier New', monospace; color: var(--red); font-size: 12.5px; font-weight: 700; }
+  td.ok       { color: #1a7a1a; font-weight: 700; }
+  td.no       { color: #999; }
+
+  /* ── FOOTER ── */
+  footer {
+    border-top: 2px solid var(--blue);
+    background: var(--lgrey);
+    padding: 14px 56px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 12px;
+    color: var(--grey);
+  }
+
+  @media (max-width: 640px) {
+    .cover { padding: 32px 24px; }
+    .cover h1 { font-size: 20px; }
+    .cover-inner { flex-direction: column; }
+    nav { padding: 0 16px; }
+    main { padding: 0 24px 40px; }
+    .ref-box { margin: 20px 24px; }
+    footer { padding: 12px 24px; flex-direction: column; gap: 6px; }
+  }
+</style>
+</head>
+<body>
+<div class="page-wrap">
+
+<!-- COVER -->
+<div class="cover">
+  <div class="cover-inner">
+    <div class="cover-text">
+      <h1>三個網域網頁程式之<br>異同與運作原理分析報告</h1>
+      <div class="cover-subtitle">JavaScript Token 解碼 ╱ 金流指紋分析 ╱ 鑑識時間戳記說明</div>
+      <div class="cover-meta">
+        <span>搜證日期：2026-05-12</span>
+        <span>機密等級：<span class="tlp-badge">TLP:RED</span></span>
+        <span>案號：111年度偵字第8075號</span>
+      </div>
+    </div>
+    <div class="cover-qr">
+      <img src="data:image/png;base64,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" alt="QR Code">
+      <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQgAAAEICAIAAAAslP2oAAAE+ElEQVR4nO3dwY0kJwBAUY/lQJyGA3JUG5DTcCbts6XPAQkEqN87rnZranrnCwkG+Pl8Pr8B//f76ReAGwkDgjAgCAOCMCAIA4IwIAgDgjAgCAOCMCAIA4IwIAgDgjAgCAOCMCD8BwhWRfuYVUDKAAAAAElFTkSuQmCC" alt="" style="display:none">
+      <p>JX 鑑識報告<br>目錄</p>
+    </div>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav>
+  <a href="#ref">相關文件</a>
+  <a href="#s1">一、整體結論</a>
+  <a href="#s2">二、共同架構</a>
+  <a href="#s3">三、裝置蒐集</a>
+  <a href="#s4">四、Token/Key</a>
+  <a href="#s5">五、運作原理</a>
+  <a href="#s6">六、鑑識推論</a>
+  <a href="#s7">七、結論</a>
+  <a href="#s8">八、金流指紋</a>
+  <a href="#s9">九、時間戳記</a>
+</nav>
+
+<!-- REF -->
+<div class="ref-box" id="ref">
+  <div class="ref-label">相關文件</div>
+  本報告為下列鑑識報告之技術補充文件：<br>
+  <a href="https://jx-track.github.io/seo-report/jx-delta" target="_blank">
+    Google 搜尋引擎操控(SEO)污染攻擊與有害網域鑑識報告（全民奮鬥自力救濟版）
+  </a><br>
+  <span style="font-size:12px;color:var(--grey)">https://jx-track.github.io/seo-report/jx-delta</span>
+</div>
+
+<main>
+
+<!-- S1 -->
+<div class="section">
+  <div class="section-title" id="s1">一、整體結論</div>
+  <p>經比對三個 HTM 搜證樣本後確認：</p>
+  <ul>
+    <li>三個網頁的 HTML 與 JavaScript 架構高度相似，相似度約達 97%</li>
+    <li>核心程式邏輯完全一致</li>
+    <li>差異主要集中於 token、追蹤參數與識別碼</li>
+    <li>屬於同一套導流模板大量複製部署的典型模式</li>
+  </ul>
+  <div class="info-box">
+    🔑 <strong>關鍵結論</strong>
+    三個網域共用同一組 Monetag Publisher Key，歸屬同一變現帳戶，為本案金流追查之核心依據。
+  </div>
+</div>
+
+<!-- S2 -->
+<div class="section">
+  <div class="section-title" id="s2">二、共同架構</div>
+
+  <div class="sub-title">2.1　基本 HTML 結構</div>
+  <p>三者皆採用極簡 HTML，幾乎無正常網站內容，所有功能均集中於 JavaScript：</p>
+  <div class="code-block">&lt;!doctype html&gt;&lt;html lang="en"&gt;&lt;head&gt;&lt;meta charset="utf-8"/&gt;&lt;/head&gt;
+&lt;body&gt;&lt;form action="" id="submit-form"&gt;&lt;/form&gt;
+&lt;script&gt; /* 導流邏輯 */ &lt;/script&gt;&lt;/body&gt;&lt;/html&gt;</div>
+  <ul>
+    <li>無可視 UI，頁面對使用者完全透明</li>
+    <li>使用隱藏 &lt;form&gt; 作為資料提交媒介</li>
+    <li>功能集中於 JavaScript，頁面載入即執行</li>
+  </ul>
+
+  <div class="sub-title">2.2　Hidden Form 機制</div>
+  <p>程式動態建立 hidden input 欄位（<code>createElement('input')</code>），用途如下：</p>
+  <ul>
+    <li>蒐集裝置資訊</li>
+    <li>建立 session token</li>
+    <li>背景送出資料至 C2</li>
+    <li>自動 submit 觸發導流</li>
+  </ul>
+</div>
+
+<!-- S3 -->
+<div class="section">
+  <div class="section-title" id="s3">三、裝置資訊蒐集</div>
+  <p>每次頁面載入，JS 自動蒐集以下裝置資訊，用於判斷真人 / 爬蟲並決定分流策略：</p>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>蒐集欄位</th><th>用途說明</th></tr></thead>
+      <tbody>
+        <tr><td class="key-cell">window.innerWidth / Height</td><td>瀏覽器視窗寬高</td></tr>
+        <tr><td class="key-cell">screen.width / height</td><td>螢幕實體解析度</td></tr>
+        <tr><td class="key-cell">devicePixelRatio</td><td>裝置像素比（判斷高解析螢幕）</td></tr>
+        <tr><td class="key-cell">documentElement.clientWidth</td><td>頁面可視寬高</td></tr>
+        <tr><td class="key-cell">window.self vs window.top</td><td>判斷是否在 iframe 內執行（fr 欄位）</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>偵測目的：</p>
+  <ul>
+    <li>判斷訪客為真人或爬蟲 / 安全分析工具</li>
+    <li>分流受害者至不同落地頁</li>
+    <li>規避自動化安全分析</li>
+  </ul>
+</div>
+
+<!-- S4 -->
+<div class="section">
+  <div class="section-title" id="s4">四、Token 與 Key 差異分析</div>
+
+  <div class="sub-title">4.1　fstu — 每 session 唯一訪客識別碼</div>
+  <p>三個網域的 fstu 值均不同，格式為 UUID v7：</p>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>網域</th><th>fstu 值</th></tr></thead>
+      <tbody>
+        <tr><td class="key-cell">zixbin.info 英明</td><td class="mono">019e1a3e-569a-7c71-a07c-00c21ee578f1</td></tr>
+        <tr><td class="key-cell">cuaeww.info 英明</td><td class="mono">019e1a3f-8caa-75c2-938c-ad5d521f2339</td></tr>
+        <tr><td class="key-cell">zixbin.info ptt</td><td class="mono">019e1a40-3bbf-7bef-bf45-36c9aae8a7e1</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="info-box">
+    <strong>UUID v7 說明</strong>
+    高位 48 bits 內嵌 Unix 毫秒時間戳，代表訪客抵達頁面的精確時刻。此欄位每個 session 獨立生成，不具跨 session 歸因能力，不作為身份識別依據使用。
+  </div>
+
+  <div class="sub-title">4.2　Publisher Key — 金流歸因核心（三網域完全相同）</div>
+  <p>以下為三個網域完全共用的固定識別碼，是最關鍵的跨網域歸因指紋：</p>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>欄位</th><th>數值</th></tr></thead>
+      <tbody>
+        <tr><td class="key-cell">Publisher Key（主）</td><td class="hi">6b147b6d3f3b8cd0bbd3191b3b1a8394</td></tr>
+        <tr><td class="key-cell">admpid（廣告管理路徑）</td><td class="mono">/uc6w0rekrs</td></tr>
+        <tr><td class="key-cell">hash</td><td class="mono">5018</td></tr>
+        <tr><td class="key-cell">C2 cookie server</td><td class="mono">protrafficinspector.com/stats</td></tr>
+        <tr><td class="key-cell">cookieName</td><td class="mono">uid_id2</td></tr>
+        <tr><td class="key-cell">偽造 refer</td><td class="mono">https://www.google.com/</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="warn-box">
+    <strong>⚠ 重要</strong>
+    Publisher Key <code>6b147b6d3f3b8cd0bbd3191b3b1a8394</code> 為 Monetag 廣告平台帳號層級唯一識別碼。三個網域完全共用此 Key，代表其廣告收益均匯入同一個 Monetag 變現帳戶。此為本案向 Monetag 提出 KYC 身份查詢及申請凍結廣告收益之主要書證。
+  </div>
+
+  <div class="sub-title">4.3　ps1 — 裝置指紋摘要（各頁面不同）</div>
+  <p>ps1 為 page-session fingerprint，每次訪問依裝置環境動態產生，三者不同屬正常：</p>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>網域</th><th>ps1 值</th></tr></thead>
+      <tbody>
+        <tr><td class="key-cell">zixbin.info 英明</td><td class="mono">f76ae14ea19f5d25fe7b1711218dbc07</td></tr>
+        <tr><td class="key-cell">cuaeww.info 英明</td><td class="mono">638a0fa193a2e6cb48d42b62b7d7daf7</td></tr>
+        <tr><td class="key-cell">zixbin.info ptt</td><td class="mono">135a7348042b9a9c71c46c10cd967f03</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- S5 -->
+<div class="section">
+  <div class="section-title" id="s5">五、運作原理</div>
+  <p>完整攻擊鏈流程如下：</p>
+  <ol class="steps">
+    <li>受害者透過 Google 搜尋觸發 SEO 汙染結果，點擊進入目標網域</li>
+    <li>頁面載入極簡 HTML，立即執行 JavaScript 導流腳本</li>
+    <li>JS 蒐集裝置資訊，背景送出至 C2（protrafficinspector.com/stats）取得 uuid cookie</li>
+    <li>TDS（流量分發系統）依裝置特徵及 uuid 判斷，決定導向目標</li>
+    <li>受害者被導向最終落地頁</li>
+  </ol>
+  <p>可能的落地頁類型：</p>
+  <ul>
+    <li>惡意軟體下載頁</li>
+    <li>偽防毒 / 勒索軟體誘騙頁</li>
+    <li>非法色情網站</li>
+    <li>詐騙交易頁</li>
+    <li>Affiliate 聯盟行銷落地頁</li>
+  </ul>
+</div>
+
+<!-- S6 -->
+<div class="section">
+  <div class="section-title" id="s6">六、鑑識推論</div>
+  <ol class="steps">
+    <li>三個頁面來自同一套程式模板，批次生成部署</li>
+    <li>由同一導流平台（Monetag SmartLink）統一管理，共用帳號</li>
+    <li>不同 token（fstu、ps1）用於後端流量識別與計費，不影響帳號歸因</li>
+    <li>網域本身僅是流量入口，真正控制核心位於後端 TDS 系統</li>
+    <li>Publisher Key 跨域共用，確認三個網域歸屬同一 JX 變現帳戶</li>
+  </ol>
+</div>
+
+<!-- S7 -->
+<div class="section">
+  <div class="section-title" id="s7">七、結論</div>
+  <p>本案技術特徵高度符合以下典型攻擊型態：</p>
+  <ul>
+    <li>SEO 汙染（Search Engine Poisoning）</li>
+    <li>TDS 流量導向（Traffic Distribution System）</li>
+    <li>惡意廣告聯盟變現（Malvertising / Affiliate Fraud）</li>
+    <li>Malware redirect chain</li>
+  </ul>
+</div>
+
+<!-- S8 -->
+<div class="section">
+  <div class="section-title" id="s8">八、金流指紋完整分析</div>
+
+  <div class="sub-title">8.1　主要金流 Key（KYC 歸因核心）</div>
+  <p>解碼三個 HTM 檔案的 JavaScript token payload，確認以下金流指紋三個網域完全一致：</p>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>欄位</th><th>數值</th></tr></thead>
+      <tbody>
+        <tr><td class="key-cell">Publisher Key</td><td class="hi">6b147b6d3f3b8cd0bbd3191b3b1a8394</td></tr>
+        <tr><td class="key-cell">admpid</td><td class="mono">/uc6w0rekrs</td></tr>
+        <tr><td class="key-cell">hash</td><td class="mono">5018</td></tr>
+        <tr><td class="key-cell">C2 cookie server</td><td class="mono">protrafficinspector.com/stats</td></tr>
+        <tr><td class="key-cell">cookieName</td><td class="mono">uid_id2</td></tr>
+        <tr><td class="key-cell">偽造 refer</td><td class="mono">https://www.google.com/</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>上述 Publisher Key 為 Monetag 廣告平台帳號識別碼，三個網域完全共用，法律行動依據：</p>
+  <ul>
+    <li>作為向 Monetag 提出正式法律請求（KYC 身份查詢）之主要書證</li>
+    <li>作為聲請凍結相關廣告收益帳戶之依據</li>
+    <li>提供 FBI / DOJ / FTC 跨境調查之技術歸因基礎</li>
+  </ul>
+
+  <div class="sub-title">8.2　新發現：第二組金流 Key（reverse urlPath 機制）</div>
+  <p>三個 HTM 檔案的 reverse urlPath 中，解碼出此前未曾出現的 key：</p>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>欄位</th><th>數值</th></tr></thead>
+      <tbody>
+        <tr><td class="key-cell">reverse key</td><td class="hi">10afaec35404ffd5edbad0131bb38ee6</td></tr>
+        <tr><td class="key-cell">submetric（廣告位 ID）</td><td class="mono">28656948</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="sub-sub-title">reverse urlPath 機制技術說明</div>
+  <p>此機制在 popunder 廣告觸發時運作，透過 <code>window.history.pushState</code> 在不導離頁面的情況下，將瀏覽器顯示的 URL 改寫為含有此 key 的路徑：</p>
+  <div class="code-block">/api/users?token=L3VjNncwcmVrcnM_...</div>
+  <ul>
+    <li>目的：讓廣告後端統計系統記錄本次流量事件並計費</li>
+    <li>同時規避使用者察覺實際導流行為</li>
+    <li>submetric（28656948）代表具體廣告版位或流量計費節點</li>
+  </ul>
+  <div class="warn-box">
+    <strong>⚠ 兩組 key 歸屬待查</strong>
+    若兩組 key 歸屬同一 Publisher 帳號 → 歸因更加確定。<br>
+    若歸屬不同帳號 → 可能揭露 JX 在 Monetag 平台上的多帳號結構。<br>
+    建議將第二組 key 附入 Monetag 法律請求補充說明中，一併追查。
+  </div>
+
+  <div class="sub-title">8.3　金流指紋對照摘要</div>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>指紋項目</th><th>數值</th><th>三網域共用</th></tr></thead>
+      <tbody>
+        <tr><td class="key-cell">主 Publisher Key</td><td class="hi">6b147b6d3f3b8cd0bbd3191b3b1a8394</td><td class="ok">✓ 完全共用</td></tr>
+        <tr><td class="key-cell">reverse urlPath key</td><td class="hi">10afaec35404ffd5edbad0131bb38ee6</td><td class="ok">✓ 完全共用</td></tr>
+        <tr><td class="key-cell">admpid</td><td class="mono">/uc6w0rekrs</td><td class="ok">✓ 完全共用</td></tr>
+        <tr><td class="key-cell">hash</td><td class="mono">5018</td><td class="ok">✓ 完全共用</td></tr>
+        <tr><td class="key-cell">submetric</td><td class="mono">28656948</td><td>reverse 專屬</td></tr>
+        <tr><td class="key-cell">fstu</td><td class="mono">UUID v7（各異）</td><td class="no">✗ 每 session 獨立</td></tr>
+        <tr><td class="key-cell">ps1</td><td class="mono">32 字元 hex（各異）</td><td class="no">✗ 每次動態生成</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- S9 -->
+<div class="section">
+  <div class="section-title" id="s9">九、st1 時間戳記鑑識說明</div>
+  <div class="warn-box">
+    <strong>⚠ 重要區分</strong>
+    st1 記錄的是搜證人員的瀏覽時間，不是 JX 的操作時間，兩者不應混淆。
+  </div>
+  <p>st1 欄位為奈秒級 Unix 時間戳，由 client-side JavaScript 在訪客載入頁面時即時生成，記錄搜證當下的瀏覽時刻。</p>
+
+  <div class="sub-title">9.1　搜證時間紀錄（UTC+8）</div>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>搜證檔案</th><th>搜證時間</th></tr></thead>
+      <tbody>
+        <tr><td class="key-cell">zixbin.info 英明.htm</td><td class="mono">2026-05-12 &nbsp;11:32:33</td></tr>
+        <tr><td class="key-cell">cuaeww.info 英明.htm</td><td class="mono">2026-05-12 &nbsp;11:33:52</td></tr>
+        <tr><td class="key-cell">zixbin.info ptt.htm</td><td class="mono">2026-05-12 &nbsp;11:34:37</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="sub-title">9.2　時間戳記之鑑識意義</div>
+  <ol class="steps">
+    <li>確認三個頁面於搜證當日（2026-05-12 上午 11:32–11:34）仍在線上活躍運行（live domain），可作為「頁面存活」之時間佐證。</li>
+    <li>fstu UUID v7 亦內嵌搜證當下的時間戳，兩項互相印證。</li>
+    <li>此時間與 JX 操作行為無關，不得作為 JX 批次自動化之時間指紋引用。</li>
+  </ol>
+  <div class="warn-box">
+    <strong>⚠ JX 操作時間指紋應引用</strong>
+    WHOIS 記錄中發現之 16:30–16:32 批次域名註冊時間（台灣時間）。<br>
+    請嚴格區分「搜證時間」與「JX 操作時間」，避免誤導審閱者。
+  </div>
+</div>
+
+</main>
+
+<footer>
+  <span>三個網域網頁程式之異同與運作原理分析報告　案號：111年度偵字第8075號</span>
+  <span class="tlp-badge">TLP:RED</span>
+</footer>
+
+</div>
+</body>
+</html>
