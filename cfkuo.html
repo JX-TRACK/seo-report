@@ -363,18 +363,26 @@
     body {
       overflow-y: auto;
       justify-content: flex-start;
-      padding: 8px 0;
-      gap: 8px;
+      padding: 4px 0;
+      gap: 4px;
       min-height: 100dvh;
     }
     .hint { font-size: 10px; margin: 0; }
     :root {
-      --h: calc(100dvh - 60px);
+      --h: calc(100dvh - 44px);
       --w: calc(var(--h) * 1.75);
     }
-    .scene {
-      flex-shrink: 0;
+    .scene { flex-shrink: 0; }
+    .front-qr {
+      justify-content: center;
+      padding: 0 10px 0 4px;
+      gap: 4px;
     }
+    .front-qr img { width: 52px; height: 52px; }
+    .front-qr span { font-size: 7px; }
+    .name-en { font-size: 24px; }
+    .phd-title { font-size: 10px; }
+    .email-addr { font-size: 11px; }
   }
 </style>
 </head>
@@ -397,7 +405,7 @@
     <circle cx="18" cy="29" r="1.5" fill="#b8975a"/>
     <line x1="13" y1="7" x2="23" y2="7" stroke="#b8975a" stroke-width="1.2" stroke-linecap="round"/>
   </svg>
-  <span style="font-family:'JetBrains Mono',monospace; font-size:10px; color:#b8975a; letter-spacing:.15em;">橫向效果更佳</span>
+  <span style="font-family:'JetBrains Mono',monospace; font-size:10px; color:#b8975a; letter-spacing:.1em; text-align:center; line-height:1.6;">橫向效果更佳<br><span style="font-size:9px; opacity:.7;">請開啟手機自動旋轉</span></span>
 </div>
 
 <div class="scene" id="scene" onclick="document.getElementById('card').classList.toggle('flipped')" role="button" aria-label="翻轉名片">
