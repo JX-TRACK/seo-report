@@ -2,7 +2,7 @@
 <html lang="zh-TW">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Kevin Kuo — 電子名片</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=Noto+Serif+TC:wght@300;400&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
 <style>
@@ -360,18 +360,45 @@
 
   /* ── 橫向模式 ── */
   @media (orientation: landscape) and (max-height: 500px) {
-    body { overflow: auto; }
+    body {
+      overflow-y: auto;
+      justify-content: flex-start;
+      padding: 8px 0;
+      gap: 8px;
+      min-height: 100dvh;
+    }
+    .hint { font-size: 10px; margin: 0; }
     :root {
-      --h: calc(100vh - 80px);
+      --h: calc(100dvh - 60px);
       --w: calc(var(--h) * 1.75);
     }
-    .hint { font-size: 10px; margin-bottom: 8px; }
+    .scene {
+      flex-shrink: 0;
+    }
   }
 </style>
 </head>
 <body>
 
-<p class="hint">點擊名片翻面 &nbsp;·&nbsp; tap to flip</p>
+<p class="hint" id="hint-text">點擊名片翻面 &nbsp;·&nbsp; tap to flip</p>
+
+<div id="rotate-hint" style="display:flex; flex-direction:column; align-items:center; gap:6px; opacity:.75;">
+  <svg id="rotate-icon" width="32" height="32" viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg">
+    <style>
+      #rotate-icon { animation: rotatePhone 2s ease-in-out infinite; }
+      @keyframes rotatePhone {
+        0%   { transform: rotate(0deg); }
+        40%  { transform: rotate(-90deg); }
+        60%  { transform: rotate(-90deg); }
+        100% { transform: rotate(0deg); }
+      }
+    </style>
+    <rect x="8" y="3" width="20" height="30" rx="3" stroke="#b8975a" stroke-width="1.8" fill="none"/>
+    <circle cx="18" cy="29" r="1.5" fill="#b8975a"/>
+    <line x1="13" y1="7" x2="23" y2="7" stroke="#b8975a" stroke-width="1.2" stroke-linecap="round"/>
+  </svg>
+  <span style="font-family:'JetBrains Mono',monospace; font-size:10px; color:#b8975a; letter-spacing:.15em;">橫向效果更佳</span>
+</div>
 
 <div class="scene" id="scene" onclick="document.getElementById('card').classList.toggle('flipped')" role="button" aria-label="翻轉名片">
   <div class="card" id="card">
@@ -440,13 +467,21 @@
 </body>
 <script>
   function checkOrientation() {
-    const hint = document.querySelector('.hint');
+    const hint = document.getElementById('hint-text');
+    const rotateHint = document.getElementById('rotate-hint');
     const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-    if (!isMobile) return;
+    if (!isMobile) {
+      rotateHint.style.display = 'none';
+      return;
+    }
     if (window.innerWidth > window.innerHeight) {
+      // 橫向
       hint.textContent = '橫向模式 · 點擊翻面';
+      rotateHint.style.display = 'none';
     } else {
-      hint.textContent = '點擊名片翻面 · tap to flip · 橫向效果更佳';
+      // 直向
+      hint.textContent = '點擊名片翻面 · tap to flip';
+      rotateHint.style.display = 'flex';
     }
   }
   window.addEventListener('resize', checkOrientation);
