@@ -116,7 +116,7 @@
   .name-en {
     font-family: 'Cormorant Garamond', serif;
     font-weight: 300;
-    font-size: 38px;
+    font-size: 30px;
     letter-spacing: .06em;
     color: var(--cream);
     line-height: 1;
@@ -129,6 +129,16 @@
     letter-spacing: .3em;
     margin-top: 4px;
     opacity: .85;
+  }
+
+  .phd-title {
+    font-family: 'Noto Serif TC', serif;
+    font-weight: 400;
+    font-size: 12px;
+    color: var(--cream);
+    letter-spacing: .12em;
+    margin-top: 3px;
+    opacity: .8;
   }
 
   .divider {
@@ -159,8 +169,8 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    padding: 0 20px 0 8px;
+    justify-content: flex-end;
+    padding: 0 20px 16px 8px;
     gap: 6px;
   }
   .front-qr img {
@@ -363,8 +373,10 @@
 
       <div class="front-body">
         <div class="front-top">
-          <div class="name-en">Kevin C. Kuo</div>
-          <div class="name-zh">郭</div>
+          <div class="name-en">Kevin C. Kuo<span style="font-family:'Noto Serif TC',serif; font-size:18px; color:var(--gold); letter-spacing:.15em; opacity:.9;">（郭）</span></div>
+          <div class="phd-title">博士候選人</div>
+          <div class="phd-title">NKUST（高科大）</div>
+          <div class="phd-title" style="letter-spacing:.04em; margin-top:6px;">Jade-Ans Internet Information Solutions</div>
           <div class="divider"></div>
           <div class="email-label">Email</div>
           <div class="email-addr">jadeans.colab@gmail.com</div>
@@ -390,13 +402,13 @@
         <div class="back-divider"></div>
         <div>
           <div class="url-label">Report</div>
-          <div class="url-val">jx-track.github.io/<wbr>seo-report/jx-delta.html</div>
+          <div class="url-val">jx-delta.pages.dev/<wbr>jx-delta</div>
         </div>
       </div>
 
             <div class="back-qrs">
         <div class="back-qr-item">
-          <img src="data:image/png;base64,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" alt="Report QR">
+          <img src="data:image/png;base64,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" alt="Report QR">
           <span>Report<br>QR</span>
         </div>
         <div class="back-qr-item">
