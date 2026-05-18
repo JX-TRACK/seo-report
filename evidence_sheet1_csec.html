@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>兒少性剝削條例違規頁面｜JADE-ANS</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;600&display=swap');
+
+  :root {
+    --red-dark: #7B0000;
+    --red: #8B0000;
+    --red-light: #B71C1C;
+    --red-pale: #FFEBEB;
+    --amber: #E65100;
+    --amber-pale: #FFF8E1;
+    --green: #1B5E20;
+    --green-pale: #E8F5E9;
+    --blue: #0D2B6B;
+    --blue-mid: #1F3864;
+    --blue-pale: #EBF3FB;
+    --gray: #F5F5F5;
+    --border: #DDDDDD;
+    --text: #1A1A1A;
+    --text-muted: #555555;
+    --mono: 'JetBrains Mono', monospace;
+    --sans: 'Noto Sans TC', sans-serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: var(--sans);
+    background: #F0EDE8;
+    color: var(--text);
+    padding: 32px 20px 60px;
+    min-height: 100vh;
+  }
+
+  .container {
+    max-width: 960px;
+    margin: 0 auto;
+  }
+
+  /* ── 頂部標題區 ── */
+  .header {
+    background: var(--red-dark);
+    border-radius: 4px 4px 0 0;
+    padding: 24px 28px 20px;
+    color: white;
+    position: relative;
+    overflow: hidden;
+  }
+  .header::before {
+    content: '';
+    position: absolute;
+    top: 0; right: 0; bottom: 0;
+    width: 6px;
+    background: repeating-linear-gradient(
+      135deg,
+      transparent 0px, transparent 6px,
+      rgba(255,255,255,0.12) 6px, rgba(255,255,255,0.12) 12px
+    );
+  }
+  .tlp-badge {
+    display: inline-block;
+    background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.3);
+    border-radius: 3px;
+    padding: 2px 8px;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 2px;
+    margin-bottom: 10px;
+  }
+  .header-title {
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 1.4;
+    margin-bottom: 4px;
+  }
+  .header-sub {
+    font-size: 12px;
+    opacity: 0.75;
+    font-family: var(--mono);
+  }
+
+  /* ── 說明橫幅 ── */
+  .info-bar {
+    background: var(--blue-mid);
+    color: white;
+    padding: 9px 28px;
+    font-size: 12px;
+    font-family: var(--mono);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .info-bar a {
+    color: #90CAF9;
+    text-decoration: none;
+  }
+  .info-bar a:hover { text-decoration: underline; }
+
+  /* ── 主表格容器 ── */
+  .table-wrap {
+    background: white;
+    border: 1px solid var(--border);
+    border-top: none;
+    overflow-x: auto;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13.5px;
+  }
+
+  thead tr {
+    background: var(--blue-mid);
+    color: white;
+  }
+  thead th {
+    padding: 11px 14px;
+    text-align: left;
+    font-weight: 700;
+    font-size: 12px;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+  }
+
+  tbody tr {
+    border-bottom: 1px solid var(--border);
+    transition: background 0.15s;
+  }
+  tbody tr:nth-child(odd) { background: #FAFAFA; }
+  tbody tr:nth-child(even) { background: white; }
+  tbody tr:hover { background: var(--blue-pale); }
+
+  td {
+    padding: 12px 14px;
+    vertical-align: top;
+    line-height: 1.6;
+  }
+
+  /* URL 欄 */
+  .td-url {
+    font-family: var(--mono);
+    font-size: 11.5px;
+    word-break: break-all;
+    min-width: 220px;
+  }
+  .td-url a {
+    color: var(--blue-mid);
+    text-decoration: none;
+    font-weight: 600;
+  }
+  .td-url a:hover { text-decoration: underline; color: var(--red); }
+
+  /* 違規類型欄 */
+  .td-type {
+    min-width: 180px;
+  }
+  .type-badge {
+    display: inline-block;
+    background: var(--red-pale);
+    color: var(--red);
+    border: 1px solid #FFCDD2;
+    border-radius: 3px;
+    padding: 2px 7px;
+    font-size: 11px;
+    font-weight: 700;
+    margin-bottom: 4px;
+    white-space: nowrap;
+  }
+  .type-desc {
+    font-size: 12px;
+    color: var(--text-muted);
+    line-height: 1.5;
+  }
+
+  /* 封存連結欄 */
+  .td-archive {
+    font-family: var(--mono);
+    font-size: 11.5px;
+    white-space: nowrap;
+  }
+  .td-archive a {
+    color: var(--green);
+    text-decoration: none;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .td-archive a::before {
+    content: '📦';
+    font-size: 11px;
+  }
+  .td-archive a:hover { text-decoration: underline; }
+
+  /* 日期欄 */
+  .td-date {
+    font-family: var(--mono);
+    font-size: 11.5px;
+    white-space: nowrap;
+    color: var(--text-muted);
+  }
+
+  /* 特殊列：廢棄網址 */
+  .row-defunct td { background: var(--amber-pale) !important; }
+  .row-defunct:hover td { background: #FFE0B2 !important; }
+
+  /* 特殊列：病毒驗證 */
+  .row-virus td { background: #FFF3E0 !important; }
+  .row-virus:hover td { background: #FFE0B2 !important; }
+
+  /* ── 底部說明區 ── */
+  .footer-panels {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-top: 12px;
+  }
+
+  .panel {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 14px 16px;
+  }
+  .panel-title {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: var(--blue-mid);
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .panel-body {
+    font-size: 12px;
+    color: var(--text-muted);
+    line-height: 1.7;
+    font-family: var(--mono);
+  }
+  .panel-body a {
+    color: var(--blue-mid);
+    text-decoration: none;
+  }
+  .panel-body a:hover { text-decoration: underline; }
+
+  /* 病毒驗證特殊面板 */
+  .panel-virus {
+    background: #FFF3E0;
+    border-color: #FFCC02;
+    grid-column: 1 / -1;
+  }
+  .virus-score {
+    display: inline-block;
+    background: var(--red);
+    color: white;
+    font-family: var(--mono);
+    font-size: 20px;
+    font-weight: 700;
+    padding: 4px 12px;
+    border-radius: 4px;
+    margin-right: 10px;
+    vertical-align: middle;
+  }
+  .virus-details {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 6px;
+    margin-top: 10px;
+  }
+  .virus-tag {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    padding: 4px 8px;
+    font-size: 11px;
+    font-family: var(--mono);
+    text-align: center;
+  }
+  .virus-tag.malicious { border-color: #FFCDD2; background: var(--red-pale); color: var(--red); }
+  .virus-tag.phishing { border-color: #FFE0B2; background: #FFF3E0; color: var(--amber); }
+  .virus-tag.malware { border-color: #F8BBD0; background: #FCE4EC; color: #880E4F; }
+
+  /* 案件資訊 */
+  .case-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--gray);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 10px 16px;
+    margin-top: 12px;
+    font-size: 11.5px;
+    font-family: var(--mono);
+    color: var(--text-muted);
+  }
+  .case-bar strong { color: var(--text); }
+
+  @media (max-width: 640px) {
+    .footer-panels { grid-template-columns: 1fr; }
+    .virus-details { grid-template-columns: repeat(2, 1fr); }
+    .case-bar { flex-direction: column; gap: 6px; align-items: flex-start; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- 標題 -->
+  <div class="header">
+    <div class="tlp-badge">TLP:RED</div>
+    <div class="header-title">兒少性剝削條例違規頁面</div>
+    <div class="header-sub">JADE-ANS 翡翠網路資訊解決方案｜案件 111年度偵字第8075號</div>
+  </div>
+
+  <!-- 說明欄 -->
+  <div class="info-bar">
+    <span>📦 網址封存服務：</span>
+    <a href="https://archive.ph" target="_blank" rel="noopener">archive.ph</a>
+    <span style="opacity:0.5">｜</span>
+    <span>查詢現有封存：archive.ph/https://目標URL</span>
+    <span style="opacity:0.5">｜</span>
+    <span>新增封存：貼入URL後按 save</span>
+  </div>
+
+  <!-- 主表格 -->
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th style="width:34px">#</th>
+          <th>原始 URL</th>
+          <th>違規類型</th>
+          <th>archive.ph 封存連結</th>
+          <th>封存日期</th>
+        </tr>
+      </thead>
+      <tbody>
+
+        <!-- 列1 -->
+        <tr>
+          <td style="text-align:center;font-family:var(--mono);font-size:12px;color:var(--text-muted)">1</td>
+          <td class="td-url">
+            <a href="https://seogoogleadsense.pixnet.net/blog/posts/7078451558" target="_blank" rel="noopener">
+              seogoogleadsense.pixnet.net<br>/blog/posts/7078451558
+            </a>
+          </td>
+          <td class="td-type">
+            <div class="type-badge">兒少性剝削防制條例</div>
+            <div class="type-desc">未成年性行為描述／傳播</div>
+          </td>
+          <td class="td-archive">
+            <a href="https://archive.ph/WUJtt" target="_blank" rel="noopener">archive.ph/WUJtt</a>
+          </td>
+          <td class="td-date">2026-05-18</td>
+        </tr>
+
+        <!-- 列2 -->
+        <tr>
+          <td style="text-align:center;font-family:var(--mono);font-size:12px;color:var(--text-muted)">2</td>
+          <td class="td-url">
+            <a href="https://harukainusa.pixnet.net/blog/posts/1029273124" target="_blank" rel="noopener">
+              harukainusa.pixnet.net<br>/blog/posts/1029273124
+            </a>
+          </td>
+          <td class="td-type">
+            <div class="type-badge">兒少性剝削防制條例</div>
+            <div class="type-desc">未成年性行為描述／傳播<br>＋ Vimeo「Minor Sex」嵌入</div>
+          </td>
+          <td class="td-archive">
+            <a href="https://archive.ph/3SR0S" target="_blank" rel="noopener">archive.ph/3SR0S</a>
+          </td>
+          <td class="td-date">2026-05-18</td>
+        </tr>
+
+        <!-- 列3：廢棄網址 -->
+        <tr class="row-defunct">
+          <td style="text-align:center;font-family:var(--mono);font-size:12px;color:var(--text-muted)">3</td>
+          <td class="td-url">
+            <a href="http://tw.nextmedia.com/applenews/article/art_id/32946942/IssueID/20101109" target="_blank" rel="noopener">
+              tw.nextmedia.com<br>/applenews/…/32946942
+            </a>
+            <div style="margin-top:4px;font-size:10.5px;color:var(--amber);font-weight:600">⚠ 廢棄網址</div>
+          </td>
+          <td class="td-type">
+            <div class="type-badge" style="background:#FFF3E0;color:var(--amber);border-color:#FFCC80">廢棄網址落地頁</div>
+            <div class="type-desc">壹週刊廢棄新聞連結<br>現落地至 onlineresultsfinder.com</div>
+          </td>
+          <td class="td-archive">
+            <a href="https://archive.ph/fGh76" target="_blank" rel="noopener">archive.ph/fGh76</a>
+          </td>
+          <td class="td-date">2026-05-18</td>
+        </tr>
+
+        <!-- 列4：病毒落地頁 -->
+        <tr class="row-virus">
+          <td style="text-align:center;font-family:var(--mono);font-size:12px;color:var(--text-muted)">4</td>
+          <td class="td-url">
+            <span style="font-family:var(--mono);font-size:11.5px;color:var(--red);font-weight:600">
+              onlineresultsfinder.com
+            </span>
+            <div style="margin-top:4px;font-size:10.5px;color:var(--red);font-weight:600">🦠 惡意網域</div>
+          </td>
+          <td class="td-type">
+            <div class="type-badge" style="background:#FCE4EC;color:#880E4F;border-color:#F48FB1">惡意落地頁</div>
+            <div class="type-desc">含病毒／惡意程式<br>VirusTotal 11/93 引擎判定惡意</div>
+          </td>
+          <td class="td-archive">
+            <a href="https://archive.ph/OAvLj" target="_blank" rel="noopener">archive.ph/OAvLj</a>
+          </td>
+          <td class="td-date">2026-05-18</td>
+        </tr>
+
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 底部說明面板 -->
+  <div class="footer-panels">
+
+    <!-- 病毒驗證面板 -->
+    <div class="panel panel-virus">
+      <div class="panel-title">🦠 病毒網址驗證｜VirusTotal 掃描結果</div>
+      <div>
+        <span class="virus-score">11 / 93</span>
+        <span style="font-size:13px;font-weight:700;color:var(--red)">家資安引擎判定為惡意</span>
+        <span style="font-size:12px;color:var(--text-muted);margin-left:8px">｜掃描日期：2026-05-18</span>
+      </div>
+      <div class="virus-details">
+        <div class="virus-tag malicious">ADMINUSLabs<br>Malicious</div>
+        <div class="virus-tag phishing">alphaMountain<br>Phishing</div>
+        <div class="virus-tag malicious">Chong Lua Dao<br>Malicious</div>
+        <div class="virus-tag malicious">CyRadar<br>Malicious</div>
+        <div class="virus-tag malicious">Forcepoint<br>Malicious</div>
+        <div class="virus-tag phishing">LevelBlue<br>Phishing</div>
+        <div class="virus-tag malicious">Lionic<br>Malicious</div>
+        <div class="virus-tag malware">MalwareURL<br>Malware</div>
+        <div class="virus-tag phishing">Rising<br>Phishing</div>
+        <div class="virus-tag malware">VIPRE<br>Malware</div>
+        <div class="virus-tag malicious">Webroot<br>Malicious</div>
+        <div class="virus-tag phishing" style="border-color:#FFE0B2;background:#FFF8E1;color:#5D4037">ESET<br>Suspicious</div>
+      </div>
+      <div style="margin-top:8px;font-size:11.5px;color:var(--text-muted);font-family:var(--mono)">
+        VirusTotal 封存：<a href="https://archive.ph/OAvLj" target="_blank" rel="noopener">archive.ph/OAvLj</a>
+        ｜完整報告：<a href="https://www.virustotal.com/gui/url/ff544634e96a01caa77e10f4358796d88829fc06dd02ff282aea0f15bc223575" target="_blank" rel="noopener">VirusTotal - URL</a>
+      </div>
+    </div>
+
+    <!-- 查詢說明 -->
+    <div class="panel">
+      <div class="panel-title">📦 封存查詢方式</div>
+      <div class="panel-body">
+        查詢現有封存：<br>
+        <code>archive.ph/https://目標URL</code><br><br>
+        最新版本快捷：<br>
+        <code>archive.ph/newest/https://目標URL</code><br><br>
+        新增封存：前往 <a href="https://archive.ph" target="_blank" rel="noopener">archive.ph</a> 貼入 URL 後按 save
+      </div>
+    </div>
+
+    <!-- PIXNET 申訴說明 -->
+    <div class="panel">
+      <div class="panel-title">⚖️ 申訴／舉報管道</div>
+      <div class="panel-body">
+        iWIN 申訴：<a href="https://i.win.org.tw" target="_blank" rel="noopener">i.win.org.tw</a><br>
+        PIXNET 檢舉：service@pixnet.tw<br>
+        刑事舉報：臺灣高雄地方檢察署<br>
+        舉報人：CHUAN-FA KUO（郭傳發）<br>
+        聯絡：jadeans.colab@gmail.com
+      </div>
+    </div>
+
+  </div>
+
+  <!-- 案件資訊列 -->
+  <div class="case-bar">
+    <span><strong>案件</strong>：111年度偵字第8075號</span>
+    <span><strong>機構</strong>：JADE-ANS 翡翠網路資訊解決方案</span>
+    <span><strong>更新</strong>：2026-05-18</span>
+    <span style="color:var(--red);font-weight:700">TLP:RED — 僅供案件調查人員使用</span>
+  </div>
+
+</div>
+</body>
+</html>
