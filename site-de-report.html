@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>site:de 國中 — JX 手動比對完整報告</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;600;700&family=JetBrains+Mono:wght@400;600&display=swap');
+
+  :root {
+    --bg: #f0f2f5;
+    --surface: #ffffff;
+    --surface2: #e8eaed;
+    --border: #c8cdd8;
+    --accent: #e8a020;
+    --accent2: #c0392b;
+    --accent3: #27ae60;
+    --text: #1a1d27;
+    --text2: #555e7a;
+    --child-bg: #fde8e8;
+    --child-border: #c0392b;
+    --miss-bg: #fff8e6;
+    --miss-border: #e8a020;
+    --ok-bg: #eafaf1;
+    --ok-border: #27ae60;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Noto Sans TC', sans-serif;
+    font-size: 13px;
+    min-height: 100vh;
+  }
+
+  header {
+    background: linear-gradient(135deg, #2c3e6b 0%, #1a2545 100%); color: #ffffff;
+    border-bottom: 2px solid var(--accent);
+    padding: 20px 32px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .badge {
+    background: var(--accent2);
+    color: white;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    padding: 3px 10px;
+    border-radius: 3px;
+    letter-spacing: 0.5px;
+  }
+
+  h1 {
+    font-size: 18px;
+    font-weight: 700;
+    color: #ffffff;
+    letter-spacing: 0.3px;
+  }
+
+  .subtitle {
+    font-size: 12px;
+    color: #b8c8e8;
+    margin-top: 3px;
+  }
+
+  .meta {
+    margin-left: auto;
+    text-align: right;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: #b8c8e8;
+    line-height: 1.8;
+  }
+
+  .tabs {
+    display: flex;
+    gap: 2px;
+    padding: 16px 32px 0;
+    background: var(--bg);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .tab {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-bottom: none;
+    color: var(--text2);
+    padding: 8px 20px;
+    cursor: pointer;
+    font-family: 'Noto Sans TC', sans-serif;
+    font-size: 13px;
+    border-radius: 6px 6px 0 0;
+    transition: all 0.2s;
+  }
+
+  .tab:hover { background: var(--surface2); color: var(--text); }
+  .tab.active {
+    background: #ffffff;
+    color: #f0c060;
+    border-color: #f0c060;
+    font-weight: 600;
+  }
+
+  .panel { display: none; padding: 24px 32px; }
+  .panel.show { display: block; }
+
+  .legend {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    color: var(--text2);
+  }
+
+  .legend-dot {
+    width: 12px; height: 12px;
+    border-radius: 2px;
+    border-width: 1px;
+    border-style: solid;
+  }
+
+  .dot-ok { background: var(--ok-bg); border-color: var(--ok-border); }
+  .dot-miss { background: var(--miss-bg); border-color: var(--miss-border); }
+  .dot-child { background: var(--child-bg); border-color: var(--child-border); }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12.5px;
+  }
+
+  thead tr {
+    background: #2c3e6b;
+    border-bottom: 2px solid var(--accent);
+  }
+
+  th {
+    padding: 10px 12px;
+    text-align: left;
+    font-weight: 600;
+    color: #f0c060;
+    font-size: 12px;
+    letter-spacing: 0.3px;
+    white-space: nowrap;
+  }
+
+  td {
+    padding: 8px 12px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+    line-height: 1.5;
+  }
+
+  tr:hover td { background: var(--surface); }
+
+  .row-ok td { background: var(--ok-bg); border-left: 3px solid var(--ok-border); }
+  .row-ok:hover td { filter: brightness(1.1); }
+  .row-miss td { background: var(--miss-bg); border-left: 3px solid var(--miss-border); }
+  .row-miss:hover td { filter: brightness(1.1); }
+  .row-child td { background: var(--child-bg); border-left: 3px solid var(--child-border); }
+  .row-child:hover td { filter: brightness(1.1); }
+
+  a {
+    color: #5b9bd5;
+    text-decoration: none;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11.5px;
+  }
+  a:hover { color: #f0c060; text-decoration: underline; }
+
+  .count {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--text2);
+    margin-bottom: 12px;
+  }
+
+  footer {
+    text-align: center;
+    padding: 20px;
+    color: var(--text2);
+    font-size: 11px;
+    border-top: 1px solid var(--border);
+    margin-top: 40px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+</head>
+<body>
+
+<header>
+  <div>
+    <div class="badge">TLP:RED</div>
+  </div>
+  <div>
+    <h1>site:de 國中 — JX 手動比對完整報告</h1>
+    <div class="subtitle">案件：111年度偵字第8075號 ｜ JADE-ANS 翡翠網路資訊解決方案</div>
+  </div>
+
+  <div style="margin-left:auto; display:flex; flex-direction:column; align-items:center; gap:6px;">
+    <div id="qrcode" style="background:#fff; padding:6px; border-radius:6px;"></div>
+    <div style="font-family:'JetBrains Mono',monospace; font-size:9px; color:#b8c8e8; text-align:center;">掃描開啟報告</div>
+  </div>
+  <div class="meta" style="margin-left:16px;">
+
+    分析日期：2026-05-28<br>
+    JX .de 域名：3 個<br>
+    手動比對：49 筆
+  </div>
+</header>
+
+<div class="tabs">
+<button class="tab active" onclick="switchTab(0)">📋 手動比對_全部</button>
+<button class="tab " onclick="switchTab(1)">🚨 ⚠️兒少性剝削</button>
+<button class="tab " onclick="switchTab(2)">🌐 域名彙整</button>
+<button class="tab " onclick="switchTab(3)">📊 Summary</button>
+
+</div>
+
+<div id="panels">
+  <div class="panel show" id="panel-0">
+    <div class="legend">
+      <div class="legend-item"><div class="legend-dot dot-ok"></div>✅ 程式與手動皆有</div>
+      <div class="legend-item"><div class="legend-dot dot-miss"></div>❌ 程式漏掉（僅手動）</div>
+      <div class="legend-item"><div class="legend-dot dot-child"></div>⚠️ 兒少性剝削</div>
+    </div>
+    <div class="count">共 49 筆 | 點擊 Google驗證 欄可直接搜尋</div>
+    <table>
+      <thead>['頁次', 'TLD', '網域', '標題', '⚠️兒少', 'Google驗證']</thead>
+    </table>
+  </div>
+</div>
+
+<script>
+const data = {"手動比對_全部": {"headers": ["頁次", "TLD", "網域", "標題", "⚠️兒少", "Google驗證"], "rows": [[{"value": "2", "hyperlink": null}, {"value": ".de", "hyperlink": null}, {"value": "dlgnzr.de", "hyperlink": null}, {"value": "Tg國中外流. 國中考卷題目驚見粗鄙性暗示", "hyperlink": null}, {"value": "", "hyperlink": null}, {"value": "site:dlgnzr.de 國中", "hyperlink": "https://www.google.com/search?q=site%3Adlgnzr.de%20%E5%9C%8B%E4%B8%AD"}], [{"value": "2", "hyperlink": null}, {"value": ".de", "hyperlink": null}, {"value": "dlgnzr.de", "hyperlink": null}, {"value": "國中女生外流影片", "hyperlink": null}, {"value": "", "hyperlink": null}, {"value": "site:dlgnzr.de 國中", "hyperlink": "https://www.google.com/search?q=site%3Adlgnzr.de%20%E5%9C%8B%E4%B8%AD"}], [{"value": "3", "hyperlink": null}, {"value": ".de", "hyperlink": null}, {"value": "dlgnzr.de", "hyperlink": null}, {"value": "板橋國中好嗎", "hyperlink": null}, {"value": "", "hyperlink": null}, {"value": "site:dlgnzr.de 國中", "hyperlink": "https://www.google.com/search?q=site%3Adlgnzr.de%20%E5%9C%8B%E4%B8%AD"}], [{"value": "3", "hyperlink": null}, {"value": ".de", "hyperlink": null}, {"value": "dlgnzr.de", "hyperlink": null}, {"value": "中正國中新生名單113", "hyperlink": null}, {"value": "", "hyperlink": null}, {"value": "site:dlgnzr.de 國中", "hyperlink": "https://www.google.com/search?q=site%3Adlgnzr.de%20%E5%9C%8B%E4%B8%AD"}], [{"value": "3", "hyperlink": null}, {"value": ".de", "hyperlink": null}, {"value": "dlgnzr.de", "hyperlink": null}, {"value": "桃園國中畢業紀念冊查詢", "hyperlink": null}, {"value": "", "hyperlink": null}, {"value": "site:dlgnzr.de 國中", "hyperlink": "https://www.google.com/search?q=site%3Adlgnzr.de%20%E5%9C%8B%E4%B8%AD"}], [{"value": "4", "hyperlink": null}, {"value": ".de", "hyperlink": null}, {"value": "dlgnzr.de", "hyperlink": null}, {"value": "三峽國中114新生編班", "hyperlink": null}, {"value": "", "hyperlink": null}, {"value": "site:dlgnzr.de 國中", "hyperlink": "https://www.google.com/search?q=site%3Adlgnzr.de%20%E5%9C%8B%E4%B8%AD"}], [{"value": "4", "hyperlink": null}, {"value": ".de", "hyperlink": null}, {"value": "dlgnzr.de", "hyperlink": null}, {"value": "金華國中考古題113", "hyperlink": null}, {"value": "", "hyperlink": null}, {"value": "site:dlgnzr.de 國中", "hyperlink": "https://www.google.com/search?q=site%3Adlgnzr.de%20%E5%9C%8B%E4%B8%AD"}], [{"value": "5", "hyperlink": null}, {"value": ".de", "hyperlink": null}, {"value": "dlgnzr.de", "hyperlink": null}, {"value": "林口國中考古題", "hyperlink": null}, {"value": "", "hyperlink": null}, {"value": "site:dlgnzr.de 國中", "hyperlink": "https://www.google.com/search?q=site%3Adlgnzr.de%20%E5%9C%8B%E4%B8%AD"}], [{"value": "5", "hyperlink": null}, {"value": ".de", "hyperlink": null}, {"value": "dlgnzr.de", "hyperlink": null}, {"value": "居仁國中會考榜單", "hyperlink": null}, {"value": "", "hyperlink": null}, {"value": "site:dlgnzr.de 國中", "hyperlink": "https://www.google.com/search?q=site%3Adlgnzr.de%20%E5%9C%8B%E4%B8%AD"}], [{"value": "5", "hyperlink": null}, {"value": ".de", "hyperlink": null}, {"value": "dlgnzr.de", "hyperlink": null}, {"value": "金華國中行事曆114第二學期", "hyperlink": null}, {"value": "", "hyperlink": null}, {"value": "site:dlgnzr.de 國中", "hyperlink": "https://www.google.com/search?q=site%3Adlgnzr.de%20%E5%9C%8B%E4%B8%AD"}], [{"value": "5", "hyperlink": null}, {"value": ".de", "hyperlink": null}, {"value": "dlgnzr.de", "hyperlink": null}, {"value": "永和卓威文理補習班", "hyperlink": null}, {"value": "", "hyperlink": null}, {"value": "site:dlgnzr.de 國中", "hyperlink": "https://www.google.com/search?q=site%3Adlgnzr.de%20%E5%9C%8B%E4%B8%AD"}], [{"value": "5", "hyperlink": null}, {"value": ".de", "hyperlink": null}, {"value": "dlgnzr.de", "hyperlink": null}, {"value": "鹽埔國中霸凌外流", "hyperlink": null}, {"value": "", "hyperlink": null}, {"value": "site:dlgnzr.de 國中", "hyperlink": "https://www.google.com/search?q=site%3Adlgnzr.de%20%E5%9C%8B%E4%B8%AD"}], [{"value": "6", "hyperlink": null}, {"value": ".de", "hyperlink": null}, {"value": "dlgnzr.de", "hyperlink": null}, {"value": "福營國中升學榜單", "hyperlink": null}, {"value": "", "hyperlink": null}, {"value": "site:dlgnzr.de 國中", "hyperlink": "https://www.google.com/search?q=site%3Adlgnzr.de%20%E5%9C%8B%E4%B8%AD"}], [{"value": "6", "hyperlink": null}, {"value": ".de", "hyperlink": null}, {"value": "dlgnzr.de", "hyperlink": null}, {"value": "江翠國中體育班招生", "hyperlink": null}, {"value": "", "hyperlink": null}, {"value": "site:dlgnzr.de 國中", "hyperlink": "https://www.google.com/search?q=site%3Adlgnzr.de%20%E5%9C%8B%E4%B8%AD"}], [{"value": "6", "hyperlink": null}, {"value": ".de", "hyperlink": null}, {"value": "dlgnzr.de", "hyperlink": null}, {"value": "國中外流tg", "hyperlink": null}, {"value": "", "hyperlink": null}, {"value": "site:dlgnzr.de 國中", "hyperlink": "https://www.google.com/search?q=site%3Adlgnzr.de%20%E5%9C%8B%E4%B8%AD"}], [{"value": "6", "hyperlink": null}, {"value": ".de", "hyperlink": null}, {"value": "dlgnzr.de", "hyperlink": null}, {"value": "新園國中畢業紀念冊", "hyperlink": null}, {"value": "", "hyperlink": null}, {"value": "site:dlgnzr.de 國中", "hyperlink": "https://www.google.com/search?q=site%3Adlgnzr.de%20%E5%9C%8B%E4%B8%AD"}], [{"value": "6", "hyperlink": null}, {"value": ".de", "hyperlink": null}, {"value": "dlgnzr.de", "hyperlink": null}, {"value": "O南國中潘佳o打炮自拍公開", "hyperlink": null}, {"value": "⚠️", "hyperlink": null}, {"value": "site:dlgnzr.de 國中", "hyperlink": "https://www.google.com/search?q=site%3Adlgnzr.de%20%E5%9C%8B%E4%B8%AD"}], [{"value": "7", "hyperlink": null}, {"value": ".de", "hyperlink": null}, {"value": "dlgnzr.de", "hyperlink": null}, {"value": "木柵國中行事曆114", "hyperlink": null}, {"value": "", "hyperlink": null}, {"value": "site:dlgnzr.de 國中", "hyperlink": "https://www.google.com/search?q=site%3Adlgnzr.de%20%E5%9C%8B%E4%B8%AD"}], [{"value": "7", "hyperlink": null}, {"value": ".de", "hyperlink": null}, {"value": "dlgnzr.de", "hyperlink": null}, {"value": "秀峰國中新生名單", "hyperlink": null}, {"value": "", "hyperlink": null}, {"value": "site:dlgnzr.de 國中", "hyperlink": "https://www.google.com/search?q=site%3Adlgnzr.de%20%E5%9C%8B%E4%B8%AD"}], [{"value": "7", "hyperlink": null}, {"value": ".de", "hyperlink": null}, {"value": "dlgnzr.de", "hyperlink": null}, {"value": "新北市115國中校長遴選結果第一階段", "hyperlink": null}, {"value": "", "hyperlink": null}, {"value": "site:dlgnzr.de 國中", "hyperlink": "https://www.google.com/search?q=site%3Adlgnzr.de%20%E5%9C%8B%E4%B8%AD"}], [{"value": "7", "hyperlink": null}, {"value": ".de", "hyperlink": null}, {"value": "dlgnzr.de", "hyperlink": null}, {"value": "國中生打炮外流", "hyperlink": null}, {"value": "⚠️", "hyperlink": null}, {"value": "site:dlgnzr.de 國中", "hyperlink": "https://www.google.com/search?q=site%3Adlgnzr.de%20%E5%9C%8B%E4%B8%AD"}], [{"value": "7", "hyperlink": null}, {"value": ".de", "hyperlink": null}, {"value": "dlgnzr.de", "hyperlink": null}, {"value": "敦化國中段考題庫", "hyperlink": null}, {"value": "", "hyperlink": null}, {"value": "site:dlgnzr.de 國中", "hyperlink": "https://www.google.com/search?q=site%3Adlgnzr.de%20%E5%9C%8B%E4%B8%AD"}], [{"value": "7", "hyperlink": null}, {"value": ".de", "hyperlink": null}, {"value": "dlgnzr.de", "hyperlink": null}, {"value": "金華國中體育班114錄取名單", "hyperlink": null}, {"value": "", "hyperlink": null}, {"value": "site:dlgnzr.de 國中", "hyperlink": "https://www.google.com/search?q=site%3Adlgnzr.de%20%E5%9C%8B%E4%B8%AD"}], [{"value": "8", "hyperlink": null}, {"value": ".de", "hyperlink": null}, {"value": "dlgnzr.de", "hyperlink": null}, {"value": "二重國中棒球隊錄取名單", "hyperlink": null}, {"value": "", "hyperlink": null}, {"value": "site:dlgnzr.de 國中", "hyperlink": "https://www.google.com/search?q=site%3Adlgnzr.de%20%E5%9C%8B%E4%B8%AD"}], [{"value": "1", "hyperlink": null}, {"value": ".de", "hyperlink": null}, {"value": "nsjeqs.de", "hyperlink": null}, {"value": "鹽埔國中霸凌外流. 國中生疑遭霸凌餵毒嬤", "hyperlink": null}, {"value": "", "hyperlink": null}, {"value": "site:nsjeqs.de 國中", "hyperlink": "https://www.google.com/search?q=site%3Ansjeqs.de%20%E5%9C%8B%E4%B8%AD"}], [{"value": "2", "hyperlink": null}, {"value": ".de", "hyperlink": null}, {"value": "nsjeqs.de", "hyperlink": null}, {"value": "鹽埔國中霸凌外流", "hyperlink": null}, {"value": "", "hyperlink": null}, {"value": "site:nsjeqs.de 國中", "hyperlink": "https://www.google.com/search?q=site%3Ansjeqs.de%20%E5%9C%8B%E4%B8%AD"}], [{"value": "2", "hyperlink": null}, {"value": ".de", "hyperlink": null}, {"value": "nsjeqs.de", "hyperlink": null}, {"value": "鹽埔國中打架脫衣", "hyperlink": null}, {"value": "⚠️", "hyperlink": null}, {"value": "site:nsjeqs.de 國中", "hyperlink": "https://www.google.com/search?q=site%3Ansjeqs.de%20%E5%9C%8B%E4%B8%AD"}], [{"value": "3", "hyperlink": null}, {"value": ".de", "hyperlink": null}, {"value": "nsjeqs.de", "hyperlink": null}, {"value": "鹽埔國中女生霸凌事件的影片", "hyperlink": null}, {"value": "", "hyperlink": null}, {"value": "site:nsjeqs.de 國中", "hyperlink": "https://www.google.com/search?q=site%3Ansjeqs.de%20%E5%9C%8B%E4%B8%AD"}], [{"value": "3", "hyperlink": null}, {"value": ".de", "hyperlink": null}, {"value": "nsjeqs.de", "hyperlink": null}, {"value": "江翠國中陳禹彤外流", "hyperlink": null}, {"value": "", "hyperlink": null}, {"value": "site:nsjeqs.de 國中", "hyperlink": "https://www.google.com/search?q=site%3Ansjeqs.de%20%E5%9C%8B%E4%B8%AD"}], [{"value": "3", "hyperlink": null}, {"value": ".de", "hyperlink": null}, {"value": "nsjeqs.de", "hyperlink": null}, {"value": "中正國中新生名單113", "hyperlink": null}, {"value": "", "hyperlink": null}, {"value": "site:nsjeqs.de 國中", "hyperlink": "https://www.google.com/search?q=site%3Ansjeqs.de%20%E5%9C%8B%E4%B8%AD"}], [{"value": "3", "hyperlink": null}, {"value": ".de", "hyperlink": null}, {"value": "nsjeqs.de", "hyperlink": null}, {"value": "國中生打炮影片", "hyperlink": null}, {"value": "⚠️", "hyperlink": null}, {"value": "site:nsjeqs.de 國中", "hyperlink": "https://www.google.com/search?q=site%3Ansjeqs.de%20%E5%9C%8B%E4%B8%AD"}], [{"value": "4", "hyperlink": null}, {"value": ".de", "hyperlink": null}, {"value": "nsjeqs.de", "hyperlink": null}, {"value": "福和國中新生編班113", "hyperlink": null}, {"value": "", "hyperlink": null}, {"value": "site:nsjeqs.de 國中", "hyperlink": "https://www.google.com/search?q=site%3Ansjeqs.de%20%E5%9C%8B%E4%B8%AD"}], [{"value": "4", "hyperlink": null}, {"value": ".de", "hyperlink": null}, {"value": "nsjeqs.de", "hyperlink": null}, {"value": "國中生物複習講義pdf", "hyperlink": null}, {"value": "", "hyperlink": null}, {"value": "site:nsjeqs.de 國中", "hyperlink": "https://www.google.com/search?q=site%3Ansjeqs.de%20%E5%9C%8B%E4%B8%AD"}], [{"value": "4", "hyperlink": null}, {"value": ".de", "hyperlink": null}, {"value": "nsjeqs.de", "hyperlink": null}, {"value": "西螺國中體育班榜單", "hyperlink": null}, {"value": "", "hyperlink": null}, {"value": "site:nsjeqs.de 國中", "hyperlink": "https://www.google.com/search?q=site%3Ansjeqs.de%20%E5%9C%8B%E4%B8%AD"}], [{"value": "4", "hyperlink": null}, {"value": ".de", "hyperlink": null}, {"value": "nsjeqs.de", "hyperlink": null}, {"value": "台中國小升國中數理資優班考古題下載", "hyperlink": null}, {"value": "", "hyperlink": null}, {"value": "site:nsjeqs.de 國中", "hyperlink": "https://www.google.com/search?q=site%3Ansjeqs.de%20%E5%9C%8B%E4%B8%AD"}], [{"value": "5", "hyperlink": null}, {"value": ".de", "hyperlink": null}, {"value": "nsjeqs.de", "hyperlink": null}, {"value": "福豐國中行事曆", "hyperlink": null}, {"value": "", "hyperlink": null}, {"value": "site:nsjeqs.de 國中", "hyperlink": "https://www.google.com/search?q=site%3Ansjeqs.de%20%E5%9C%8B%E4%B8%AD"}], [{"value": "5", "hyperlink": null}, {"value": ".de", "hyperlink": null}, {"value": "nsjeqs.de", "hyperlink": null}, {"value": "安順國中課表查詢", "hyperlink": null}, {"value": "", "hyperlink": null}, {"value": "site:nsjeqs.de 國中", "hyperlink": "https://www.google.com/search?q=site%3Ansjeqs.de%20%E5%9C%8B%E4%B8%AD"}], [{"value": "5", "hyperlink": null}, {"value": ".de", "hyperlink": null}, {"value": "nsjeqs.de", "hyperlink": null}, {"value": "Tg國中外流", "hyperlink": null}, {"value": "", "hyperlink": null}, {"value": "site:nsjeqs.de 國中", "hyperlink": "https://www.google.com/search?q=site%3Ansjeqs.de%20%E5%9C%8B%E4%B8%AD"}], [{"value": "5", "hyperlink": null}, {"value": ".de", "hyperlink": null}, {"value": "nsjeqs.de", "hyperlink": null}, {"value": "福山國中段考成績查詢", "hyperlink": null}, {"value": "", "hyperlink": null}, {"value": "site:nsjeqs.de 國中", "hyperlink": "https://www.google.com/search?q=site%3Ansjeqs.de%20%E5%9C%8B%E4%B8%AD"}], [{"value": "6", "hyperlink": null}, {"value": ".de", "hyperlink": null}, {"value": "nsjeqs.de", "hyperlink": null}, {"value": "英明國中他在動密碼", "hyperlink": null}, {"value": "", "hyperlink": null}, {"value": "site:nsjeqs.de 國中", "hyperlink": "https://www.google.com/search?q=site%3Ansjeqs.de%20%E5%9C%8B%E4%B8%AD"}], [{"value": "7", "hyperlink": null}, {"value": ".de", "hyperlink": null}, {"value": "nsjeqs.de", "hyperlink": null}, {"value": "富岡國中畢業紀念冊", "hyperlink": null}, {"value": "", "hyperlink": null}, {"value": "site:nsjeqs.de 國中", "hyperlink": "https://www.google.com/search?q=site%3Ansjeqs.de%20%E5%9C%8B%E4%B8%AD"}], [{"value": "7", "hyperlink": null}, {"value": ".de", "hyperlink": null}, {"value": "nsjeqs.de", "hyperlink": null}, {"value": "江翠國中體育班招生", "hyperlink": null}, {"value": "", "hyperlink": null}, {"value": "site:nsjeqs.de 國中", "hyperlink": "https://www.google.com/search?q=site%3Ansjeqs.de%20%E5%9C%8B%E4%B8%AD"}], [{"value": "7", "hyperlink": null}, {"value": ".de", "hyperlink": null}, {"value": "nsjeqs.de", "hyperlink": null}, {"value": "板橋國中行事曆115", "hyperlink": null}, {"value": "", "hyperlink": null}, {"value": "site:nsjeqs.de 國中", "hyperlink": "https://www.google.com/search?q=site%3Ansjeqs.de%20%E5%9C%8B%E4%B8%AD"}], [{"value": "7", "hyperlink": null}, {"value": ".de", "hyperlink": null}, {"value": "nsjeqs.de", "hyperlink": null}, {"value": "國中理化課159", "hyperlink": null}, {"value": "", "hyperlink": null}, {"value": "site:nsjeqs.de 國中", "hyperlink": "https://www.google.com/search?q=site%3Ansjeqs.de%20%E5%9C%8B%E4%B8%AD"}], [{"value": "7", "hyperlink": null}, {"value": ".de", "hyperlink": null}, {"value": "nsjeqs.de", "hyperlink": null}, {"value": "鹽埔國中打架影片", "hyperlink": null}, {"value": "", "hyperlink": null}, {"value": "site:nsjeqs.de 國中", "hyperlink": "https://www.google.com/search?q=site%3Ansjeqs.de%20%E5%9C%8B%E4%B8%AD"}], [{"value": "7", "hyperlink": null}, {"value": ".de", "hyperlink": null}, {"value": "nsjeqs.de", "hyperlink": null}, {"value": "英明國中他在動影片", "hyperlink": null}, {"value": "", "hyperlink": null}, {"value": "site:nsjeqs.de 國中", "hyperlink": "https://www.google.com/search?q=site%3Ansjeqs.de%20%E5%9C%8B%E4%B8%AD"}], [{"value": "7", "hyperlink": null}, {"value": ".de", "hyperlink": null}, {"value": "nsjeqs.de", "hyperlink": null}, {"value": "石牌國中數學考古題", "hyperlink": null}, {"value": "", "hyperlink": null}, {"value": "site:nsjeqs.de 國中", "hyperlink": "https://www.google.com/search?q=site%3Ansjeqs.de%20%E5%9C%8B%E4%B8%AD"}], [{"value": "2", "hyperlink": null}, {"value": ".de", "hyperlink": null}, {"value": "womblf.de", "hyperlink": null}, {"value": "復興國中平面圖114", "hyperlink": null}, {"value": "", "hyperlink": null}, {"value": "site:womblf.de 國中", "hyperlink": "https://www.google.com/search?q=site%3Awomblf.de%20%E5%9C%8B%E4%B8%AD"}], [{"value": "3", "hyperlink": null}, {"value": ".de", "hyperlink": null}, {"value": "womblf.de", "hyperlink": null}, {"value": "嘉義市民生國中跳樓", "hyperlink": null}, {"value": "", "hyperlink": null}, {"value": "site:womblf.de 國中", "hyperlink": "https://www.google.com/search?q=site%3Awomblf.de%20%E5%9C%8B%E4%B8%AD"}]]}, "⚠️兒少性剝削": {"headers": ["頁次", "網域", "標題", "iWIN通報"], "rows": [[{"value": "6", "hyperlink": null}, {"value": "dlgnzr.de", "hyperlink": null}, {"value": "O南國中潘佳o打炮自拍公開", "hyperlink": null}, {"value": "iWIN通報連結", "hyperlink": "https://i.win.org.tw/iWIN/"}], [{"value": "7", "hyperlink": null}, {"value": "dlgnzr.de", "hyperlink": null}, {"value": "國中生打炮外流", "hyperlink": null}, {"value": "iWIN通報連結", "hyperlink": "https://i.win.org.tw/iWIN/"}], [{"value": "2", "hyperlink": null}, {"value": "nsjeqs.de", "hyperlink": null}, {"value": "鹽埔國中打架脫衣", "hyperlink": null}, {"value": "iWIN通報連結", "hyperlink": "https://i.win.org.tw/iWIN/"}], [{"value": "3", "hyperlink": null}, {"value": "nsjeqs.de", "hyperlink": null}, {"value": "國中生打炮影片", "hyperlink": null}, {"value": "iWIN通報連結", "hyperlink": "https://i.win.org.tw/iWIN/"}]]}, "域名彙整": {"headers": ["網域", "TLD", "毒化頁面數", "兒少相關", "Serper識別", "說明"], "rows": [[{"value": "dlgnzr.de", "hyperlink": null}, {"value": ".de", "hyperlink": null}, {"value": "24", "hyperlink": null}, {"value": "2", "hyperlink": null}, {"value": "✅", "hyperlink": null}, {"value": "程式正確識別，8頁共24筆", "hyperlink": null}], [{"value": "nsjeqs.de", "hyperlink": null}, {"value": ".de", "hyperlink": null}, {"value": "23", "hyperlink": null}, {"value": "2", "hyperlink": null}, {"value": "✅", "hyperlink": null}, {"value": "程式正確識別，但漏抓9筆", "hyperlink": null}], [{"value": "womblf.de", "hyperlink": null}, {"value": ".de", "hyperlink": null}, {"value": "2", "hyperlink": null}, {"value": "0", "hyperlink": null}, {"value": "❌", "hyperlink": null}, {"value": "URL解析bug(womblf→omblf)，程式漏掉", "hyperlink": null}]]}, "Summary": {"headers": ["項目", "值"], "rows": [[{"value": "查詢", "hyperlink": null}, {"value": "site:de 國中", "hyperlink": null}], [{"value": "手動掃描頁數", "hyperlink": null}, {"value": "8", "hyperlink": null}], [{"value": "Serper掃描頁數", "hyperlink": null}, {"value": "7", "hyperlink": null}], [{"value": "JX .de 域名數", "hyperlink": null}, {"value": "3", "hyperlink": null}], [{"value": "手動識別總頁面", "hyperlink": null}, {"value": "49", "hyperlink": null}], [{"value": "Serper識別頁面", "hyperlink": null}, {"value": "23", "hyperlink": null}], [{"value": "Serper漏掉域名", "hyperlink": null}, {"value": "womblf.de", "hyperlink": null}], [{"value": "⚠️兒少性剝削", "hyperlink": null}, {"value": "4", "hyperlink": null}], [{"value": "分析時間", "hyperlink": null}, {"value": "2026-05-28 14:18:16", "hyperlink": null}]]}};
+
+function buildTable(sheet, content) {
+  const headers = content.headers;
+  const rows = content.rows;
+  
+  let thead = '<tr>' + headers.map(h => `<th>${h}</th>`).join('') + '</tr>';
+  
+  let tbody = rows.map(row => {
+    let cls = '';
+    if (sheet === '手動比對_全部') {
+      const child = row[4]?.value;
+      const status = row[7]?.value || '';
+      if (child === '⚠️') cls = 'row-child';
+      else if (status.includes('漏掉')) cls = 'row-miss';
+      else cls = 'row-ok';
+    } else if (sheet === '⚠️兒少性剝削') {
+      cls = 'row-child';
+    }
+    
+    const cells = row.map(cell => {
+      const val = cell.value || '';
+      const link = cell.hyperlink;
+      if (link && val) {
+        return `<td><a href="${link}" target="_blank">${val}</a></td>`;
+      }
+      return `<td>${val}</td>`;
+    }).join('');
+    
+    return `<tr class="${cls}">${cells}</tr>`;
+  }).join('');
+  
+  return `<table><thead>${thead}</thead><tbody>${tbody}</tbody></table>`;
+}
+
+// Build all panels
+const panelsDiv = document.getElementById('panels');
+panelsDiv.innerHTML = '';
+
+const sheets = Object.keys(data);
+sheets.forEach((sheet, i) => {
+  const panel = document.createElement('div');
+  panel.className = 'panel' + (i === 0 ? ' show' : '');
+  panel.id = `panel-${i}`;
+  
+  let extra = '';
+  if (sheet === '手動比對_全部') {
+    extra = `<div class="legend">
+      <div class="legend-item"><div class="legend-dot dot-ok"></div>✅ 程式與手動皆有（28筆）</div>
+      <div class="legend-item"><div class="legend-dot dot-miss"></div>❌ 程式漏掉（21筆）</div>
+      <div class="legend-item"><div class="legend-dot dot-child"></div>⚠️ 兒少性剝削（4筆）</div>
+    </div><div class="count">共 ${data[sheet].rows.length} 筆 ｜ Google驗證欄可直接點擊搜尋</div>`;
+  } else {
+    extra = `<div class="count">共 ${data[sheet].rows.length} 筆</div>`;
+  }
+  
+  panel.innerHTML = extra + buildTable(sheet, data[sheet]);
+  panelsDiv.appendChild(panel);
+});
+
+function switchTab(idx) {
+  document.querySelectorAll('.tab').forEach((t, i) => {
+    t.classList.toggle('active', i === idx);
+  });
+  document.querySelectorAll('.panel').forEach((p, i) => {
+    p.classList.toggle('show', i === idx);
+  });
+}
+</script>
+
+<footer>
+  JADE-ANS 翡翠網路資訊解決方案 ｜ TLP:RED ｜ 未經授權不得轉載
+</footer>
+
+
+<script>
+new QRCode(document.getElementById("qrcode"), {
+  text: "https://jx-delta.pages.dev/site-de-report",
+  width: 80,
+  height: 80,
+  colorDark: "#1a2545",
+  colorLight: "#ffffff",
+  correctLevel: QRCode.CorrectLevel.M
+});
+</script>
+
+</body>
+</html>
